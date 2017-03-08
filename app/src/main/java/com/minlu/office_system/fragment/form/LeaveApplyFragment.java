@@ -2,7 +2,6 @@ package com.minlu.office_system.fragment.form;
 
 import android.support.v7.widget.ListPopupWindow;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
@@ -54,19 +53,6 @@ public class LeaveApplyFragment extends FormFragment {
         strings.add("KHBGS");
         strings.add("AKFBA");
         strings.add("FTRUH");
-
-
-        showListPopupWindow(customEditTextRight, strings, new ShowListPopupItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                setBackGroundDarkColor(1f);
-            }
-
-            @Override
-            public void onAnchorViewClick(View v) {
-                setBackGroundDarkColor(0.7f);
-            }
-        });
 
         return inflate;
     }

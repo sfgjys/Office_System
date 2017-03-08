@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.PopupWindow;
 
 import com.minlu.baselibrary.base.BaseFragment;
 import com.minlu.office_system.fragment.time.DatePickerFragment;
@@ -20,6 +21,8 @@ public abstract class FormFragment extends BaseFragment {
         void onItemClick(AdapterView<?> parent, View view, int position, long id);
 
         void onAnchorViewClick(View v);
+
+        void onListPopupDismiss();
     }
 
     public abstract void disAgreeOnClick(View v);
@@ -54,13 +57,6 @@ public abstract class FormFragment extends BaseFragment {
         listPopupWindow.setHeight(ActionBar.LayoutParams.WRAP_CONTENT);
         listPopupWindow.setAnchorView(anchorView);//设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         listPopupWindow.setModal(true);//设置是否是模式
-        listPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                clickListener.onItemClick(parent, view, position, id);
-                listPopupWindow.dismiss();
-            }
-        });
         anchorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,10 +64,23 @@ public abstract class FormFragment extends BaseFragment {
                 clickListener.onAnchorViewClick(v);
             }
         });
+        listPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                clickListener.onItemClick(parent, view, position, id);
+                listPopupWindow.dismiss();
+            }
+        });
+        listPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                clickListener.onListPopupDismiss();
+            }
+        });
     }
 
     /*
-    * 设置背景颜色变暗
+    * 设置背景颜色变暗 参数0.0f~1.0f
     * */
     public void setBackGroundDarkColor(float alpha) {
         WindowManager.LayoutParams layoutParams = getActivity().getWindow().getAttributes();
