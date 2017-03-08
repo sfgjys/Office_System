@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/tv_custom_edit_text_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="请假标题 : "
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+    <EditText
+        android:id="@+id/et_custom_edit_text_right"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginStart="6dp"
+        android:layout_weight="1"
+        android:inputType="text"
+        android:paddingRight="10dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/loading_background_thin_gray"
+        android:theme="@style/AppTheme" />
+
+</LinearLayout>

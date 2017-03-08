@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/shape_setting_item_background_pressed" android:state_pressed="true"/>
+    <!-- pressed 这个代表按下时显示的图片 -->
+
+    <item android:drawable="@drawable/shape_setting_item_background"/>
+    <!-- default  这个代表默认也就什么都不做时显示的图片 -->
+
+</selector>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:setting="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/thin_gray"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_setting_item_back"
+        android:padding="6dp">
+
+        <ImageView
+            android:id="@+id/iv_me_top_itme_left_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="6dp"
+            android:src="@mipmap/ic_launcher" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/iv_me_top_itme_left_image"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="shaozhengjie"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="个人中心，待办事项"
+                android:textColor="@android:color/darker_gray"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_setting_ico_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:src="@mipmap/setting_ico_right"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <com.minlu.office_system.customview.SettingItem
+        android:id="@+id/me_my_leave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        setting:describeTextStyle="@style/textStyle"
+        setting:iscache="gone"
+        setting:isright="visible"
+        setting:isswitch="gone"
+        setting:setting_itm_miaoshu="我的请假"
+        setting:setting_itm_tubiao="@mipmap/me_bottm_item1" />
+
+
+    <com.minlu.office_system.customview.SettingItem
+        android:id="@+id/me_my_apply_for_bus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        setting:describeTextStyle="@style/textStyle"
+        setting:iscache="gone"
+        setting:isright="visible"
+        setting:isswitch="gone"
+        setting:setting_itm_miaoshu="我的车辆申请"
+        setting:setting_itm_tubiao="@mipmap/me_bottm_item2" />
+
+
+    <com.minlu.office_system.customview.SettingItem
+        android:id="@+id/me_my_meeting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        setting:describeTextStyle="@style/textStyle"
+        setting:iscache="gone"
+        setting:isright="visible"
+        setting:isswitch="gone"
+        setting:setting_itm_miaoshu="我的会议室预约"
+        setting:setting_itm_tubiao="@mipmap/me_bottm_item3" />
+
+</LinearLayout>

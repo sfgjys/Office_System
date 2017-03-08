@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/selector_hompage_grideitem"
+    android:padding="12dp">
+
+    <ImageView
+        android:id="@+id/iv_home_page_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/home_page_icon1" />
+
+    <TextView
+        android:id="@+id/tv_home_page_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:text="收文管理"
+        android:textColor="@android:color/black"
+        android:textSize="18dp" />
+
+</LinearLayout>

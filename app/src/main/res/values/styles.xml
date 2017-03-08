@@ -1,0 +1,54 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/action_bar_background</item>
+    </style>
+
+    <style name="textStyle">
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <!--<item name="android:textStyle">bold</item>-->
+    </style>
+
+    <style name="editText_parent">
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/shape_editext_bg</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="editText_child" parent="editText_parent">
+        <item name="android:drawablePadding">15dp</item>
+        <item name="android:layout_marginRight">30dp</item>
+        <item name="android:layout_marginLeft">30dp</item>
+    </style>
+
+    <style name="login_in_padding">
+        <item name="android:layout_marginRight">30dp</item>
+        <item name="android:layout_marginLeft">30dp</item>
+    </style>
+
+    <style name="form_head_parent_layout_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">26dp</item>
+    </style>
+
+    <style name="width_match_height_wrap">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="editText_item_top" parent="width_match_height_wrap">
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+</resources>

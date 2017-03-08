@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:setting="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/thin_gray"
+    android:orientation="vertical">
+
+    <com.minlu.office_system.customview.SettingItem
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        setting:describeTextStyle="@style/textStyle"
+        setting:iscache="gone"
+        setting:isright="gone"
+        setting:isswitch="visible"
+        setting:setting_itm_miaoshu="信息提示"
+        setting:setting_itm_tubiao="@null" />
+
+    <com.minlu.office_system.customview.SettingItem
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        setting:describeTextStyle="@style/textStyle"
+        setting:iscache="gone"
+        setting:isright="visible"
+        setting:isswitch="gone"
+        setting:setting_itm_miaoshu="清理缓存"
+        setting:setting_itm_tubiao="@null" />
+
+    <com.minlu.office_system.customview.SettingItem
+        android:id="@+id/setting_version_information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        setting:describeTextStyle="@style/textStyle"
+        setting:iscache="gone"
+        setting:isright="visible"
+        setting:isswitch="gone"
+        setting:setting_itm_miaoshu="版本信息"
+        setting:setting_itm_tubiao="@null" />
+
+    <com.minlu.office_system.customview.SettingItem
+        android:id="@+id/setting_about_us"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        setting:describeTextStyle="@style/textStyle"
+        setting:iscache="gone"
+        setting:isright="visible"
+        setting:isswitch="gone"
+        setting:setting_itm_miaoshu="关于我们"
+        setting:setting_itm_tubiao="@null" />
+
+
+    <com.minlu.office_system.customview.SettingItem
+        android:id="@+id/setting_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        setting:describeTextStyle="@style/textStyle"
+        setting:iscache="gone"
+        setting:isright="visible"
+        setting:isswitch="gone"
+        setting:setting_itm_miaoshu="退出"
+        setting:setting_itm_tubiao="@null" />
+
+</LinearLayout>

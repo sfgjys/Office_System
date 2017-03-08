@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:edittextitem="http://schemas.android.com/apk/res-auto"
+    style="@style/form_head_parent_layout_style">
+
+    <com.minlu.office_system.customview.EditTextItem
+        style="@style/width_match_height_wrap"
+        edittextitem:editText_hint="请输入标题"
+        edittextitem:editText_left_text="请假标题 : " />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/et_item_leave_type"
+        android:layout_marginRight="100dp"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请选择"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="请假类型 : "
+        edittextitem:editText_right_icon="@mipmap/pull_down_default" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/et_item_start_time"
+        edittextitem:editText_hint="请选择时间"
+        edittextitem:editText_left_text="开始时间 : "
+        edittextitem:editText_right_icon="@mipmap/calendar_icon_default"
+        style="@style/editText_item_top" />
+
+
+    <com.minlu.office_system.customview.EditTextItem
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请选择时间"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="结束时间 : "
+        edittextitem:editText_right_icon="@mipmap/calendar_icon_default" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/et_item_remark"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="各种建议,备注"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_is_clickable="true"
+        edittextitem:editText_left_text="备注 : "
+        edittextitem:editText_max_lines="6" />
+</LinearLayout>

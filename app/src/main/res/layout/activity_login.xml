@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/thin_gray">
+
+    <TextView
+        android:id="@+id/iv_login_top_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:drawableLeft="@mipmap/main_top_image"
+        android:drawablePadding="6dp"
+        android:gravity="center_vertical"
+        android:text="协同智能办公系统"
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/login_user"
+        style="@style/editText_child"
+        android:layout_below="@+id/iv_login_top_logo"
+        android:layout_marginTop="60dp"
+        android:drawableLeft="@mipmap/login_user"
+        android:drawableStart="@mipmap/login_user"
+        android:hint="请输入帐号"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/black" />
+
+    <EditText
+        android:id="@+id/login_password"
+        style="@style/editText_child"
+        android:layout_below="@id/login_user"
+        android:layout_marginTop="@dimen/login_two_edit_text_margin"
+        android:drawableLeft="@mipmap/login_password"
+        android:drawableStart="@mipmap/login_password"
+        android:hint="请输入密码"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/black" />
+
+    <CheckBox
+        android:id="@+id/cb_login_remember_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/login_password"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="@dimen/login_two_edit_text_margin"
+        android:background="@android:color/transparent"
+        android:button="@null"
+        android:checked="false"
+        android:drawableLeft="@drawable/selector_login_radiobutton_bg"
+        android:drawablePadding="6dp"
+        android:text="自动登录"
+        android:textColor="@color/black"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/login_bottom_text_margin_bottom"
+        android:text="POWERED BY 明鹿物联  版权所有"
+        android:textColor="@color/white"
+        android:textSize="12dp" />
+
+    <Button
+        android:id="@+id/bt_login_button"
+        style="@style/login_in_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cb_login_remember_password"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/selector_login_button"
+        android:text="登录"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+</RelativeLayout>
