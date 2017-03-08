@@ -26,11 +26,11 @@ public class FormActivity extends BaseActivity implements View.OnClickListener {
 
         initView();
 
-        showWhichButton(getmIntent().getIntExtra(StringsFiled.HOME_TO_FORM_SHOW_WHICH_BUTTON, -1));
+        showWhichButton(getmIntent().getIntExtra(StringsFiled.TO_FORM_SHOW_WHICH_BUTTON, -1));
 
         // 根据Class<?>创建Fragment，并开启Fragment
-        Class<?> aClass = (Class<?>) getmIntent().getSerializableExtra(StringsFiled.HOME_TO_FORM_SHOW_FORM_FRAGMENT);
-        mFragmentTag = getmIntent().getStringExtra(StringsFiled.HOME_TO_FORM_SHOW_FORM_FRAGMENT_TAG);
+        Class<?> aClass = (Class<?>) getmIntent().getSerializableExtra(StringsFiled.TO_FORM_SHOW_FORM_FRAGMENT);
+        mFragmentTag = getmIntent().getStringExtra(StringsFiled.TO_FORM_SHOW_FORM_FRAGMENT_TAG);
         try {
             Fragment fragment = (Fragment) aClass.newInstance();
             getSupportFragmentManager().beginTransaction().replace(R.id.sv_replace_form, fragment, mFragmentTag).commit();
