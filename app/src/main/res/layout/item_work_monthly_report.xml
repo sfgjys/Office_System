@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:background="@color/main_bottom_gray"
+        android:orientation="vertical"
+        android:padding="1dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/main_bottom_gray"
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="工作一"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="工作安排"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="      要明确何时实现目标和完成任务，，这是实现计划的保证。,总之，要根据客观条件，统筹安排，将“怎么做”写得明确具体，切实可行"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="工作汇报"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="      工作汇报必须有情况的概述和叙述，，。、有利和不利条件以及工作的环境和基础等进行分析。"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="工作总结"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="       生活处处有学习。，刚来时，、。，我越来越懂得谦逊，谦虚使人进步，骄傲使人落后。"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>
