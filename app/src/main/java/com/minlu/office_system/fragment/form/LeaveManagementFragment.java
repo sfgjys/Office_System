@@ -23,7 +23,7 @@ public class LeaveManagementFragment extends FormFragment {
 
     @Override
     protected View onCreateSuccessView() {
-        View inflate = ViewsUitls.inflate(R.layout.form_leave_apply);
+        View inflate = ViewsUitls.inflate(R.layout.form_leave_management);
 
         return inflate;
     }
@@ -31,7 +31,7 @@ public class LeaveManagementFragment extends FormFragment {
     @Override
     protected ContentPage.ResultState onLoad() {
         excessive = new ArrayList<>();
-//        excessive.add("excessive");
+        excessive.add("excessive");
         return chat(excessive);
     }
 

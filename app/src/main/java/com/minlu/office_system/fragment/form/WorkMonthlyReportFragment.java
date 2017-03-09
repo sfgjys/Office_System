@@ -23,7 +23,7 @@ public class WorkMonthlyReportFragment extends FormFragment {
 
     @Override
     protected View onCreateSuccessView() {
-        View inflate = ViewsUitls.inflate(R.layout.form_leave_apply);
+        View inflate = ViewsUitls.inflate(R.layout.form_work_monthly_report);
 
         return inflate;
     }
@@ -31,9 +31,10 @@ public class WorkMonthlyReportFragment extends FormFragment {
     @Override
     protected ContentPage.ResultState onLoad() {
         excessive = new ArrayList<>();
-//        excessive.add("excessive");
+        excessive.add("excessive");
         return chat(excessive);
     }
+
     @Override
     public void disAgreeOnClick(View v) {
         System.out.println("WorkMonthlyReportFragment-disAgreeOnClick");
