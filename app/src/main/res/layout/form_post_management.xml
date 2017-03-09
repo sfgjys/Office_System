@@ -3,23 +3,72 @@
     xmlns:edittextitem="http://schemas.android.com/apk/res-auto"
     style="@style/form_head_parent_layout_style">
 
+    <!--  <com.minlu.office_system.customview.EditTextItem
+          style="@style/width_match_height_wrap"
+          android:visibility="gone"
+          edittextitem:editText_hint="请输入标题"
+          edittextitem:editText_input_type="textPassword"
+          edittextitem:editText_left_text="请假标题 : "
+          edittextitem:editText_max_lines="1"
+          edittextitem:editText_right_icon="@mipmap/pull_down_default" />
+
+      <com.minlu.office_system.customview.EditTextItem
+          android:id="@+id/et_item_leave_type"
+          style="@style/editText_item_top"
+          android:visibility="gone"
+          edittextitem:editText_hint="请选择"
+          edittextitem:editText_input_type="textMultiLine"
+          edittextitem:editText_left_text="请假类型 : "
+          edittextitem:editText_max_lines="6"
+          edittextitem:editText_right_icon="@mipmap/calendar_icon_default" />-->
+
     <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_post_management_drafter"
         style="@style/width_match_height_wrap"
-        android:visibility="gone"
-        edittextitem:editText_hint="请输入标题"
-        edittextitem:editText_input_type="textPassword"
-        edittextitem:editText_left_text="请假标题 : "
-        edittextitem:editText_max_lines="1"
+        edittextitem:editText_hint="请输入拟搞人"
+        edittextitem:editText_left_text="拟搞人 : " />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_post_management_main_office"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请输入主办处室"
+        edittextitem:editText_left_text="主办处室 : " />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_post_management_post_type"
+        style="@style/editText_item_top"
+        android:layout_marginRight="0dp"
+        edittextitem:editText_hint="请选择类型"
+        edittextitem:editText_left_text="发文类型 : "
         edittextitem:editText_right_icon="@mipmap/pull_down_default" />
 
     <com.minlu.office_system.customview.EditTextItem
-        android:id="@+id/et_item_leave_type"
+        android:id="@+id/form_post_management_post_number"
         style="@style/editText_item_top"
-        android:visibility="gone"
-        edittextitem:editText_hint="请选择"
-        edittextitem:editText_input_type="textMultiLine"
-        edittextitem:editText_left_text="请假类型 : "
-        edittextitem:editText_max_lines="6"
-        edittextitem:editText_right_icon="@mipmap/calendar_icon_default" />
+        edittextitem:editText_hint="请输入发文文号"
+        edittextitem:editText_left_text="发文文号 : " />
 
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_post_management_is_open"
+        style="@style/editText_item_top"
+        android:layout_marginRight="150dp"
+        edittextitem:editText_hint="是/否"
+        edittextitem:editText_left_text="是否公开 : "
+        edittextitem:editText_right_icon="@mipmap/pull_down_default" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_post_management_post_title"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请输入发文标题"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_left_text="发文标题 : "
+        edittextitem:editText_max_lines="3" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_post_management_main_send_office"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请输入主送机关"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_left_text="主送机关 : "
+        edittextitem:editText_max_lines="3" />
 </LinearLayout>

@@ -26,9 +26,11 @@ public class RecordManagementFragment extends FormFragment {
 
     @Override
     protected View onCreateSuccessView() {
-
-        FormActivity formActivity = (FormActivity) getActivity();
-        formActivity.setScrollViewNoGravity();
+        // 因为本fragment是通过R.id.sv_replace_form控件replace开启的，但是R.id.sv_replace_form控件是居中属性，所以再次我们要使得居中属性去除
+        FormActivity formActivity = (FormActivity) getContext();
+        if (formActivity != null) {
+            formActivity.setScrollViewNoGravity();
+        }
 
         View inflate = ViewsUitls.inflate(R.layout.form_record_management);
 

@@ -2,24 +2,71 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:edittextitem="http://schemas.android.com/apk/res-auto"
     style="@style/form_head_parent_layout_style">
+    <!--
+
+        <com.minlu.office_system.customview.EditTextItem
+            style="@style/width_match_height_wrap"
+            android:visibility="gone"
+            edittextitem:editText_hint="请输入标题"
+            edittextitem:editText_input_type="textPassword"
+            edittextitem:editText_left_text="请假标题 : "
+            edittextitem:editText_max_lines="1"
+            edittextitem:editText_right_icon="@mipmap/pull_down_default" />
+
+        <com.minlu.office_system.customview.EditTextItem
+            android:id="@+id/form_leave_apply_type"
+            style="@style/editText_item_top"
+            android:visibility="gone"
+            edittextitem:editText_hint="请选择"
+            edittextitem:editText_input_type="textMultiLine"
+            edittextitem:editText_left_text="请假类型 : "
+            edittextitem:editText_max_lines="6"
+            edittextitem:editText_right_icon="@mipmap/calendar_icon_default" />
+    -->
 
     <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_plan_summary_year"
         style="@style/width_match_height_wrap"
-        android:visibility="gone"
-        edittextitem:editText_hint="请输入标题"
-        edittextitem:editText_input_type="textPassword"
-        edittextitem:editText_left_text="请假标题 : "
-        edittextitem:editText_max_lines="1"
-        edittextitem:editText_right_icon="@mipmap/pull_down_default" />
+        edittextitem:editText_hint="请输入第几年度"
+        edittextitem:editText_left_text="年度 : " />
 
     <com.minlu.office_system.customview.EditTextItem
-        android:id="@+id/et_item_leave_type"
+        android:id="@+id/form_plan_summary_quarter"
         style="@style/editText_item_top"
-        android:visibility="gone"
-        edittextitem:editText_hint="请选择"
-        edittextitem:editText_input_type="textMultiLine"
-        edittextitem:editText_left_text="请假类型 : "
-        edittextitem:editText_max_lines="6"
+        edittextitem:editText_hint="请输入第几季度"
+        edittextitem:editText_left_text="季度 : " />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_plan_summary_user_name"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请输入姓名"
+        edittextitem:editText_left_text="姓名 : " />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_plan_summary_job"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请输入职位"
+        edittextitem:editText_left_text="职位 : " />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_plan_summary_department"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请输入所在部门"
+        edittextitem:editText_left_text="所在部门 : " />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_plan_summary_time"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请选择时间"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="填写时间 : "
         edittextitem:editText_right_icon="@mipmap/calendar_icon_default" />
 
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_plan_summary_work_plan"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请输入工作计划"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_left_text="工作计划 : "
+        edittextitem:editText_max_lines="6" />
 </LinearLayout>

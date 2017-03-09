@@ -1,25 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:edittextitem="http://schemas.android.com/apk/res-auto"
-    style="@style/form_head_parent_layout_style">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <com.minlu.office_system.customview.EditTextItem
-        style="@style/width_match_height_wrap"
-        android:visibility="gone"
-        edittextitem:editText_hint="请输入标题"
-        edittextitem:editText_input_type="textPassword"
-        edittextitem:editText_left_text="请假标题 : "
-        edittextitem:editText_max_lines="1"
-        edittextitem:editText_right_icon="@mipmap/pull_down_default" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:background="@color/main_bottom_gray"
+        android:orientation="vertical"
+        android:padding="1dp">
 
-    <com.minlu.office_system.customview.EditTextItem
-        android:id="@+id/et_item_leave_type"
-        style="@style/editText_item_top"
-        android:visibility="gone"
-        edittextitem:editText_hint="请选择"
-        edittextitem:editText_input_type="textMultiLine"
-        edittextitem:editText_left_text="请假类型 : "
-        edittextitem:editText_max_lines="6"
-        edittextitem:editText_right_icon="@mipmap/calendar_icon_default" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/main_bottom_gray"
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="工作一"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="工作安排"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="      要明确何时实现目标和完成任务，，这是实现计划的保证。,总之，要根据客观条件，统筹安排，将“怎么做”写得明确具体，切实可行"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="工作汇报"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="      工作汇报必须有情况的概述和叙述，，。、有利和不利条件以及工作的环境和基础等进行分析。"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="工作总结"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="       生活处处有学习。，刚来时，、。，我越来越懂得谦逊，谦虚使人进步，骄傲使人落后。"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

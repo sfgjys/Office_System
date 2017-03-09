@@ -3,7 +3,7 @@
     xmlns:edittextitem="http://schemas.android.com/apk/res-auto"
     style="@style/form_head_parent_layout_style">
 
-    <com.minlu.office_system.customview.EditTextItem
+<!--    <com.minlu.office_system.customview.EditTextItem
         style="@style/width_match_height_wrap"
         android:visibility="gone"
         edittextitem:editText_hint="请输入标题"
@@ -13,13 +13,13 @@
         edittextitem:editText_right_icon="@mipmap/pull_down_default" />
 
     <com.minlu.office_system.customview.EditTextItem
-        android:id="@+id/et_item_leave_type"
+        android:id="@+id/form_leave_apply_type"
         style="@style/editText_item_top"
         android:visibility="gone"
         edittextitem:editText_hint="请选择"
         edittextitem:editText_input_type="textMultiLine"
         edittextitem:editText_left_text="请假类型 : "
         edittextitem:editText_max_lines="6"
-        edittextitem:editText_right_icon="@mipmap/calendar_icon_default" />
+        edittextitem:editText_right_icon="@mipmap/calendar_icon_default" />-->
 
 </LinearLayout>

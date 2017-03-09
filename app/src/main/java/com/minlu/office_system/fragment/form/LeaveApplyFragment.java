@@ -1,7 +1,7 @@
 package com.minlu.office_system.fragment.form;
 
-import android.support.v7.widget.ListPopupWindow;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
@@ -16,18 +16,11 @@ import com.minlu.office_system.fragment.time.DatePickerFragment;
 import com.minlu.office_system.fragment.time.TimePickerFragment;
 
 import java.util.ArrayList;
-import java.util.List;
 
-/**
- * Created by user on 2017/3/7.
- */
 
-public class LeaveApplyFragment extends FormFragment {
+public class LeaveApplyFragment extends FormFragment implements FormFragment.ShowListPopupItemClickListener {
 
     private ArrayList<String> excessive;
-    private ListPopupWindow mListPop;
-    private EditText customEditTextRight;
-    private List<String> lists;
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -45,16 +38,54 @@ public class LeaveApplyFragment extends FormFragment {
 
         View inflate = ViewsUitls.inflate(R.layout.form_leave_apply);
 
-
-        EditTextItem editTextItem = (EditTextItem) inflate.findViewById(R.id.et_item_leave_type);
-        customEditTextRight = editTextItem.getCustomEditTextRight();
-
-        ArrayList<String> strings = new ArrayList<>();
-        strings.add("KHBGS");
-        strings.add("AKFBA");
-        strings.add("FTRUH");
+        initView(inflate);
 
         return inflate;
+    }
+
+    private void initView(View inflate) {
+        EditTextItem title = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_title);
+
+        EditTextItem type = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_type);
+        EditText typeCustomEditTextRight = type.getCustomEditTextRight();
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add("事假");
+        strings.add("病假");
+        strings.add("婚假");
+        strings.add("产假");
+        strings.add("年假");
+        strings.add("休假");
+        showListPopupWindow(typeCustomEditTextRight, strings, this);
+
+
+        EditTextItem startTime = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_start_time);
+        startTime.getCustomEditTextRight().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog(new DatePickerFragment.SetDateListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                    }
+                });
+            }
+        });
+        EditTextItem endTime = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_end_time);
+        endTime.getCustomEditTextRight().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog(new DatePickerFragment.SetDateListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                    }
+                });
+            }
+        });
+
+        EditTextItem remark = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_remark);
+
+        ViewsUitls.setWidthFromTargetView(title.getCustomEditTextLeft(), remark.getCustomEditTextLeft());
     }
 
     @Override
@@ -89,5 +120,20 @@ public class LeaveApplyFragment extends FormFragment {
     @Override
     public void submitOnClick(View v) {
         System.out.println("LeaveApplyFragment-submitOnClick");
+    }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    }
+
+    @Override
+    public void onAnchorViewClick(View v) {
+        setBackGroundDarkColor(0.7f);
+    }
+
+    @Override
+    public void onListPopupDismiss() {
+        setBackGroundDarkColor(1.0f);
     }
 }
