@@ -14,12 +14,11 @@ import com.minlu.office_system.fragment.form.PostManagementFragment;
 import com.minlu.office_system.fragment.form.RecordManagementFragment;
 import com.minlu.office_system.fragment.form.WorkMonthlyReportFragment;
 
-/**
- * Created by user on 2017/3/7.
- */
-
 public enum AllForms {
 
+    /*
+    * 主页中item的文本名字，主页中item的图片所在资源id，表单Fragment的class，在表单Fragment界面中显示的是什么按钮，打开表单Fragment时的Tag
+    * */
     RECORD_MANAGEMENT("收文管理", R.mipmap.home_page_icon1, RecordManagementFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON, StringsFiled.RecordManagementFragment_TAG),
     POST_MANAGEMENT("发文管理", R.mipmap.home_page_icon2, PostManagementFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON, StringsFiled.PostManagementFragment_TAG),
     LEAVE_MANAGEMENT("请假管理", R.mipmap.home_page_icon3, LeaveManagementFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON, StringsFiled.LeaveManagementFragment_TAG),

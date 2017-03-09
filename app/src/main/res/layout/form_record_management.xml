@@ -4,8 +4,38 @@
     style="@style/form_head_parent_layout_style">
 
     <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_record_management_title"
         style="@style/width_match_height_wrap"
         edittextitem:editText_hint="请输入标题"
+        edittextitem:editText_left_text="来文标题 : " />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_record_management_number"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请输入文号"
         edittextitem:editText_left_text="来文文号 : " />
 
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_record_management_unit"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请输入单位"
+        edittextitem:editText_left_text="来文单位 : " />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_record_management_date"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请选择日期"
+        edittextitem:editText_left_text="来文日期 : " />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_record_management_details"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请选择日期"
+        edittextitem:editText_left_text="文件详情 : " />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_record_management_remark"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="选填备注"
+        edittextitem:editText_left_text="备注 : " />
 </LinearLayout>
