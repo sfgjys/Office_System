@@ -4,7 +4,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
 
 import com.minlu.baselibrary.base.ContentPage;
 import com.minlu.baselibrary.util.ViewsUitls;
@@ -13,7 +12,6 @@ import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
 import com.minlu.office_system.fragment.time.DatePickerFragment;
-import com.minlu.office_system.fragment.time.TimePickerFragment;
 
 import java.util.ArrayList;
 
@@ -98,23 +96,11 @@ public class LeaveApplyFragment extends FormFragment implements FormFragment.Sho
     @Override
     public void disAgreeOnClick(View v) {
         System.out.println("LeaveApplyFragment-disAgreeOnClick");
-        showDatePickerDialog(new DatePickerFragment.SetDateListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                System.out.println(year + "-" + month + "-" + dayOfMonth);
-            }
-        });
     }
 
     @Override
     public void agreeOnClick(View v) {
         System.out.println("LeaveApplyFragment-agreeOnClick");
-        showTimePickerDialog(new TimePickerFragment.SetTimeListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                System.out.println(hourOfDay + "-" + minute);
-            }
-        });
     }
 
     @Override
