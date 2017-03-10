@@ -1,5 +1,6 @@
 package com.minlu.office_system.fragment.form;
 
+import android.content.Intent;
 import android.view.View;
 
 import com.minlu.baselibrary.base.ContentPage;
@@ -31,6 +32,13 @@ public class LeaveManagementFragment extends FormFragment {
         }
 
         View inflate = ViewsUitls.inflate(R.layout.form_leave_management);
+
+        inflate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent());
+            }
+        });
 
         return inflate;
     }

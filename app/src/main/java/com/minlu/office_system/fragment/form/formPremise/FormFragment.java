@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.PopupWindow;
 
 import com.minlu.baselibrary.base.BaseFragment;
+import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.fragment.time.DatePickerFragment;
 import com.minlu.office_system.fragment.time.TimePickerFragment;
 
@@ -54,7 +55,7 @@ public abstract class FormFragment extends BaseFragment {
         final ListPopupWindow listPopupWindow = new ListPopupWindow(getContext());
         listPopupWindow.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, date));
         listPopupWindow.setWidth(ActionBar.LayoutParams.WRAP_CONTENT);
-        listPopupWindow.setHeight(ActionBar.LayoutParams.WRAP_CONTENT);
+        listPopupWindow.setHeight(ViewsUitls.dptopx(200));
         listPopupWindow.setAnchorView(anchorView);//设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         listPopupWindow.setModal(true);//设置是否是模式
         anchorView.setOnClickListener(new View.OnClickListener() {

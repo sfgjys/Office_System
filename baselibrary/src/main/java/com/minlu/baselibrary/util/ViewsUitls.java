@@ -135,4 +135,12 @@ public class ViewsUitls {
         }
     }
 
+    public static String getBandZERONumber(int i) {
+        if (i >= 0 && i <= 9) {
+            return "0" + i;
+        } else {
+            return i + "";
+        }
+    }
+
 }

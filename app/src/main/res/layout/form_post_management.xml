@@ -39,6 +39,7 @@
         style="@style/editText_item_top"
         android:layout_marginRight="0dp"
         edittextitem:editText_hint="请选择类型"
+        edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="发文类型 : "
         edittextitem:editText_right_icon="@mipmap/pull_down_default" />
 
@@ -53,6 +54,7 @@
         style="@style/editText_item_top"
         android:layout_marginRight="150dp"
         edittextitem:editText_hint="是/否"
+        edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="是否公开 : "
         edittextitem:editText_right_icon="@mipmap/pull_down_default" />
 
