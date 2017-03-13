@@ -75,10 +75,10 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
             point.setBackgroundResource(R.drawable.shape_guide_point_normal);// 轮播图下的连续的点 (默认状态)
             // 设置我们点在线性布局中的宽高属性以及其他属性
             LayoutParams params = new LayoutParams(
-                    ViewsUitls.dptopx(9),
-                    ViewsUitls.dptopx(9));// 轮播图下的点的大小
+                    ViewsUitls.dpToPx(9),
+                    ViewsUitls.dpToPx(9));// 轮播图下的点的大小
             if (i != 0) {
-                params.leftMargin = ViewsUitls.dptopx(10);// 轮播图下点之间的距离
+                params.leftMargin = ViewsUitls.dpToPx(10);// 轮播图下点之间的距离
             }
             i++;
             point.setLayoutParams(params);
@@ -110,14 +110,14 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
         mIsSkip.setBackgroundColor(Color.TRANSPARENT);
         mIsSkip.setText("立即跳转");
         mIsSkip.setTextColor(Color.RED);
-        mIsSkip.setTextSize(ViewsUitls.dptopx(9));
+        mIsSkip.setTextSize(ViewsUitls.dpToPx(9));
     }
 
     // 获取要移动的标准距离
     private void setScrollPoint() {
         mScrollPoint = findViewById(R.id.v_guide_scroll_point);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                ViewsUitls.dptopx(10), ViewsUitls.dptopx(10));
+                ViewsUitls.dpToPx(10), ViewsUitls.dpToPx(10));
         mScrollPoint.setLayoutParams(params);
         mScrollPoint.postDelayed(new Runnable() {
             @Override

@@ -22,7 +22,7 @@ public class ViewsUitls {
     /**
      * dip转px
      */
-    public static int dptopx(int dip) {
+    public static int dpToPx(int dip) {
         float density = getContext().getResources().getDisplayMetrics().density;
         // px = dip * density
         // 3.3 3.8 3
