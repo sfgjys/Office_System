@@ -76,7 +76,7 @@ public class ViewsUitls {
             return false;
         }
         for (int i = 0; i < runningServices.size(); i++) {
-            String setviceName = runningServices.get(i).service.getClassName().toString();
+            String setviceName = runningServices.get(i).service.getClassName();
             if (setviceName.equals(serviceName)) {
                 isWork = true;
                 break;
@@ -134,13 +134,4 @@ public class ViewsUitls {
             });
         }
     }
-
-    public static String getBandZERONumber(int i) {
-        if (i >= 0 && i <= 9) {
-            return "0" + i;
-        } else {
-            return i + "";
-        }
-    }
-
 }

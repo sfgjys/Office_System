@@ -76,8 +76,10 @@ public class BusRequestFragment extends FormFragment {
             public void onClick(View v) {
                 showTimePickerDialog(new TimePickerFragment.SetTimeListener() {
                     @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        startTimeEditText.setText(ViewsUitls.getBandZERONumber(hourOfDay) + " : " + ViewsUitls.getBandZERONumber(minute));
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minuteOfDay) {
+                        String hour = (hourOfDay >= 0 && hourOfDay <= 9) ? ("0" + hourOfDay) : (hourOfDay + "");
+                        String minute = (minuteOfDay >= 0 && minuteOfDay <= 9) ? ("0" + minuteOfDay) : (minuteOfDay + "");
+                        startTimeEditText.setText(hour + " : " + minute);
                     }
                 });
             }
