@@ -32,4 +32,8 @@ public class StringUtils {
         }
         return true;
     }
+
+    public static String lessThanNineConvertString(int lessThanNine) {
+        return (lessThanNine >= 0 && lessThanNine <= 9) ? ("0" + lessThanNine) : (lessThanNine + "");
+    }
 }
