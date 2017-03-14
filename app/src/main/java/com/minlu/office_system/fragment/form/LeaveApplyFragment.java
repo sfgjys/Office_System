@@ -2,9 +2,7 @@ package com.minlu.office_system.fragment.form;
 
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
 
 import com.minlu.baselibrary.base.ContentPage;
 import com.minlu.baselibrary.util.ViewsUitls;
@@ -13,8 +11,6 @@ import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.customview.EditTextTimeSelector;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
-import com.minlu.office_system.fragment.time.DatePickerFragment;
-import com.minlu.office_system.fragment.time.TimePickerFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +20,6 @@ public class LeaveApplyFragment extends FormFragment {
 
     private List<String> mLeaveType;
     private EditTextItem mLeaveTypeEdit;
-    private EditTextTimeSelector mStartTime;
-    private EditTextTimeSelector mEndTime;
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -50,6 +44,9 @@ public class LeaveApplyFragment extends FormFragment {
 
     private void initView(View inflate) {
         EditTextItem title = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_title);
+        EditTextItem remark = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_remark);
+
+        ViewsUitls.setWidthFromTargetView(title.getCustomEditTextLeft(), remark.getCustomEditTextLeft());
 
         // 类型列表展示
         mLeaveTypeEdit = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_type);
@@ -71,38 +68,14 @@ public class LeaveApplyFragment extends FormFragment {
             }
         });
 
-        mStartTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_leave_apply_start_time);
+        // 时间选择对话框展示
+        EditTextTimeSelector mStartTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_leave_apply_start_time);
+        mStartTime.setDayOfYearAndTimeOfDay();
         showAndSetTimeText(mStartTime);
-        mEndTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_leave_apply_end_time);
+        EditTextTimeSelector mEndTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_leave_apply_end_time);
+        mEndTime.setDayOfYearAndTimeOfDay();
         showAndSetTimeText(mEndTime);
 
-        EditTextItem remark = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_remark);
-
-        ViewsUitls.setWidthFromTargetView(title.getCustomEditTextLeft(), remark.getCustomEditTextLeft());
-    }
-
-    private void showAndSetTimeText(final EditTextTimeSelector editTextTimeSelector) {
-        editTextTimeSelector.setDayOrTimeOnClickListener(new EditTextTimeSelector.DayOrTimeOnClickListener() {
-            @Override
-            public void onTimeClick(View v) {
-                showTimePickerDialog(new TimePickerFragment.SetTimeListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        editTextTimeSelector.setTimeOfDayText(hourOfDay + ":" + minute);
-                    }
-                });
-            }
-
-            @Override
-            public void onDayClick(View v) {
-                showDatePickerDialog(new DatePickerFragment.SetDateListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        editTextTimeSelector.setDayOfYearText(year + "-" + (month + 1) + "-" + dayOfMonth);
-                    }
-                });
-            }
-        });
     }
 
     @Override

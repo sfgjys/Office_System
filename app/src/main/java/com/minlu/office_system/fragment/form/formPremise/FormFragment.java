@@ -7,10 +7,14 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.PopupWindow;
+import android.widget.TimePicker;
 
 import com.minlu.baselibrary.base.BaseFragment;
+import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.ViewsUitls;
+import com.minlu.office_system.customview.EditTextTimeSelector;
 import com.minlu.office_system.fragment.time.DatePickerFragment;
 import com.minlu.office_system.fragment.time.TimePickerFragment;
 
@@ -88,5 +92,33 @@ public abstract class FormFragment extends BaseFragment {
         WindowManager.LayoutParams layoutParams = getActivity().getWindow().getAttributes();
         layoutParams.alpha = alpha;
         getActivity().getWindow().setAttributes(layoutParams);
+    }
+
+
+    /*
+    * 将需要展示时间选择对话框的EditTextTimeSelector控件传入进行具体操作代码
+    * */
+    public void showAndSetTimeText(final EditTextTimeSelector editTextTimeSelector) {
+        editTextTimeSelector.setDayOrTimeOnClickListener(new EditTextTimeSelector.DayOrTimeOnClickListener() {
+            @Override
+            public void onTimeClick(View v) {
+                showTimePickerDialog(new TimePickerFragment.SetTimeListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        editTextTimeSelector.setTimeOfDayText(StringUtils.lessThanNineConvertString(hourOfDay) + ":" + StringUtils.lessThanNineConvertString(minute));
+                    }
+                });
+            }
+
+            @Override
+            public void onDayClick(View v) {
+                showDatePickerDialog(new DatePickerFragment.SetDateListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        editTextTimeSelector.setDayOfYearText(year + "-" + (StringUtils.lessThanNineConvertString(month + 1)) + "-" + StringUtils.lessThanNineConvertString(dayOfMonth));
+                    }
+                });
+            }
+        });
     }
 }

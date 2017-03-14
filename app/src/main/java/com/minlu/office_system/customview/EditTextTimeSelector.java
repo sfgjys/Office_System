@@ -8,7 +8,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.office_system.R;
+
+import java.util.Calendar;
 
 
 public class EditTextTimeSelector extends LinearLayout {
@@ -71,6 +74,15 @@ public class EditTextTimeSelector extends LinearLayout {
 
     public void setTimeOfDayText(String timeOfDayText) {
         mTimeOfDay.setText(timeOfDayText);
+    }
+
+    public void setDayOfYearAndTimeOfDay() {
+        Calendar calendar = Calendar.getInstance();
+        setDayOfYearText(calendar.get(Calendar.YEAR) + "-" +
+                StringUtils.lessThanNineConvertString(calendar.get(Calendar.MONTH) + 1) + "-" +
+                StringUtils.lessThanNineConvertString(calendar.get(Calendar.DAY_OF_MONTH)));
+        setTimeOfDayText(StringUtils.lessThanNineConvertString(calendar.get(Calendar.HOUR_OF_DAY)) + ":" +
+                StringUtils.lessThanNineConvertString(calendar.get(Calendar.MINUTE)));
     }
 
     public void setDayOrTimeOnClickListener(DayOrTimeOnClickListener dayOrTimeOnClickListener) {
