@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,6 +14,9 @@ import com.minlu.office_system.R;
 public class EditTextTimeSelector extends LinearLayout {
 
     private String mEditTextLeftText;
+    private DayOrTimeOnClickListener dayOrTimeOnClickListener;
+    private EditText mDayOfYear;
+    private EditText mTimeOfDay;
 
     public EditTextTimeSelector(Context context) {
         super(context);
@@ -40,5 +44,42 @@ public class EditTextTimeSelector extends LinearLayout {
         View view = View.inflate(context, R.layout.custom_selector_time_layout, this);
         TextView textView = (TextView) view.findViewById(R.id.tv_custom_selector_time_left);
         textView.setText(mEditTextLeftText);
+
+        mDayOfYear = (EditText) view.findViewById(R.id.et_custom_selector_time_day);
+        mDayOfYear.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dayOrTimeOnClickListener != null) {
+                    dayOrTimeOnClickListener.onDayClick(v);
+                }
+            }
+        });
+        mTimeOfDay = (EditText) view.findViewById(R.id.et_custom_selector_time_24h);
+        mTimeOfDay.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dayOrTimeOnClickListener != null) {
+                    dayOrTimeOnClickListener.onTimeClick(v);
+                }
+            }
+        });
+    }
+
+    public void setDayOfYearText(String dayOfYearText) {
+        mDayOfYear.setText(dayOfYearText);
+    }
+
+    public void setTimeOfDayText(String timeOfDayText) {
+        mTimeOfDay.setText(timeOfDayText);
+    }
+
+    public void setDayOrTimeOnClickListener(DayOrTimeOnClickListener dayOrTimeOnClickListener) {
+        this.dayOrTimeOnClickListener = dayOrTimeOnClickListener;
+    }
+
+    public interface DayOrTimeOnClickListener {
+        void onTimeClick(View v);
+
+        void onDayClick(View v);
     }
 }
