@@ -1,9 +1,9 @@
 package com.minlu.office_system.fragment.form.formPremise;
 
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.ListPopupWindow;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -53,11 +53,12 @@ public abstract class FormFragment extends BaseFragment {
     * */
     public void showListPopupWindow(View anchorView, final List<String> date, final ShowListPopupItemClickListener clickListener) {
         final ListPopupWindow listPopupWindow = new ListPopupWindow(getContext());
-        listPopupWindow.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, date));
-        listPopupWindow.setWidth(ActionBar.LayoutParams.WRAP_CONTENT);
-        listPopupWindow.setHeight(ViewsUitls.dpToPx(200));
+        listPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        listPopupWindow.setHeight((date.size() > 3) ? ViewsUitls.dpToPx(200) : ViewGroup.LayoutParams.WRAP_CONTENT);
         listPopupWindow.setAnchorView(anchorView);//设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         listPopupWindow.setModal(true);//设置是否是模式
+        listPopupWindow.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, date));
+
         anchorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

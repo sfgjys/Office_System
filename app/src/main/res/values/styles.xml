@@ -47,6 +47,11 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="width_wrap_height_wrap">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
     <style name="editText_item_top" parent="width_match_height_wrap">
         <item name="android:layout_marginTop">10dp</item>
     </style>

@@ -25,7 +25,9 @@
         android:id="@+id/form_record_management_date"
         style="@style/editText_item_top"
         edittextitem:editText_hint="请选择日期"
-        edittextitem:editText_left_text="来文日期 : " />
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="来文日期 : "
+        edittextitem:editText_right_icon="@mipmap/calendar_icon_default" />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_record_management_details"

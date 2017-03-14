@@ -37,7 +37,7 @@
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_post_management_post_type"
         style="@style/editText_item_top"
-        android:layout_marginRight="0dp"
+        android:layout_marginRight="100dp"
         edittextitem:editText_hint="请选择类型"
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="发文类型 : "
@@ -52,7 +52,7 @@
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_post_management_is_open"
         style="@style/editText_item_top"
-        android:layout_marginRight="150dp"
+        android:layout_marginRight="100dp"
         edittextitem:editText_hint="是/否"
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="是否公开 : "

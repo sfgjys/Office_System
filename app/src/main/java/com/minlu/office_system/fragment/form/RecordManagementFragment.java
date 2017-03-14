@@ -1,6 +1,8 @@
 package com.minlu.office_system.fragment.form;
 
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
 
 import com.minlu.baselibrary.base.ContentPage;
 import com.minlu.baselibrary.util.ViewsUitls;
@@ -8,6 +10,8 @@ import com.minlu.office_system.R;
 import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
+import com.minlu.office_system.fragment.time.DatePickerFragment;
+import com.minlu.office_system.fragment.time.TimePickerFragment;
 
 import java.util.ArrayList;
 
@@ -18,6 +22,12 @@ import java.util.ArrayList;
 public class RecordManagementFragment extends FormFragment {
 
     private ArrayList<String> excessive;
+    private int mYear;
+    private int mMonth;
+    private int mDayOfMonth;
+    private int mHourOfDay;
+    private int mMinute;
+    private EditTextItem mSuperiorTextDate;
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -37,13 +47,40 @@ public class RecordManagementFragment extends FormFragment {
         EditTextItem superiorTextTitle = (EditTextItem) inflate.findViewById(R.id.form_record_management_title);
         EditTextItem superiorTextNumber = (EditTextItem) inflate.findViewById(R.id.form_record_management_number);
         EditTextItem superiorTextUnit = (EditTextItem) inflate.findViewById(R.id.form_record_management_unit);
-        EditTextItem superiorTextDate = (EditTextItem) inflate.findViewById(R.id.form_record_management_date);
+        mSuperiorTextDate = (EditTextItem) inflate.findViewById(R.id.form_record_management_date);
+        mSuperiorTextDate.getCustomEditTextRight().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimeSelectorDialog();
+            }
+        });
+
         EditTextItem superiorTextDetails = (EditTextItem) inflate.findViewById(R.id.form_record_management_details);
         EditTextItem superiorTextRemark = (EditTextItem) inflate.findViewById(R.id.form_record_management_remark);
 
         ViewsUitls.setWidthFromTargetView(superiorTextTitle.getCustomEditTextLeft(), superiorTextRemark.getCustomEditTextLeft());
 
         return inflate;
+    }
+
+    /* 显示时间选择器 */
+    private void showTimeSelectorDialog() {
+        showDatePickerDialog(new DatePickerFragment.SetDateListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                mYear = year;
+                mMonth = month;
+                mDayOfMonth = dayOfMonth;
+                showTimePickerDialog(new TimePickerFragment.SetTimeListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        mHourOfDay = hourOfDay;
+                        mMinute = minute;
+                        mSuperiorTextDate.setEditText(mYear + "-" + mMonth + "-" + mDayOfMonth + " " + mHourOfDay + ":" + mMinute);
+                    }
+                });
+            }
+        });
     }
 
     @Override

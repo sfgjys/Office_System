@@ -44,7 +44,7 @@ public class HomePageFragment extends BaseFragment<HomePageItem> {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                start();
+//                start();
                 skipFormActivity(position);
             }
         });

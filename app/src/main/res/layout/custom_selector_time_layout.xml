@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/tv_custom_selector_time_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开始时间 : "
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+    <EditText
+        android:id="@+id/et_custom_selector_time_day"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginStart="6dp"
+        android:layout_weight="1.6"
+        android:drawableRight="@mipmap/calendar_icon_default"
+        android:inputType="text"
+        android:paddingRight="10dp"
+        android:text="2016-12-32"
+        android:textColor="@color/black"
+        android:textColorHint="@color/loading_background_thin_gray"
+        android:theme="@style/AppTheme" />
+
+    <EditText
+        android:id="@+id/et_custom_selector_time_24h"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginStart="6dp"
+        android:layout_weight="1"
+        android:drawableRight="@mipmap/time_icon_default"
+        android:inputType="text"
+        android:paddingRight="10dp"
+        android:text="00:00"
+        android:textColor="@color/black"
+        android:textColorHint="@color/loading_background_thin_gray"
+        android:theme="@style/AppTheme" />
+</LinearLayout>

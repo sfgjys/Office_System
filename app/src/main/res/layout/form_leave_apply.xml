@@ -18,6 +18,8 @@
         edittextitem:editText_left_text="请假类型 : "
         edittextitem:editText_right_icon="@mipmap/pull_down_default" />
 
+    <include layout="@layout/custom_selector_time_layout" />
+
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_leave_apply_start_time"
         style="@style/editText_item_top"
@@ -26,7 +28,6 @@
         edittextitem:editText_left_text="开始时间 : "
         edittextitem:editText_right_icon="@mipmap/calendar_icon_default" />
 
-
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_leave_apply_end_time"
         style="@style/editText_item_top"
@@ -34,6 +35,14 @@
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="结束时间 : "
         edittextitem:editText_right_icon="@mipmap/calendar_icon_default" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_leave_apply_number_of_days"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint=""
+        edittextitem:editText_input_type="number"
+        edittextitem:editText_left_text="请假天数 : " />
+
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_leave_apply_remark"

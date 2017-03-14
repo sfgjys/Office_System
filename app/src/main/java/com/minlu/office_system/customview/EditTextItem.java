@@ -38,19 +38,16 @@ public class EditTextItem extends LinearLayout {
         TypedArray attributes = context.obtainStyledAttributes(attrs, R.styleable.EditTextItem);
         // 通过R文件中的id来获取对应属性的值，要什么值，那方法就是get该值的类型,参数就是id值,给id是所要获取值的对应设置的名字，参数一是我们前面写的declare-styleable标签下的attr标签
 
-        mEditTextHint = attributes.getString(R.styleable.EditTextItem_editText_hint);
+        mEditTextHint = attributes.getString(R.styleable.EditTextItem_editText_hint);// 提示文本
+        mEditTextLeftText = attributes.getString(R.styleable.EditTextItem_editText_left_text);// 左边文本
 
-        mEditTextLeftText = attributes.getString(R.styleable.EditTextItem_editText_left_text);
-
-        mEditTextRightIcon = attributes.getResourceId(R.styleable.EditTextItem_editText_right_icon, 0);
+        mEditTextRightIcon = attributes.getResourceId(R.styleable.EditTextItem_editText_right_icon, 0);// 右边图标
 
         mEditTextIsEdit = attributes.getBoolean(R.styleable.EditTextItem_editText_is_edit, true);// 没使用该属性就返回默认值true，默认是可以编辑的
-
         mEditTextIsClickable = attributes.getBoolean(R.styleable.EditTextItem_editText_is_clickable, true);// 没使用该属性就返回默认值true，默认是可以点击的
 
-        mEditTextInputType = attributes.getInt(R.styleable.EditTextItem_editText_input_type, -1);
-
-        mEditTextMaxLines = attributes.getInteger(R.styleable.EditTextItem_editText_max_lines, -1);
+        mEditTextInputType = attributes.getInt(R.styleable.EditTextItem_editText_input_type, -1);// 文本输入类型
+        mEditTextMaxLines = attributes.getInteger(R.styleable.EditTextItem_editText_max_lines, -1);// 最大显示行数
 
         // 使用了本方法，最后必须调用下面的这个方法
         attributes.recycle();
