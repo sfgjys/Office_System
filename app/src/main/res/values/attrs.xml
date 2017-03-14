@@ -66,5 +66,7 @@
         </attr>
     </declare-styleable>
 
-
+    <declare-styleable name="EditTextTimeSelector">
+        <attr name="time_selector_left_text" format="string" />
+    </declare-styleable>
 </resources>
