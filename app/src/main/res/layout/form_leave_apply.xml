@@ -18,8 +18,6 @@
         edittextitem:editText_left_text="请假类型 : "
         edittextitem:editText_right_icon="@mipmap/pull_down_default" />
 
-    <include layout="@layout/custom_selector_time_layout" />
-
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_leave_apply_start_time"
         style="@style/editText_item_top"
