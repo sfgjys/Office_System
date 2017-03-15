@@ -18,6 +18,7 @@ public class EditTextTimeSelector extends LinearLayout {
 
     private String mEditTextLeftText;
     private DayOrTimeOnClickListener dayOrTimeOnClickListener;
+    private OnSetTextListener onSetTextListener;
     private EditText mDayOfYear;
     private EditText mTimeOfDay;
 
@@ -70,10 +71,16 @@ public class EditTextTimeSelector extends LinearLayout {
 
     public void setDayOfYearText(String dayOfYearText) {
         mDayOfYear.setText(dayOfYearText);
+        if (onSetTextListener != null) {
+            onSetTextListener.onSetText();// 当设置了文本时被调用监听
+        }
     }
 
     public void setTimeOfDayText(String timeOfDayText) {
         mTimeOfDay.setText(timeOfDayText);
+        if (onSetTextListener != null) {
+            onSetTextListener.onSetText();// 当设置了文本时被调用监听
+        }
     }
 
     public void setDayOfYearAndTimeOfDay() {
@@ -89,9 +96,17 @@ public class EditTextTimeSelector extends LinearLayout {
         this.dayOrTimeOnClickListener = dayOrTimeOnClickListener;
     }
 
+    public void setOnSetTextListener(OnSetTextListener onSetTextListener) {
+        this.onSetTextListener = onSetTextListener;
+    }
+
     public interface DayOrTimeOnClickListener {
         void onTimeClick(View v);
 
         void onDayClick(View v);
+    }
+
+    public interface OnSetTextListener {
+        void onSetText();
     }
 }

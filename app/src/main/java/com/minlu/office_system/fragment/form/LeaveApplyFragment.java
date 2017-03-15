@@ -72,9 +72,19 @@ public class LeaveApplyFragment extends FormFragment {
         EditTextTimeSelector mStartTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_leave_apply_start_time);
         mStartTime.setDayOfYearAndTimeOfDay();
         showAndSetTimeText(mStartTime);
+        mStartTime.setOnSetTextListener(new EditTextTimeSelector.OnSetTextListener() {
+            @Override
+            public void onSetText() {
+            }
+        });
         EditTextTimeSelector mEndTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_leave_apply_end_time);
         mEndTime.setDayOfYearAndTimeOfDay();
         showAndSetTimeText(mEndTime);
+        mEndTime.setOnSetTextListener(new EditTextTimeSelector.OnSetTextListener() {
+            @Override
+            public void onSetText() {
+            }
+        });
 
     }
 

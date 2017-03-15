@@ -56,12 +56,12 @@ public abstract class FormFragment extends BaseFragment {
     * 在参数一控件下，展示参数二集合中的文本数据，参数三是自定义点击文本条目的监听事件
     * */
     public void showListPopupWindow(View anchorView, final List<String> date, final ShowListPopupItemClickListener clickListener) {
-        final ListPopupWindow listPopupWindow = new ListPopupWindow(getContext());
+        final ListPopupWindow listPopupWindow = new ListPopupWindow(ViewsUitls.getContext());
         listPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         listPopupWindow.setHeight((date.size() > 3) ? ViewsUitls.dpToPx(200) : ViewGroup.LayoutParams.WRAP_CONTENT);
         listPopupWindow.setAnchorView(anchorView);//设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         listPopupWindow.setModal(true);//设置是否是模式
-        listPopupWindow.setAdapter(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, date));
+        listPopupWindow.setAdapter(new ArrayAdapter<>(ViewsUitls.getContext(), android.R.layout.simple_list_item_1, date));
 
         anchorView.setOnClickListener(new View.OnClickListener() {
             @Override
