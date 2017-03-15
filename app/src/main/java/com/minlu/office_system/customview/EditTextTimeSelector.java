@@ -44,6 +44,7 @@ public class EditTextTimeSelector extends LinearLayout {
         initView(context);
     }
 
+    /*初始化控件*/
     private void initView(Context context) {
         View view = View.inflate(context, R.layout.custom_selector_time_layout, this);
         TextView textView = (TextView) view.findViewById(R.id.tv_custom_selector_time_left);
@@ -69,6 +70,20 @@ public class EditTextTimeSelector extends LinearLayout {
         });
     }
 
+    public String getDayOrTimeText() {
+        String timeText = null;
+        String dayText = null;
+        if (mDayOfYear != null) {
+            dayText = mDayOfYear.getText().toString().trim();
+        }
+        if (mTimeOfDay != null) {
+            timeText = mTimeOfDay.getText().toString().trim();
+        }
+        return dayText + " " + timeText;
+    }
+
+
+    /*给日期edittext设置文本，并有一个监听回调方法*/
     public void setDayOfYearText(String dayOfYearText) {
         mDayOfYear.setText(dayOfYearText);
         if (onSetTextListener != null) {
@@ -76,6 +91,7 @@ public class EditTextTimeSelector extends LinearLayout {
         }
     }
 
+    /*给时间edittext设置文本，并有一个监听回调方法*/
     public void setTimeOfDayText(String timeOfDayText) {
         mTimeOfDay.setText(timeOfDayText);
         if (onSetTextListener != null) {
@@ -83,6 +99,7 @@ public class EditTextTimeSelector extends LinearLayout {
         }
     }
 
+    /*给日期和时间的edittext设置现在时间的文本*/
     public void setDayOfYearAndTimeOfDay() {
         Calendar calendar = Calendar.getInstance();
         setDayOfYearText(calendar.get(Calendar.YEAR) + "-" +
@@ -92,10 +109,12 @@ public class EditTextTimeSelector extends LinearLayout {
                 StringUtils.lessThanNineConvertString(calendar.get(Calendar.MINUTE)));
     }
 
+    /*设置点击edittext的监听回调*/
     public void setDayOrTimeOnClickListener(DayOrTimeOnClickListener dayOrTimeOnClickListener) {
         this.dayOrTimeOnClickListener = dayOrTimeOnClickListener;
     }
 
+    /*设置edittext文本进行设置时的监听回调*/
     public void setOnSetTextListener(OnSetTextListener onSetTextListener) {
         this.onSetTextListener = onSetTextListener;
     }

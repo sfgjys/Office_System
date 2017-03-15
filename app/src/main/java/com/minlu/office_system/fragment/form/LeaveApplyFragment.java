@@ -5,6 +5,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 
 import com.minlu.baselibrary.base.ContentPage;
+import com.minlu.baselibrary.util.TimeTool;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.R;
 import com.minlu.office_system.activity.FormActivity;
@@ -20,6 +21,9 @@ public class LeaveApplyFragment extends FormFragment {
 
     private List<String> mLeaveType;
     private EditTextItem mLeaveTypeEdit;
+    private EditTextItem mLeaveDayNumber;
+    private EditTextTimeSelector mStartTime;
+    private EditTextTimeSelector mEndTime;
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -45,6 +49,7 @@ public class LeaveApplyFragment extends FormFragment {
     private void initView(View inflate) {
         EditTextItem title = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_title);
         EditTextItem remark = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_remark);
+        mLeaveDayNumber = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_leave_day_number);
 
         ViewsUitls.setWidthFromTargetView(title.getCustomEditTextLeft(), remark.getCustomEditTextLeft());
 
@@ -69,23 +74,33 @@ public class LeaveApplyFragment extends FormFragment {
         });
 
         // 时间选择对话框展示
-        EditTextTimeSelector mStartTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_leave_apply_start_time);
+        mStartTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_leave_apply_start_time);
         mStartTime.setDayOfYearAndTimeOfDay();
         showAndSetTimeText(mStartTime);
         mStartTime.setOnSetTextListener(new EditTextTimeSelector.OnSetTextListener() {
             @Override
             public void onSetText() {
+                setLeaveDayNumberText();
             }
         });
-        EditTextTimeSelector mEndTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_leave_apply_end_time);
+        mEndTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_leave_apply_end_time);
         mEndTime.setDayOfYearAndTimeOfDay();
         showAndSetTimeText(mEndTime);
         mEndTime.setOnSetTextListener(new EditTextTimeSelector.OnSetTextListener() {
             @Override
             public void onSetText() {
+                setLeaveDayNumberText();
             }
         });
 
+        setLeaveDayNumberText();
+    }
+
+    private void setLeaveDayNumberText() {
+        if (mStartTime != null && mEndTime != null) {
+            float[] timeDifferenceValue = TimeTool.getBaseStringOfTimeDifferenceValue(mStartTime.getDayOrTimeText(), mEndTime.getDayOrTimeText(), "yyyy-MM-dd HH:mm");
+            mLeaveDayNumber.setEditText((int) timeDifferenceValue[0] + " 天 " + timeDifferenceValue[1] + " 小时 , 共 " + (int)timeDifferenceValue[2] + " 天");
+        }
     }
 
     @Override
