@@ -1,5 +1,6 @@
 package com.minlu.office_system.fragment.form.formPremise;
 
+import android.content.Context;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.ListPopupWindow;
 import android.view.View;
@@ -55,13 +56,13 @@ public abstract class FormFragment extends BaseFragment {
     /*
     * 在参数一控件下，展示参数二集合中的文本数据，参数三是自定义点击文本条目的监听事件
     * */
-    public void showListPopupWindow(View anchorView, final List<String> date, final ShowListPopupItemClickListener clickListener) {
-        final ListPopupWindow listPopupWindow = new ListPopupWindow(ViewsUitls.getContext());
+    public void showListPopupWindow(View anchorView, final List<String> date, final ShowListPopupItemClickListener clickListener, Context context) {
+        final ListPopupWindow listPopupWindow = new ListPopupWindow(context);
         listPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         listPopupWindow.setHeight((date.size() > 3) ? ViewsUitls.dpToPx(200) : ViewGroup.LayoutParams.WRAP_CONTENT);
         listPopupWindow.setAnchorView(anchorView);//设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         listPopupWindow.setModal(true);//设置是否是模式
-        listPopupWindow.setAdapter(new ArrayAdapter<>(ViewsUitls.getContext(), android.R.layout.simple_list_item_1, date));
+        listPopupWindow.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, date));
 
         anchorView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +99,7 @@ public abstract class FormFragment extends BaseFragment {
     /*
     * 将需要展示时间选择对话框的EditTextTimeSelector控件传入进行具体操作代码
     * */
-    public void showAndSetTimeText(final EditTextTimeSelector editTextTimeSelector) {
+    public void setEditTextOnClickShowTimePicker(final EditTextTimeSelector editTextTimeSelector) {
         editTextTimeSelector.setDayOrTimeOnClickListener(new EditTextTimeSelector.DayOrTimeOnClickListener() {
             @Override
             public void onTimeClick(View v) {

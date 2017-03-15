@@ -67,7 +67,7 @@ public class BusRequestFragment extends FormFragment {
             public void onListPopupDismiss() {
                 setBackGroundDarkColor(1.0f);
             }
-        });
+        }, getActivity());
 
         EditTextItem startTime = (EditTextItem) inflate.findViewById(R.id.form_bus_request_start_time);
         final EditText startTimeEditText = startTime.getCustomEditTextRight();

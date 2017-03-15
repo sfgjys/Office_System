@@ -71,12 +71,12 @@ public class LeaveApplyFragment extends FormFragment {
             public void onListPopupDismiss() {
                 setBackGroundDarkColor(1.0f);
             }
-        });
+        },getActivity());
 
         // 时间选择对话框展示
         mStartTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_leave_apply_start_time);
         mStartTime.setDayOfYearAndTimeOfDay();
-        showAndSetTimeText(mStartTime);
+        setEditTextOnClickShowTimePicker(mStartTime);
         mStartTime.setOnSetTextListener(new EditTextTimeSelector.OnSetTextListener() {
             @Override
             public void onSetText() {
@@ -85,7 +85,7 @@ public class LeaveApplyFragment extends FormFragment {
         });
         mEndTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_leave_apply_end_time);
         mEndTime.setDayOfYearAndTimeOfDay();
-        showAndSetTimeText(mEndTime);
+        setEditTextOnClickShowTimePicker(mEndTime);
         mEndTime.setOnSetTextListener(new EditTextTimeSelector.OnSetTextListener() {
             @Override
             public void onSetText() {

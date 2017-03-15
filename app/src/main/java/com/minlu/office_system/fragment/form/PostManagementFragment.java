@@ -64,7 +64,7 @@ public class PostManagementFragment extends FormFragment {
             public void onListPopupDismiss() {
                 setBackGroundDarkColor(1.0f);
             }
-        });
+        },getActivity());
 
         EditTextItem isOpen = (EditTextItem) inflate.findViewById(R.id.form_post_management_is_open);
         final EditText isOpenEditText = isOpen.getCustomEditTextRight();
@@ -83,7 +83,7 @@ public class PostManagementFragment extends FormFragment {
             public void onListPopupDismiss() {
                 setBackGroundDarkColor(1.0f);
             }
-        });
+        },getActivity());
 
         return inflate;
     }
