@@ -56,7 +56,7 @@ public abstract class FormFragment extends BaseFragment {
     /*
     * 在参数一控件下，展示参数二集合中的文本数据，参数三是自定义点击文本条目的监听事件
     * */
-    public void showListPopupWindow(View anchorView, final List<String> date, final ShowListPopupItemClickListener clickListener, Context context) {
+    public void setWhichViewShowListPopupWindow(View anchorView, final List<String> date, final ShowListPopupItemClickListener clickListener, Context context) {
         final ListPopupWindow listPopupWindow = new ListPopupWindow(context);
         listPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         listPopupWindow.setHeight((date.size() > 3) ? ViewsUitls.dpToPx(200) : ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -102,20 +102,23 @@ public abstract class FormFragment extends BaseFragment {
     public void setEditTextOnClickShowTimePicker(final EditTextTimeSelector editTextTimeSelector) {
         editTextTimeSelector.setDayOrTimeOnClickListener(new EditTextTimeSelector.DayOrTimeOnClickListener() {
             @Override
-            public void onTimeClick(View v) {
+            public void onTimeClick(View v) { // 点击24h的事件
+                // 展示24h时间选择对话框
                 showTimePickerDialog(new TimePickerFragment.SetTimeListener() {
                     @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {// 点击对话框确认的方法回调
+                        // TODO 点击时间选择对话框的时候设置String时间,需要注意格式,还有下面的
                         editTextTimeSelector.setTimeOfDayText(StringUtils.lessThanNineConvertString(hourOfDay) + ":" + StringUtils.lessThanNineConvertString(minute));
                     }
                 });
             }
 
             @Override
-            public void onDayClick(View v) {
+            public void onDayClick(View v) {// 点击年月日的事件
+                // 展示年月日时间选择对话框
                 showDatePickerDialog(new DatePickerFragment.SetDateListener() {
                     @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {// 点击对话框确认的方法回调
                         editTextTimeSelector.setDayOfYearText(year + "-" + (StringUtils.lessThanNineConvertString(month + 1)) + "-" + StringUtils.lessThanNineConvertString(dayOfMonth));
                     }
                 });

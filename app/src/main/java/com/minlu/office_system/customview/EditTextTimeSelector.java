@@ -100,7 +100,8 @@ public class EditTextTimeSelector extends LinearLayout {
     }
 
     /*给日期和时间的edittext设置现在时间的文本*/
-    public void setDayOfYearAndTimeOfDay() {
+    public void setNowDayOfYearAndTimeOfDay() {
+        // TODO 第一次显示现在的时间文本,注意格式
         Calendar calendar = Calendar.getInstance();
         setDayOfYearText(calendar.get(Calendar.YEAR) + "-" +
                 StringUtils.lessThanNineConvertString(calendar.get(Calendar.MONTH) + 1) + "-" +

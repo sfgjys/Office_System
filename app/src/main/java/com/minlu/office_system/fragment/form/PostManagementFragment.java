@@ -49,7 +49,7 @@ public class PostManagementFragment extends FormFragment {
 
         EditTextItem postType = (EditTextItem) inflate.findViewById(R.id.form_post_management_post_type);
         final EditText postTypeEditText = postType.getCustomEditTextRight();
-        showListPopupWindow(postTypeEditText, mPostTypeData, new ShowListPopupItemClickListener() {
+        setWhichViewShowListPopupWindow(postTypeEditText, mPostTypeData, new ShowListPopupItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 postTypeEditText.setText(mPostTypeData.get(position));
@@ -68,7 +68,7 @@ public class PostManagementFragment extends FormFragment {
 
         EditTextItem isOpen = (EditTextItem) inflate.findViewById(R.id.form_post_management_is_open);
         final EditText isOpenEditText = isOpen.getCustomEditTextRight();
-        showListPopupWindow(isOpenEditText, mYesOrNo, new ShowListPopupItemClickListener() {
+        setWhichViewShowListPopupWindow(isOpenEditText, mYesOrNo, new ShowListPopupItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 isOpenEditText.setText(mYesOrNo.get(position));

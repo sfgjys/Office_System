@@ -52,7 +52,7 @@ public class BusRequestFragment extends FormFragment {
         EditTextItem office = (EditTextItem) inflate.findViewById(R.id.form_bus_request_office);
         EditTextItem busNumber = (EditTextItem) inflate.findViewById(R.id.form_bus_request_bus_number);
         final EditText busNumberEditText = busNumber.getCustomEditTextRight();
-        showListPopupWindow(busNumberEditText, busNumberData, new ShowListPopupItemClickListener() {
+        setWhichViewShowListPopupWindow(busNumberEditText, busNumberData, new ShowListPopupItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 busNumberEditText.setText(busNumberData.get(position));

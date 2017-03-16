@@ -57,7 +57,7 @@ public class LeaveApplyFragment extends FormFragment {
         mLeaveTypeEdit = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_type);
         EditText typeCustomEditTextRight = mLeaveTypeEdit.getCustomEditTextRight();
 
-        showListPopupWindow(typeCustomEditTextRight, mLeaveType, new ShowListPopupItemClickListener() {
+        setWhichViewShowListPopupWindow(typeCustomEditTextRight, mLeaveType, new ShowListPopupItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mLeaveTypeEdit.setEditText(mLeaveType.get(position));
@@ -74,18 +74,20 @@ public class LeaveApplyFragment extends FormFragment {
             }
         }, getActivity());
 
+
         // 时间选择对话框展示
         mStartTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_leave_apply_start_time);
-        mStartTime.setDayOfYearAndTimeOfDay();
-        setEditTextOnClickShowTimePicker(mStartTime);
+        mStartTime.setNowDayOfYearAndTimeOfDay();
+        setEditTextOnClickShowTimePicker(mStartTime);// 给mStartTime设置点击弹出时间选择对话框
         mStartTime.setOnSetTextListener(new EditTextTimeSelector.OnSetTextListener() {
             @Override
             public void onSetText() {
                 setLeaveDayNumberText();
             }
-        });
+        });// 设置 当mStartTime修改了文本输入框内的文本时的 监听事件
+
         mEndTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_leave_apply_end_time);
-        mEndTime.setDayOfYearAndTimeOfDay();
+        mEndTime.setNowDayOfYearAndTimeOfDay();
         setEditTextOnClickShowTimePicker(mEndTime);
         mEndTime.setOnSetTextListener(new EditTextTimeSelector.OnSetTextListener() {
             @Override
@@ -94,11 +96,14 @@ public class LeaveApplyFragment extends FormFragment {
             }
         });
 
-        setLeaveDayNumberText();
+
+        setLeaveDayNumberText();// 第一此显示界面对的时候就需要设置文本了
     }
 
+    /*给开始时间和结束时间之间的  请假天数  的输入文本框设置具体的文本*/
     private void setLeaveDayNumberText() {
         if (mStartTime != null && mEndTime != null) {
+            // TODO 计算请假天数的时候,需要注意时间格式
             float[] timeDifferenceValue = TimeTool.getBaseStringOfTimeDifferenceValue(mStartTime.getDayOrTimeText(), mEndTime.getDayOrTimeText(), "yyyy-MM-dd HH:mm");
             mLeaveDayNumber.setEditText((int) timeDifferenceValue[0] + " 天 " + timeDifferenceValue[1] + " 小时 , 共 " + (int) timeDifferenceValue[2] + " 天");
         }
