@@ -2,27 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="3dp">
+    android:orientation="horizontal">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginLeft="9dp"
-        android:layout_marginRight="18dp">
-
-        <View
-            android:layout_width="0.5dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/black" />
+        android:layout_marginRight="18dp"
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/single_approval_link_left_round"
             style="@style/round_figure_serial_number_style"
             android:text="1"
             android:textStyle="italic|bold" />
 
-    </FrameLayout>
+        <View
+            android:id="@+id/single_approval_link_left_line"
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="6dp"
+            android:background="@color/black" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,52 +34,29 @@
         android:padding="3dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="9dp"
-            android:text="审批环节 : 发起请假申请"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
+            style="@style/single_approval_right_text_style"
+            android:text="审批环节 : 发起请假申请" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="9dp"
-            android:text="处理人 : 马云"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
+            style="@style/single_approval_right_text_style"
+            android:text="处理人 : 马云" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="9dp"
-            android:text="职务 : 董事长"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
+            style="@style/single_approval_right_text_style"
+            android:text="职务 : 董事长" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="9dp"
-            android:text="处理意见 : 同意"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
+            style="@style/single_approval_right_text_style"
+            android:text="处理意见 : 同意" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="9dp"
-            android:text="登录IP : 192.168.1.66"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
+            style="@style/single_approval_right_text_style"
+            android:text="登录IP : 192.168.1.66" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/single_approval_right_text_style"
             android:layout_marginBottom="26dp"
-            android:text="审批时间 : 2026-06-26 06:26:26"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
+            android:text="审批时间 : 2026-06-26 06:26:26" />
     </LinearLayout>
 
 </LinearLayout>

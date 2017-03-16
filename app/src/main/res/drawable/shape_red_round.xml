@@ -6,8 +6,8 @@
     <!-- corners:设置弧度 -->
     <!-- size:设置图片的大小 -->
     <size
-        android:width="28dp"
-        android:height="28dp" />
+        android:width="36dp"
+        android:height="36dp" />
     <!-- solid:设置颜色 -->
     <solid android:color="@color/top_background" />
 
