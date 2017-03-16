@@ -27,7 +27,7 @@ public enum AllForms {
     ASSETS_MANAGEMENT("资产管理", R.mipmap.home_page_icon6, AssetsManagementFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON, StringsFiled.AssetsManagementFragment_TAG),
     WORK_MONTHLY_REPORT("工作月报", R.mipmap.home_page_icon7, WorkMonthlyReportFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON, StringsFiled.WorkMonthlyReportFragment_TAG),
     MEETING_ORDER("会议预约", R.mipmap.home_page_icon8, MeetingOrderFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON, StringsFiled.MeetingOrderFragment_TAG),
-    LEAVE_REQUEST("请假申请", R.mipmap.home_page_icon9, LeaveApplyFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON, StringsFiled.LeaveApplyFragment_TAG),
+    LEAVE_REQUEST("请假申请", R.mipmap.home_page_icon9, LeaveApplyFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON, StringsFiled.LeaveApplyFragment_TAG),
     BUS_REQUEST("车辆申请", R.mipmap.home_page_icon10, BusRequestFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON, StringsFiled.BusRequestFragment_TAG),
     OTHER_ITEM("其他栏目", R.mipmap.home_page_icon11, OtherItemFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON, StringsFiled.OtherItemFragment_TAG);
 

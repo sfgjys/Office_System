@@ -33,7 +33,26 @@
         style="@style/editText_item_top"
         edittextitem:editText_hint=""
         edittextitem:editText_input_type="number"
+        edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="请假天数 : " />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_leave_apply_residue_leave_year_number"
+        style="@style/editText_item_top"
+        android:layout_marginRight="100dp"
+        edittextitem:editText_hint=""
+        edittextitem:editText_input_type="number"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="剩余年假 : " />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_leave_apply_add_up_leave_day_number"
+        style="@style/editText_item_top"
+        android:layout_marginRight="100dp"
+        edittextitem:editText_hint=""
+        edittextitem:editText_input_type="number"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="累计请假 : " />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_leave_apply_remark"

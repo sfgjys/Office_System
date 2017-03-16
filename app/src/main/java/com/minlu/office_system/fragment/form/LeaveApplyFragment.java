@@ -1,5 +1,6 @@
 package com.minlu.office_system.fragment.form;
 
+import android.content.DialogInterface;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -11,6 +12,7 @@ import com.minlu.office_system.R;
 import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.customview.EditTextTimeSelector;
+import com.minlu.office_system.fragment.dialog.PromptDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
 
 import java.util.ArrayList;
@@ -49,6 +51,12 @@ public class LeaveApplyFragment extends FormFragment {
     private void initView(View inflate) {
         EditTextItem title = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_title);
         EditTextItem remark = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_remark);
+        EditTextItem addUpLeaveDays = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_add_up_leave_day_number);
+        addUpLeaveDays.setEditText("0 天");
+        EditTextItem residueLeaveYears = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_residue_leave_year_number);
+        residueLeaveYears.setEditText("0 天");
+
+
         mLeaveDayNumber = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_leave_day_number);
 
         ViewsUitls.setWidthFromTargetView(title.getCustomEditTextLeft(), remark.getCustomEditTextLeft());
@@ -123,16 +131,20 @@ public class LeaveApplyFragment extends FormFragment {
 
     @Override
     public void disAgreeOnClick(View v) {
-        System.out.println("LeaveApplyFragment-disAgreeOnClick");
     }
 
     @Override
     public void agreeOnClick(View v) {
-        System.out.println("LeaveApplyFragment-agreeOnClick");
     }
 
     @Override
     public void submitOnClick(View v) {
-        System.out.println("LeaveApplyFragment-submitOnClick");
+        PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
+            @Override
+            public void onSureClick(DialogInterface dialog, int id) {
+                System.out.println("LeaveApplyFragment-submitOnClick");
+            }
+        }, "是否将请假申请进行提交处理 !");
+        promptDialog.show(getActivity().getSupportFragmentManager(), "LeaveApplySubmit");
     }
 }
