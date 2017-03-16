@@ -34,6 +34,13 @@ public class PlanSummaryFragment extends FormFragment {
         }
 
         View inflate = ViewsUitls.inflate(R.layout.form_plan_summary);
+
+        initView(inflate);
+
+        return inflate;
+    }
+
+    private void initView(View inflate) {
         EditTextItem year = (EditTextItem) inflate.findViewById(R.id.form_plan_summary_year);
         EditTextItem quarter = (EditTextItem) inflate.findViewById(R.id.form_plan_summary_quarter);
         EditTextItem userName = (EditTextItem) inflate.findViewById(R.id.form_plan_summary_user_name);
@@ -52,9 +59,6 @@ public class PlanSummaryFragment extends FormFragment {
             }
         });
         EditTextItem workPlan = (EditTextItem) inflate.findViewById(R.id.form_plan_summary_work_plan);
-
-
-        return inflate;
     }
 
     @Override
