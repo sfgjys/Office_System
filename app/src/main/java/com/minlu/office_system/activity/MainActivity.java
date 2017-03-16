@@ -21,6 +21,7 @@ import java.util.List;
 public class MainActivity extends FragmentActivity {
 
     private FragmentShowHide fragmentShowHide;
+    private int showWhichFragment = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +36,12 @@ public class MainActivity extends FragmentActivity {
                 .addItem(new BottomNavigationItem(R.mipmap.main_home_page_icon, "首页").setActiveColorResource(R.color.main_bottom_red).setInActiveColorResource(R.color.main_bottom_gray))
                 .addItem(new BottomNavigationItem(R.mipmap.main_me_icon, "我的").setActiveColorResource(R.color.main_bottom_red).setInActiveColorResource(R.color.main_bottom_gray))
                 .addItem(new BottomNavigationItem(R.mipmap.main_setting_icon, "设置").setActiveColorResource(R.color.main_bottom_red).setInActiveColorResource(R.color.main_bottom_gray))
-                .setFirstSelectedPosition(0)
+                .setFirstSelectedPosition(0)// 首次选择哪个
                 .initialise();
         bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
             @Override
             public void onTabSelected(int position) {// 按下Tab时会调用
+                showWhichFragment = position;
                 System.out.println("onTabSelected: " + position);
                 if (fragmentShowHide != null) {
                     fragmentShowHide.showFragment(position, R.id.fl_replace_fragment, getSupportFragmentManager().beginTransaction());
@@ -69,7 +71,7 @@ public class MainActivity extends FragmentActivity {
 
         if (savedInstanceState == null) {
             System.out.println("第一次进入该界面，需要通过add来进行展示Fragment");
-            showFragment(tagList, fragmentList);
+            showFragment(tagList, fragmentList, 0);
         } else {
             for (int i = 0; i < tagList.size(); i++) {
                 Fragment fragmentByTag = getSupportFragmentManager().findFragmentByTag(tagList.get(i));
@@ -79,19 +81,22 @@ public class MainActivity extends FragmentActivity {
                 }
             }
             System.out.println("第二次+++++++++++++++++++++++++++++");
-            showFragment(tagList, fragmentList);
+            int saveWhichFragment = savedInstanceState.getInt("showWhichFragment", 0);
+            bottomNavigationBar.selectTab(saveWhichFragment);
+            showFragment(tagList, fragmentList, saveWhichFragment);
         }
 
 
     }
 
-    private void showFragment(List<String> tagList, List<Fragment> fragmentList) {
+    private void showFragment(List<String> tagList, List<Fragment> fragmentList, int which) {
         fragmentShowHide = new FragmentShowHide(fragmentList, tagList);
-        fragmentShowHide.showFragment(0, R.id.fl_replace_fragment, getSupportFragmentManager().beginTransaction());
+        fragmentShowHide.showFragment(which, R.id.fl_replace_fragment, getSupportFragmentManager().beginTransaction());
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("showWhichFragment", showWhichFragment);// 将选择哪个Tab进行存储
         super.onSaveInstanceState(outState);
     }
 
