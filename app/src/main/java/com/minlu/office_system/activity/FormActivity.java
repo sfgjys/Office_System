@@ -31,9 +31,16 @@ public class FormActivity extends BaseActivity implements View.OnClickListener {
         // 根据Class<?>创建Fragment，并开启Fragment
         Class<?> aClass = (Class<?>) getmIntent().getSerializableExtra(StringsFiled.TO_FORM_SHOW_FORM_FRAGMENT);
         mFragmentTag = getmIntent().getStringExtra(StringsFiled.TO_FORM_SHOW_FORM_FRAGMENT_TAG);
+
+
         try {
-            Fragment fragment = (Fragment) aClass.newInstance();
-            getSupportFragmentManager().beginTransaction().replace(R.id.sv_replace_form, fragment, mFragmentTag).commit();
+            Fragment fragmentByTag = getSupportFragmentManager().findFragmentByTag(mFragmentTag);
+            if (fragmentByTag != null) {
+                getSupportFragmentManager().beginTransaction().show(fragmentByTag).commit();
+            } else {
+                Fragment fragment = (Fragment) aClass.newInstance();
+                getSupportFragmentManager().beginTransaction().add(R.id.sv_replace_form, fragment, mFragmentTag).commit();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             ToastUtil.showToast(getApplication(), "程序异常");

@@ -56,6 +56,7 @@ public class LeaveApplyFragment extends FormFragment {
         // 类型列表展示
         mLeaveTypeEdit = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_type);
         EditText typeCustomEditTextRight = mLeaveTypeEdit.getCustomEditTextRight();
+
         showListPopupWindow(typeCustomEditTextRight, mLeaveType, new ShowListPopupItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -71,7 +72,7 @@ public class LeaveApplyFragment extends FormFragment {
             public void onListPopupDismiss() {
                 setBackGroundDarkColor(1.0f);
             }
-        },getActivity());
+        }, getActivity());
 
         // 时间选择对话框展示
         mStartTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_leave_apply_start_time);
@@ -99,7 +100,7 @@ public class LeaveApplyFragment extends FormFragment {
     private void setLeaveDayNumberText() {
         if (mStartTime != null && mEndTime != null) {
             float[] timeDifferenceValue = TimeTool.getBaseStringOfTimeDifferenceValue(mStartTime.getDayOrTimeText(), mEndTime.getDayOrTimeText(), "yyyy-MM-dd HH:mm");
-            mLeaveDayNumber.setEditText((int) timeDifferenceValue[0] + " 天 " + timeDifferenceValue[1] + " 小时 , 共 " + (int)timeDifferenceValue[2] + " 天");
+            mLeaveDayNumber.setEditText((int) timeDifferenceValue[0] + " 天 " + timeDifferenceValue[1] + " 小时 , 共 " + (int) timeDifferenceValue[2] + " 天");
         }
     }
 
