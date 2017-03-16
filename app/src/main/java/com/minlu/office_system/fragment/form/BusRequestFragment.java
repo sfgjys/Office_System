@@ -14,13 +14,14 @@ import com.minlu.office_system.fragment.form.formPremise.FormFragment;
 import com.minlu.office_system.fragment.time.TimePickerFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by user on 2017/3/7.
  */
 public class BusRequestFragment extends FormFragment {
 
-    private ArrayList<String> excessive;
+    private List<String> mBusNumberData;
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -35,40 +36,20 @@ public class BusRequestFragment extends FormFragment {
             formActivity.setScrollViewNoGravity();
         }
 
-        final ArrayList<String> busNumberData = new ArrayList<>();
-        busNumberData.add("苏D G23098F");
-        busNumberData.add("苏D N2435U9");
-        busNumberData.add("苏D F2398F2");
-        busNumberData.add("苏D 23RF124");
-        busNumberData.add("苏D SE380AS");
-        busNumberData.add("苏D SD20342");
-        busNumberData.add("苏D MRE45OI");
-        busNumberData.add("苏D G23098F");
-        busNumberData.add("苏D N2435U9");
-        busNumberData.add("苏D F2398F2");
-
         View inflate = ViewsUitls.inflate(R.layout.form_bus_request);
+
+        initView(inflate);
+
+        return inflate;
+    }
+
+    private void initView(View inflate) {
         EditTextItem title = (EditTextItem) inflate.findViewById(R.id.form_bus_request_title);
         EditTextItem office = (EditTextItem) inflate.findViewById(R.id.form_bus_request_office);
-        EditTextItem busNumber = (EditTextItem) inflate.findViewById(R.id.form_bus_request_bus_number);
-        final EditText busNumberEditText = busNumber.getCustomEditTextRight();
-        setWhichViewShowListPopupWindow(busNumberEditText, busNumberData, new ShowListPopupItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                busNumberEditText.setText(busNumberData.get(position));
-            }
+        EditTextItem destination = (EditTextItem) inflate.findViewById(R.id.form_bus_request_destination);
+        EditTextItem cause = (EditTextItem) inflate.findViewById(R.id.form_bus_request_cause);
 
-            @Override
-            public void onAnchorViewClick(View v) {
-                setBackGroundDarkColor(0.7f);
-            }
-
-            @Override
-            public void onListPopupDismiss() {
-                setBackGroundDarkColor(1.0f);
-            }
-        }, getActivity());
-
+        // 展示时间选择
         EditTextItem startTime = (EditTextItem) inflate.findViewById(R.id.form_bus_request_start_time);
         final EditText startTimeEditText = startTime.getCustomEditTextRight();
         startTimeEditText.setOnClickListener(new View.OnClickListener() {
@@ -85,20 +66,45 @@ public class BusRequestFragment extends FormFragment {
             }
         });
 
-        EditTextItem destination = (EditTextItem) inflate.findViewById(R.id.form_bus_request_destination);
-        EditTextItem cause = (EditTextItem) inflate.findViewById(R.id.form_bus_request_cause);
+        // 展示车号列表
+        EditTextItem busNumber = (EditTextItem) inflate.findViewById(R.id.form_bus_request_bus_number);
+        final EditText busNumberEditText = busNumber.getCustomEditTextRight();
+        setWhichViewShowListPopupWindow(busNumberEditText, mBusNumberData, new ShowListPopupItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                busNumberEditText.setText(mBusNumberData.get(position));
+            }
+
+            @Override
+            public void onAnchorViewClick(View v) {
+                setBackGroundDarkColor(0.7f);
+            }
+
+            @Override
+            public void onListPopupDismiss() {
+                setBackGroundDarkColor(1.0f);
+            }
+        }, getActivity());
+
 
         ViewsUitls.setWidthFromTargetView(title.getCustomEditTextLeft(), busNumber.getCustomEditTextLeft());
         ViewsUitls.setWidthFromTargetView(title.getCustomEditTextLeft(), destination.getCustomEditTextLeft());
-
-        return inflate;
     }
 
     @Override
     protected ContentPage.ResultState onLoad() {
-        excessive = new ArrayList<>();
-        excessive.add("excessive");
-        return chat(excessive);
+        mBusNumberData = new ArrayList<>();
+        mBusNumberData.add("苏D G23098F");
+        mBusNumberData.add("苏D N2435U9");
+        mBusNumberData.add("苏D F2398F2");
+        mBusNumberData.add("苏D 23RF124");
+        mBusNumberData.add("苏D SE380AS");
+        mBusNumberData.add("苏D SD20342");
+        mBusNumberData.add("苏D MRE45OI");
+        mBusNumberData.add("苏D G23098F");
+        mBusNumberData.add("苏D N2435U9");
+        mBusNumberData.add("苏D F2398F2");
+        return chat(mBusNumberData);
     }
 
     @Override

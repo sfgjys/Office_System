@@ -27,7 +27,7 @@ public class RecordManagementFragment extends FormFragment {
     private int mDayOfMonth;
     private int mHourOfDay;
     private int mMinute;
-    private EditTextItem mSuperiorTextDate;
+    private EditTextItem mSuperiorTextDay;
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -44,11 +44,17 @@ public class RecordManagementFragment extends FormFragment {
 
         View inflate = ViewsUitls.inflate(R.layout.form_record_management);
 
+        initView(inflate);
+
+        return inflate;
+    }
+
+    private void initView(View inflate) {
         EditTextItem superiorTextTitle = (EditTextItem) inflate.findViewById(R.id.form_record_management_title);
         EditTextItem superiorTextNumber = (EditTextItem) inflate.findViewById(R.id.form_record_management_number);
         EditTextItem superiorTextUnit = (EditTextItem) inflate.findViewById(R.id.form_record_management_unit);
-        mSuperiorTextDate = (EditTextItem) inflate.findViewById(R.id.form_record_management_date);
-        mSuperiorTextDate.getCustomEditTextRight().setOnClickListener(new View.OnClickListener() {
+        mSuperiorTextDay = (EditTextItem) inflate.findViewById(R.id.form_record_management_day);
+        mSuperiorTextDay.getCustomEditTextRight().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showTimeSelectorDialog();
@@ -59,8 +65,6 @@ public class RecordManagementFragment extends FormFragment {
         EditTextItem superiorTextRemark = (EditTextItem) inflate.findViewById(R.id.form_record_management_remark);
 
         ViewsUitls.setWidthFromTargetView(superiorTextTitle.getCustomEditTextLeft(), superiorTextRemark.getCustomEditTextLeft());
-
-        return inflate;
     }
 
     /* 显示时间选择器 */
@@ -76,7 +80,7 @@ public class RecordManagementFragment extends FormFragment {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         mHourOfDay = hourOfDay;
                         mMinute = minute;
-                        mSuperiorTextDate.setEditText(mYear + "-" + mMonth + "-" + mDayOfMonth + " " + mHourOfDay + ":" + mMinute);
+                        mSuperiorTextDay.setEditText(mYear + "-" + mMonth + "-" + mDayOfMonth + " " + mHourOfDay + ":" + mMinute);
                     }
                 });
             }

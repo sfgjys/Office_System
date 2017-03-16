@@ -38,17 +38,25 @@ public class PostManagementFragment extends FormFragment {
 
         View inflate = ViewsUitls.inflate(R.layout.form_post_management);
 
+        initView(inflate);
+
+        return inflate;
+    }
+
+    private void initView(View inflate) {
         EditTextItem drafter = (EditTextItem) inflate.findViewById(R.id.form_post_management_drafter);
         EditTextItem mainOffice = (EditTextItem) inflate.findViewById(R.id.form_post_management_main_office);
         EditTextItem postNumber = (EditTextItem) inflate.findViewById(R.id.form_post_management_post_number);
         EditTextItem postTitle = (EditTextItem) inflate.findViewById(R.id.form_post_management_post_title);
         EditTextItem mainSendOffice = (EditTextItem) inflate.findViewById(R.id.form_post_management_main_send_office);
 
+
         ViewsUitls.setWidthFromTargetView(mainOffice.getCustomEditTextLeft(), drafter.getCustomEditTextLeft());
 
 
         EditTextItem postType = (EditTextItem) inflate.findViewById(R.id.form_post_management_post_type);
         final EditText postTypeEditText = postType.getCustomEditTextRight();
+        // 设置展示类型选择列表
         setWhichViewShowListPopupWindow(postTypeEditText, mPostTypeData, new ShowListPopupItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -64,9 +72,11 @@ public class PostManagementFragment extends FormFragment {
             public void onListPopupDismiss() {
                 setBackGroundDarkColor(1.0f);
             }
-        },getActivity());
+        }, getActivity());
+
 
         EditTextItem isOpen = (EditTextItem) inflate.findViewById(R.id.form_post_management_is_open);
+        // 设置展示是否公开列表
         final EditText isOpenEditText = isOpen.getCustomEditTextRight();
         setWhichViewShowListPopupWindow(isOpenEditText, mYesOrNo, new ShowListPopupItemClickListener() {
             @Override
@@ -83,9 +93,7 @@ public class PostManagementFragment extends FormFragment {
             public void onListPopupDismiss() {
                 setBackGroundDarkColor(1.0f);
             }
-        },getActivity());
-
-        return inflate;
+        }, getActivity());
     }
 
     @Override
