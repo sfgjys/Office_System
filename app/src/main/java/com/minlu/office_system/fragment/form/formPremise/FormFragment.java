@@ -14,11 +14,13 @@ import android.widget.TimePicker;
 
 import com.minlu.baselibrary.base.BaseFragment;
 import com.minlu.baselibrary.util.StringUtils;
+import com.minlu.baselibrary.util.TimeTool;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.customview.EditTextTimeSelector;
 import com.minlu.office_system.fragment.time.DatePickerFragment;
 import com.minlu.office_system.fragment.time.TimePickerFragment;
 
+import java.util.Calendar;
 import java.util.List;
 
 public abstract class FormFragment extends BaseFragment {
@@ -119,6 +121,13 @@ public abstract class FormFragment extends BaseFragment {
                 showDatePickerDialog(new DatePickerFragment.SetDateListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {// 点击对话框确认的方法回调
+                        long selectTime = TimeTool.textTimeToLongTime(year + "-" + (month + 1) + "-" + dayOfMonth, "yyyy-MM-dd");
+                        long nowTime = TimeTool.textTimeToLongTime(Calendar.getInstance().get(Calendar.YEAR) + "-" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH), "yyyy-MM-dd");
+                        if (selectTime < nowTime) {// 选择的日期小于现在的是不可能的，要复原
+                            year = Calendar.getInstance().get(Calendar.YEAR);
+                            month = Calendar.getInstance().get(Calendar.MONTH);
+                            dayOfMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+                        }
                         editTextTimeSelector.setDayOfYearText(year + "-" + (StringUtils.lessThanNineConvertString(month + 1)) + "-" + StringUtils.lessThanNineConvertString(dayOfMonth));
                     }
                 });
