@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -75,8 +76,15 @@ public class EditTextItem extends LinearLayout {
             System.out.println("=================================================");
             customEditTextRight.setMaxLines(mEditTextMaxLines);
         }
+
+        // EditText不一直显示边框颜色。但无法编辑
         customEditTextRight.setFocusableInTouchMode(mEditTextIsEdit);
         customEditTextRight.setFocusable(mEditTextIsEdit);
+        // EditText可以一直显示边框颜色。但无法编辑
+//        if (!mEditTextIsEdit) {
+//            customEditTextRight.setKeyListener(null);
+//        }
+
         customEditTextRight.setEnabled(mEditTextIsClickable);
     }
 
@@ -92,4 +100,25 @@ public class EditTextItem extends LinearLayout {
         customEditTextRight.setText(editText);
     }
 
+    public interface OnCustomTouchToClick {
+        void onCustomTouch(View v, MotionEvent event);
+    }
+
+    public void setCustomOnTouch(final OnCustomTouchToClick customOnTouch) {
+        customEditTextRight.setOnTouchListener(new OnTouchListener() {
+            //按住和松开的标识
+            int touch_flag = 0;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                touch_flag++;
+                if (touch_flag == 2) {
+                    touch_flag = 0;
+                    //自己业务
+                    customOnTouch.onCustomTouch(v, event);
+                }
+                return false;
+            }
+        });
+    }
 }
