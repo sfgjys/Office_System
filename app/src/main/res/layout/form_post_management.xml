@@ -41,7 +41,7 @@
         edittextitem:editText_hint="请选择类型"
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="发文类型 : "
-        edittextitem:editText_right_icon="@mipmap/pull_down_default" />
+        edittextitem:editText_right_icon="@drawable/selector_pull_down" />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_post_management_post_number"
@@ -56,7 +56,7 @@
         edittextitem:editText_hint="是/否"
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="是否公开 : "
-        edittextitem:editText_right_icon="@mipmap/pull_down_default" />
+        edittextitem:editText_right_icon="@drawable/selector_pull_down" />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_post_management_post_title"

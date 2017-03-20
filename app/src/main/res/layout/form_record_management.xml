@@ -32,12 +32,16 @@
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_record_management_details"
         style="@style/editText_item_top"
-        edittextitem:editText_hint="请选择日期"
-        edittextitem:editText_left_text="文件详情 : " />
+        edittextitem:editText_hint="请编写文件详情"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_left_text="文件详情 : "
+        edittextitem:editText_max_lines="6" />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_record_management_remark"
         style="@style/editText_item_top"
         edittextitem:editText_hint="选填备注"
-        edittextitem:editText_left_text="备注 : " />
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_left_text="备注 : "
+        edittextitem:editText_max_lines="6" />
 </LinearLayout>

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
     android:gravity="center">
 
     <TextView
@@ -20,7 +21,8 @@
         android:layout_marginLeft="6dp"
         android:layout_marginStart="6dp"
         android:layout_weight="1.6"
-        android:drawableRight="@mipmap/calendar_icon_default"
+        android:background="@drawable/custom_edit_text_background"
+        android:drawableRight="@drawable/selector_calendar"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:gravity="center_vertical"
@@ -38,7 +40,8 @@
         android:layout_marginLeft="6dp"
         android:layout_marginStart="6dp"
         android:layout_weight="1"
-        android:drawableRight="@mipmap/time_icon_default"
+        android:background="@drawable/custom_edit_text_background"
+        android:drawableRight="@drawable/selector_time"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:gravity="center_vertical"

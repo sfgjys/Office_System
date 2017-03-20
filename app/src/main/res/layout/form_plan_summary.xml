@@ -60,7 +60,7 @@
         edittextitem:editText_hint="请选择时间"
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="填写时间 : "
-        edittextitem:editText_right_icon="@mipmap/calendar_icon_default" />
+        edittextitem:editText_right_icon="@drawable/selector_calendar" />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_plan_summary_work_plan"

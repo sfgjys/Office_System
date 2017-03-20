@@ -47,7 +47,7 @@
         edittextitem:editText_hint="请选择车号"
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="车号 : "
-        edittextitem:editText_right_icon="@mipmap/pull_down_default" />
+        edittextitem:editText_right_icon="@drawable/selector_pull_down" />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_bus_request_start_time"
@@ -55,7 +55,7 @@
         edittextitem:editText_hint="请选择用车开始时间"
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="开始时间 : "
-        edittextitem:editText_right_icon="@mipmap/calendar_icon_default" />
+        edittextitem:editText_right_icon="@drawable/selector_calendar" />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_bus_request_destination"

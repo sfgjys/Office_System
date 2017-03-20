@@ -16,7 +16,7 @@
         edittextitem:editText_hint="请选择"
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="请假类型 : "
-        edittextitem:editText_right_icon="@mipmap/pull_down_default" />
+        edittextitem:editText_right_icon="@drawable/selector_pull_down" />
 
     <com.minlu.office_system.customview.EditTextTimeSelector
         android:id="@+id/form_leave_apply_start_time"
