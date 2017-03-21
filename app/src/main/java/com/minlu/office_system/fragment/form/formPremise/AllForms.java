@@ -49,39 +49,19 @@ public enum AllForms {
         return formName;
     }
 
-    public void setFormName(String formName) {
-        this.formName = formName;
-    }
-
     public int getFormIconId() {
         return formIconId;
-    }
-
-    public void setFormIconId(int formIconId) {
-        this.formIconId = formIconId;
     }
 
     public Class<?> getFormClassName() {
         return formClassName;
     }
 
-    public void setFormClassName(Class<?> formClassName) {
-        this.formClassName = formClassName;
-    }
-
     public int getShowWhichButton() {
         return showWhichButton;
     }
 
-    public void setShowWhichButton(int showWhichButton) {
-        this.showWhichButton = showWhichButton;
-    }
-
     public String getFragmentTAG() {
         return fragmentTAG;
-    }
-
-    public void setFragmentTAG(String fragmentTAG) {
-        this.fragmentTAG = fragmentTAG;
     }
 }
