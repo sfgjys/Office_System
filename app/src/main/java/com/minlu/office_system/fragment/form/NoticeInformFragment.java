@@ -5,11 +5,17 @@ import android.view.View;
 import com.minlu.baselibrary.base.ContentPage;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by user on 2017/3/27.
  */
 
 public class NoticeInformFragment extends FormFragment {
+
+    private List<Object> excessive;
+
     @Override
     protected void onSubClassOnCreateView() {
         loadDataAndRefresh();
@@ -22,7 +28,9 @@ public class NoticeInformFragment extends FormFragment {
 
     @Override
     protected ContentPage.ResultState onLoad() {
-        return null;
+        excessive = new ArrayList<>();
+//        excessive.add("excessive");
+        return chat(excessive);
     }
 
     @Override

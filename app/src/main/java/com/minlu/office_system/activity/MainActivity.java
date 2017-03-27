@@ -5,28 +5,40 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.minlu.baselibrary.customview.MyLinearLayout;
+import com.minlu.baselibrary.manager.ThreadManager;
+import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.FragmentShowHide;
 import com.minlu.office_system.R;
 import com.minlu.office_system.fragment.HomePageFragment;
 import com.minlu.office_system.fragment.MeFragment;
 import com.minlu.office_system.fragment.SettingFragment;
+import com.minlu.office_system.fragment.dialog.NoticeInformListDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 
 public class MainActivity extends FragmentActivity {
 
     private FragmentShowHide fragmentShowHide;
     private int showWhichFragment = 0;
+    private MyLinearLayout myLinearLayout;
+    private FrameLayout mLoadingUI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        myLinearLayout = (MyLinearLayout) findViewById(R.id.custom_ll);
+        mLoadingUI = (FrameLayout) findViewById(R.id.main_fl_loading);
 
         BottomNavigationBar bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_button);
         bottomNavigationBar.clearAll();
@@ -86,7 +98,39 @@ public class MainActivity extends FragmentActivity {
             showFragment(tagList, fragmentList, saveWhichFragment);
         }
 
+        myLinearLayout.setIsInterruptTouch(true);
+        mLoadingUI.setVisibility(View.VISIBLE);
+        ThreadManager.getInstance().execute(new TimerTask() {
+            @Override
+            public void run() {
+                showNoticeInform();
+            }
+        });
+    }
 
+    private void showNoticeInform() {
+        // TODO 查询是否有公告,有的话就展示对话框并取消限制，没有就取消限制
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        cancelConfine();
+
+        NoticeInformListDialog noticeInformListDialog = new NoticeInformListDialog(new ArrayList<>());
+        noticeInformListDialog.show(getSupportFragmentManager(),"NoticeInformListDialog");
+    }
+
+    /* 取消点击事件阻止和加载页面 */
+    private void cancelConfine() {
+        ViewsUitls.runInMainThread(new TimerTask() {
+            @Override
+            public void run() {
+                myLinearLayout.setIsInterruptTouch(false);
+                mLoadingUI.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void showFragment(List<String> tagList, List<Fragment> fragmentList, int which) {
