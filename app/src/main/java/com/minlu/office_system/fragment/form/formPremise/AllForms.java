@@ -8,6 +8,7 @@ import com.minlu.office_system.fragment.form.BusRequestFragment;
 import com.minlu.office_system.fragment.form.LeaveApplyFragment;
 import com.minlu.office_system.fragment.form.LeaveManagementFragment;
 import com.minlu.office_system.fragment.form.MeetingOrderFragment;
+import com.minlu.office_system.fragment.form.NoticeInformFragment;
 import com.minlu.office_system.fragment.form.OtherItemFragment;
 import com.minlu.office_system.fragment.form.PlanSummaryFragment;
 import com.minlu.office_system.fragment.form.PostManagementFragment;
@@ -29,7 +30,8 @@ public enum AllForms {
     MEETING_ORDER("会议预约", R.mipmap.home_page_icon8, MeetingOrderFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON, StringsFiled.MeetingOrderFragment_TAG),
     LEAVE_REQUEST("请假申请", R.mipmap.home_page_icon9, LeaveApplyFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON, StringsFiled.LeaveApplyFragment_TAG),
     BUS_REQUEST("车辆申请", R.mipmap.home_page_icon10, BusRequestFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON, StringsFiled.BusRequestFragment_TAG),
-    OTHER_ITEM("其他栏目", R.mipmap.home_page_icon11, OtherItemFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON, StringsFiled.OtherItemFragment_TAG);
+    OTHER_ITEM("其他栏目", R.mipmap.home_page_icon11, OtherItemFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON, StringsFiled.OtherItemFragment_TAG),
+    NOTICE_INFORM("公告通知", R.mipmap.home_page_icon11, NoticeInformFragment.class, StringsFiled.NO_SHOW_BUTTON, StringsFiled.NoticeInformFragment_TAG);
 
     private String formName;
     private int formIconId;

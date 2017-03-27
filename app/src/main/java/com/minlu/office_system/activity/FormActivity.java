@@ -89,6 +89,10 @@ public class FormActivity extends BaseActivity implements View.OnClickListener {
                 twoIsAgreeButtons.setVisibility(View.GONE);
                 submitButton.setVisibility(View.VISIBLE);
                 break;
+            case StringsFiled.NO_SHOW_BUTTON:
+                twoIsAgreeButtons.setVisibility(View.GONE);
+                submitButton.setVisibility(View.GONE);
+                break;
             case -1:
                 ToastUtil.showToast(getApplication(), "home to form show which failure");
                 break;

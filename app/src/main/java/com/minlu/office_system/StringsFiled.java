@@ -31,10 +31,12 @@ public class StringsFiled {
     public static final String LeaveApplyFragment_TAG = "LeaveApply";
     public static final String BusRequestFragment_TAG = "BusRequest";
     public static final String OtherItemFragment_TAG = "OtherItem";
+    public static final String NoticeInformFragment_TAG = "NoticeInformFragment";
 
     /*
     * 区别显示是否同意按钮还是提交按钮
     * */
+    public final static int NO_SHOW_BUTTON = 0;
     public final static int SHOW_IS_AGREE_BUTTON = 1;
     public final static int SHOW_SUBMIT_BUTTON = 2;
 
