@@ -2,70 +2,49 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="3dp">
+    android:orientation="vertical">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="系统公告"
-        android:textColor="@color/black"
-        android:textSize="18dp" />
+        android:background="@drawable/shape_notice_inform_top_background"
+        android:padding="10dp">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_margin="3dp"
-        android:background="@color/loading_background_thin_gray" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="系统公告"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="系统公告"
-        android:textColor="@color/black"
-        android:textSize="18dp" />
+        <ImageView
+            android:id="@+id/notice_inform_dialog_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/calendar_icon_default" />
+    </RelativeLayout>
 
-    <View
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_margin="3dp"
-        android:background="@color/loading_background_thin_gray" />
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_notice_inform_bottom_background">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="系统公告"
-        android:textColor="@color/black"
-        android:textSize="18dp" />
+        <ListView
+            android:id="@+id/notice_inform_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="15dp"
+            android:divider="#00000000"
+            android:dividerHeight="0dip"
+            android:listSelector="@android:color/transparent"
+            android:overScrollFooter="@android:color/transparent"
+            android:overScrollHeader="@android:color/transparent"
+            android:overScrollMode="never"
+            android:scrollbars="none" />
+    </FrameLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_margin="3dp"
-        android:background="@color/loading_background_thin_gray" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="系统公告"
-        android:textColor="@color/black"
-        android:textSize="18dp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_margin="3dp"
-        android:background="@color/loading_background_thin_gray" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="系统公告"
-        android:textColor="@color/black"
-        android:textSize="18dp" />
 </LinearLayout>

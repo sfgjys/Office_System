@@ -16,6 +16,7 @@ public class StringsFiled {
     public static final String TO_FORM_SHOW_WHICH_BUTTON = "to_form_show_which_button";
     public static final String TO_FORM_SHOW_FORM_FRAGMENT = "to_form_show_form_fragment";
     public static final String TO_FORM_SHOW_FORM_FRAGMENT_TAG = "to_form_show_form_fragment_tag";
+    public static final String TO_FORM_SHOW_IS_USE_SCROLL = "to_form_show_is_use_scroll";
 
     /*
     * 打开表单Fragment的Tag

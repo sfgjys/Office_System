@@ -19,6 +19,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener {
     private Button submitButton;
     private View mContent;
     private String mFragmentTag;
+    private ScrollView scrollView;
 
     @Override
     public void onCreateContent() {
@@ -39,7 +40,13 @@ public class FormActivity extends BaseActivity implements View.OnClickListener {
                 getSupportFragmentManager().beginTransaction().show(fragmentByTag).commit();
             } else {
                 Fragment fragment = (Fragment) aClass.newInstance();
-                getSupportFragmentManager().beginTransaction().add(R.id.sv_replace_form, fragment, mFragmentTag).commit();
+                boolean isUseScroll = getmIntent().getBooleanExtra(StringsFiled.TO_FORM_SHOW_IS_USE_SCROLL, false);
+                if (isUseScroll) {
+                    getSupportFragmentManager().beginTransaction().add(R.id.sv_replace_form, fragment, mFragmentTag).commit();
+                } else {
+                    scrollView.setVisibility(View.GONE);
+                    getSupportFragmentManager().beginTransaction().add(R.id.fl_replace_form, fragment, mFragmentTag).commit();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,6 +55,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initView() {
+        scrollView = (ScrollView) mContent.findViewById(R.id.sv_replace_form);
         twoIsAgreeButtons = (LinearLayout) mContent.findViewById(R.id.ll_dis_agree_button);
         Button agreeButton = (Button) mContent.findViewById(R.id.bt_agree_button);
         agreeButton.setOnClickListener(this);
@@ -104,7 +112,6 @@ public class FormActivity extends BaseActivity implements View.OnClickListener {
     * 设置R.id.sv_replace_form控件的展示形式
     * */
     public void setScrollViewNoGravity() {
-        ScrollView scrollView = (ScrollView) mContent.findViewById(R.id.sv_replace_form);
         ScrollView.LayoutParams layoutParams = (ScrollView.LayoutParams) scrollView.getLayoutParams();
         layoutParams.gravity = Gravity.NO_GRAVITY;
         scrollView.setLayoutParams(layoutParams);

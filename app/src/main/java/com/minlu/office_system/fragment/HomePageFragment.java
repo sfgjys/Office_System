@@ -58,6 +58,7 @@ public class HomePageFragment extends BaseFragment<HomePageItem> {
         intent.putExtra(StringsFiled.TO_FORM_SHOW_WHICH_BUTTON, AllForms.values()[position].getShowWhichButton());
         intent.putExtra(StringsFiled.TO_FORM_SHOW_FORM_FRAGMENT, AllForms.values()[position].getFormClassName());
         intent.putExtra(StringsFiled.TO_FORM_SHOW_FORM_FRAGMENT_TAG, AllForms.values()[position].getFragmentTAG());
+        intent.putExtra(StringsFiled.TO_FORM_SHOW_IS_USE_SCROLL, AllForms.values()[position].isAddFragmentIsUseScroll());
         getContext().startActivity(intent);
     }
 

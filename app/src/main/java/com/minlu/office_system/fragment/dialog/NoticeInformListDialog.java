@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ListView;
 
 import com.minlu.office_system.R;
+import com.minlu.office_system.adapter.NoticeInformAdapter;
 
 import java.util.List;
 
@@ -36,12 +38,22 @@ public class NoticeInformListDialog extends DialogFragment {
 
         View view = inflater.inflate(R.layout.dialog_notice_inform, null);
 
+        ListView listView = (ListView) view.findViewById(R.id.notice_inform_list_view);
+        View cancel = view.findViewById(R.id.notice_inform_dialog_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.cancel();
+                alertDialog.dismiss();
+            }
+        });
+
+        listView.setAdapter(new NoticeInformAdapter(data));
 
         alertDialog = builder.setView(view).create();
         alertDialog.setCanceledOnTouchOutside(false);
 
-
-
+        alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         return alertDialog;
     }
 
@@ -56,7 +68,8 @@ public class NoticeInformListDialog extends DialogFragment {
 
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         // 设置透明度为0.3
-        layoutParams.width =  (int) (display.getWidth() * 0.6); ;
+        layoutParams.width = (int) (display.getWidth() * 0.8);
+        layoutParams.height = (int) (display.getHeight() * 0.4);
         window.setAttributes(layoutParams);
 
     }

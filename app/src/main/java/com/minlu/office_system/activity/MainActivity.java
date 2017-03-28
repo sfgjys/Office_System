@@ -118,8 +118,17 @@ public class MainActivity extends FragmentActivity {
 
         cancelConfine();
 
-        NoticeInformListDialog noticeInformListDialog = new NoticeInformListDialog(new ArrayList<>());
-        noticeInformListDialog.show(getSupportFragmentManager(),"NoticeInformListDialog");
+
+        ArrayList<String> objects = new ArrayList<>();
+        objects.add("");
+        objects.add("");
+        objects.add("");
+        objects.add("");
+        objects.add("");
+        objects.add("");
+        objects.add("");
+        NoticeInformListDialog noticeInformListDialog = new NoticeInformListDialog(objects);
+        noticeInformListDialog.show(getSupportFragmentManager(), "NoticeInformListDialog");
     }
 
     /* 取消点击事件阻止和加载页面 */
