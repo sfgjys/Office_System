@@ -10,10 +10,12 @@ import android.widget.GridView;
 import com.minlu.baselibrary.BaseStringsFiled;
 import com.minlu.baselibrary.base.BaseFragment;
 import com.minlu.baselibrary.base.ContentPage;
+import com.minlu.baselibrary.util.ToastUtil;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.R;
 import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
+import com.minlu.office_system.activity.FormListActivity;
 import com.minlu.office_system.adapter.HomePageAdapter;
 import com.minlu.office_system.bean.HomePageItem;
 import com.minlu.office_system.fragment.form.formPremise.AllForms;
@@ -45,21 +47,36 @@ public class HomePageFragment extends BaseFragment<HomePageItem> {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 start();
-                skipFormActivity(position);
+                skipFormListActivity(position);
             }
         });
 
         return inflate;
     }
 
-    private void skipFormActivity(int position) {
-        Intent intent = new Intent(getContext(), FormActivity.class);
+    private void skipFormListActivity(int position) {
+
+        Intent intent = new Intent();
+        // 标题
         intent.putExtra(BaseStringsFiled.ACTIVITY_TITLE, AllForms.values()[position].getFormName());
-        intent.putExtra(StringsFiled.TO_FORM_SHOW_WHICH_BUTTON, AllForms.values()[position].getShowWhichButton());
-        intent.putExtra(StringsFiled.TO_FORM_SHOW_FORM_FRAGMENT, AllForms.values()[position].getFormClassName());
-        intent.putExtra(StringsFiled.TO_FORM_SHOW_FORM_FRAGMENT_TAG, AllForms.values()[position].getFragmentTAG());
-        intent.putExtra(StringsFiled.TO_FORM_SHOW_IS_USE_SCROLL, AllForms.values()[position].isAddFragmentIsUseScroll());
-        getContext().startActivity(intent);
+        // 功能类型对应的position
+        intent.putExtra(StringsFiled.HOME_PAGE_TO_FORM_LIST_POSITION, position);
+
+        switch (AllForms.values()[position].getHomeToListType()) {
+            case StringsFiled.HOME_TO_LIST_SHOW_LIST:
+                intent.setClass(getContext(), FormListActivity.class);
+                break;
+            case StringsFiled.HOME_TO_LIST_SHOW_FORM:
+                intent.setClass(getContext(), FormActivity.class);
+                break;
+            case StringsFiled.HOME_TO_LIST_SHOW_NULL:
+                intent = null;
+                ToastUtil.showToast(ViewsUitls.getContext(), "敬请期待");
+                break;
+        }
+        if (intent != null) {
+            getContext().startActivity(intent);
+        }
     }
 
     @Override

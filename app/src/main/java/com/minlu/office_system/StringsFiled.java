@@ -19,6 +19,9 @@ public class StringsFiled {
     public static final String TO_FORM_SHOW_IS_USE_SCROLL = "to_form_show_is_use_scroll";
     public static final String HTML_DETAIL_CODE = "html_detail_code";
 
+
+    public static final String HOME_PAGE_TO_FORM_LIST_POSITION = "HOME_PAGE_TO_FORM_LIST_POSITION";
+
     /*
     * 打开表单Fragment的Tag
     * */
@@ -43,6 +46,7 @@ public class StringsFiled {
     public final static String RecordManagement_ProcessId = "739ba060ba08406abab4aa1fa0ae6346";// 收文管理
     public final static String PostManagement_ProcessId = "8289579875e346da8ddc563bacf23081";// 发文管理
     public final static String WorkMonthlyReport_ProcessId = "bf79e27c4f4047f0b67ad6e6402c093f";// 工作月报
+    public final static String No_Need_ProcessId = "No_Need_ProcessId";// 没有
 
     /*
     * 区别显示是否同意按钮还是提交按钮
@@ -51,5 +55,8 @@ public class StringsFiled {
     public final static int SHOW_IS_AGREE_BUTTON = 1;
     public final static int SHOW_SUBMIT_BUTTON = 2;
 
+    public final static int HOME_TO_LIST_SHOW_LIST = 0;
+    public final static int HOME_TO_LIST_SHOW_FORM = 1;
+    public final static int HOME_TO_LIST_SHOW_NULL = 2;
 
 }

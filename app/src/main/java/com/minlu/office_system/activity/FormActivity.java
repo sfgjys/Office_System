@@ -11,6 +11,7 @@ import com.minlu.baselibrary.base.BaseActivity;
 import com.minlu.baselibrary.util.ToastUtil;
 import com.minlu.office_system.R;
 import com.minlu.office_system.StringsFiled;
+import com.minlu.office_system.fragment.form.formPremise.AllForms;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
 
 public class FormActivity extends BaseActivity implements View.OnClickListener {
@@ -20,6 +21,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener {
     private View mContent;
     private String mFragmentTag;
     private ScrollView scrollView;
+    private int formTypePosition;
 
     @Override
     public void onCreateContent() {
@@ -27,12 +29,17 @@ public class FormActivity extends BaseActivity implements View.OnClickListener {
 
         initView();
 
-        showWhichButton(getmIntent().getIntExtra(StringsFiled.TO_FORM_SHOW_WHICH_BUTTON, -1));
+        formTypePosition = getmIntent().getIntExtra(StringsFiled.HOME_PAGE_TO_FORM_LIST_POSITION, -1);
 
+        showWhichButton(AllForms.values()[formTypePosition].getShowWhichButton());
+
+        showFormFragment();
+    }
+
+    private void showFormFragment() {
         // 根据Class<?>创建Fragment，并开启Fragment
-        Class<?> aClass = (Class<?>) getmIntent().getSerializableExtra(StringsFiled.TO_FORM_SHOW_FORM_FRAGMENT);
-        mFragmentTag = getmIntent().getStringExtra(StringsFiled.TO_FORM_SHOW_FORM_FRAGMENT_TAG);
-
+        Class<?> aClass = AllForms.values()[formTypePosition].getFormClassName();
+        mFragmentTag = AllForms.values()[formTypePosition].getFragmentTAG();
 
         try {
             Fragment fragmentByTag = getSupportFragmentManager().findFragmentByTag(mFragmentTag);
@@ -40,7 +47,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener {
                 getSupportFragmentManager().beginTransaction().show(fragmentByTag).commit();
             } else {
                 Fragment fragment = (Fragment) aClass.newInstance();
-                boolean isUseScroll = getmIntent().getBooleanExtra(StringsFiled.TO_FORM_SHOW_IS_USE_SCROLL, false);
+                boolean isUseScroll = AllForms.values()[formTypePosition].isAddFragmentIsUseScroll();
                 if (isUseScroll) {
                     getSupportFragmentManager().beginTransaction().add(R.id.sv_replace_form, fragment, mFragmentTag).commit();
                 } else {
@@ -116,4 +123,5 @@ public class FormActivity extends BaseActivity implements View.OnClickListener {
         layoutParams.gravity = Gravity.NO_GRAVITY;
         scrollView.setLayoutParams(layoutParams);
     }
+
 }

@@ -19,21 +19,26 @@ public abstract class BaseFragment<T> extends DialogFragment {
 
     private ContentPage contentPage;
     private int mBundleValue;
+    private Bundle mBundle;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Bundle bundle = getArguments();
+        mBundle = getArguments();
 
-        if (bundle != null) {
-            mBundleValue = bundle.getInt(BaseStringsFiled.OPEN_FRAGMENT_BUNDLE_KEY, -1);
+        if (mBundle != null) {
+            mBundleValue = mBundle.getInt(BaseStringsFiled.OPEN_FRAGMENT_BUNDLE_KEY, -1);
         }
 
     }
 
     public int getBundleValue() {
         return mBundleValue;
+    }
+
+    public Bundle getBundle() {
+        return mBundle;
     }
 
     @Override
