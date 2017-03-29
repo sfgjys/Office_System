@@ -37,6 +37,8 @@ public class NoticeInformActivity extends BaseActivity {
         View content = setContent(R.layout.activity_notice_inform);
         webView = (WebView) content.findViewById(R.id.web_view);
 
+        setLoadingVisibility(View.VISIBLE);
+
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("id", "" + getmIntent().getIntExtra(StringsFiled.HTML_DETAIL_CODE, -1));
         OkHttpMethod.asynPostRequest(IpFiled.NOTICE_DETAIL, hashMap, new Callback() {
@@ -45,6 +47,7 @@ public class NoticeInformActivity extends BaseActivity {
                 ViewsUitls.runInMainThread(new TimerTask() {
                     @Override
                     public void run() {
+                        setLoadingVisibility(View.GONE);
                         ToastUtil.showToast(ViewsUitls.getContext(), "服务器异常");
                     }
                 });
@@ -68,6 +71,7 @@ public class NoticeInformActivity extends BaseActivity {
                 ViewsUitls.runInMainThread(new TimerTask() {
                     @Override
                     public void run() {
+                        setLoadingVisibility(View.GONE);
                         if (StringUtils.interentIsNormal(loadHTML)) {
                             webView.loadDataWithBaseURL(null, loadHTML, "text/html", "utf-8", null);
                         } else {

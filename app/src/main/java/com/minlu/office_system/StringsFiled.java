@@ -35,11 +35,21 @@ public class StringsFiled {
     public static final String OtherItemFragment_TAG = "OtherItem";
     public static final String NoticeInformFragment_TAG = "NoticeInformFragment";
 
+
+    // processid为固定值
+    public final static String LeaveManagement_ProcessId = "5ba62e2b649b493d8462b96c5a3e76ce";// 请假审批
+    public final static String BusManagement_ProcessId = "a24f18f112a2414aae76accbe62a4cc4";// 车辆审批
+    public final static String PlanSummary_ProcessId = "0cfc092d8e44454382fd68d5538656bc";// 计划总结
+    public final static String RecordManagement_ProcessId = "739ba060ba08406abab4aa1fa0ae6346";// 收文管理
+    public final static String PostManagement_ProcessId = "8289579875e346da8ddc563bacf23081";// 发文管理
+    public final static String WorkMonthlyReport_ProcessId = "bf79e27c4f4047f0b67ad6e6402c093f";// 工作月报
+
     /*
     * 区别显示是否同意按钮还是提交按钮
     * */
     public final static int NO_SHOW_BUTTON = 0;
     public final static int SHOW_IS_AGREE_BUTTON = 1;
     public final static int SHOW_SUBMIT_BUTTON = 2;
+
 
 }
