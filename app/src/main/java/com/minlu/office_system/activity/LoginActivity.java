@@ -14,7 +14,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.minlu.baselibrary.BaseStringsFiled;
-import com.minlu.baselibrary.base.BaseApplication;
 import com.minlu.baselibrary.http.OkHttpManger;
 import com.minlu.baselibrary.manager.ThreadManager;
 import com.minlu.baselibrary.sqlite.MySQLiteOpenHelper;
@@ -22,8 +21,12 @@ import com.minlu.baselibrary.util.SharedPreferencesUtil;
 import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.ToastUtil;
 import com.minlu.baselibrary.util.ViewsUitls;
+import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.R;
 import com.minlu.office_system.StringsFiled;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.TimerTask;
@@ -120,10 +123,7 @@ public class LoginActivity extends Activity {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(BaseApplication.getContext(), MainActivity.class);
-                intent.putExtra(BaseStringsFiled.ACTIVITY_TITLE, "主页面");
-                startActivity(intent);
-                finish();
+                login();
             }
         });
 
@@ -144,14 +144,13 @@ public class LoginActivity extends Activity {
     /*请求网络是否登录成功*/
     private void requestIsLoginSuccess(String userName, String passWord) {
         OkHttpClient okHttpClient = OkHttpManger.getInstance().getOkHttpClient();
-        RequestBody formBody = new FormBody.Builder().add("username", userName)
+        RequestBody formBody = new FormBody.Builder().add("name", userName)
                 .add("password", passWord).build();
-        System.out.println("登录url");
         Request request = new Request.Builder()
-                .url("登录url")
+                .url(IpFiled.LOGIN)
                 .post(formBody)
                 .build();
-
+        System.out.println(IpFiled.LOGIN);
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -166,7 +165,6 @@ public class LoginActivity extends Activity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
                 try {
                     loginResult = response.body().string();
                 } catch (IOException e) {
@@ -177,7 +175,16 @@ public class LoginActivity extends Activity {
                     @Override
                     public void run() {
                         if (StringUtils.interentIsNormal(loginResult)) {
-                            // TODO 对登录网络请求的json数据进行处理
+                            try {
+                                JSONObject jsonObject = new JSONObject(loginResult);
+                                if (jsonObject.optInt("status") == 1) {// 登录成功
+                                    loginSuccee();
+                                } else {
+                                    ToastUtil.showToast(LoginActivity.this, "用户帐号或密码错误");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         } else {
                             ToastUtil.showToast(LoginActivity.this, "服务器异常,请稍候");
                         }
