@@ -30,6 +30,7 @@ public class ApprovalFlowFragment extends BaseFragment {
         View inflate = ViewsUitls.inflate(R.layout.layout_list);
         ListView listView = (ListView) inflate.findViewById(R.id.list_view);
         listView.setAdapter(new ApprovalFlowAdapter(excessive));
+        listView.setPadding(ViewsUitls.dpToPx(18), ViewsUitls.dpToPx(18), ViewsUitls.dpToPx(18), ViewsUitls.dpToPx(18));
 
         return inflate;
     }

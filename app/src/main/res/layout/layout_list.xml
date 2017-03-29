@@ -13,6 +13,5 @@
         android:overScrollFooter="@android:color/transparent"
         android:overScrollHeader="@android:color/transparent"
         android:overScrollMode="never"
-        android:padding="18dp"
         android:scrollbars="none" />
 </FrameLayout>

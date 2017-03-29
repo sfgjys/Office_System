@@ -10,5 +10,7 @@ public class IpFiled {
 
     public final static String LOGIN = ip + "phone/moblogin.html";
 
+    public final static String NOTICE_LIST = ip + "phone/noticeList.html";
 
+    public final static String NOTICE_DETAIL = ip + "phone/noticeDetail.html";
 }

@@ -13,17 +13,29 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.minlu.baselibrary.customview.MyLinearLayout;
 import com.minlu.baselibrary.manager.ThreadManager;
+import com.minlu.baselibrary.util.StringUtils;
+import com.minlu.baselibrary.util.ToastUtil;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.FragmentShowHide;
+import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.R;
+import com.minlu.office_system.bean.NoticeList;
 import com.minlu.office_system.fragment.HomePageFragment;
 import com.minlu.office_system.fragment.MeFragment;
 import com.minlu.office_system.fragment.SettingFragment;
 import com.minlu.office_system.fragment.dialog.NoticeInformListDialog;
+import com.minlu.office_system.http.OkHttpMethod;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
+
+import okhttp3.Response;
 
 public class MainActivity extends FragmentActivity {
 
@@ -31,6 +43,8 @@ public class MainActivity extends FragmentActivity {
     private int showWhichFragment = 0;
     private MyLinearLayout myLinearLayout;
     private FrameLayout mLoadingUI;
+    private String mNoticeListResult;
+    private List<NoticeList> mNoticeListData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,26 +123,49 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void showNoticeInform() {
-        // TODO 查询是否有公告,有的话就展示对话框并取消限制，没有就取消限制
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        Response response = OkHttpMethod.synPostRequest(IpFiled.NOTICE_LIST, null);
+
+        if (response.isSuccessful()) {// 请求成功则获取返回结果字符串
+            try {
+                mNoticeListResult = response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-        cancelConfine();
+        if (StringUtils.interentIsNormal(mNoticeListResult)) {// 返回结果字符串正常就解析
+            try {
+                JSONObject jsonObject = new JSONObject(mNoticeListResult);
+                if (jsonObject.has("rows")) {
+                    mNoticeListData = new ArrayList<>();// 有total值说明返回json字符串格式正确,不管有没有公告 都先创建数据对象
+                    JSONArray jsonArray = jsonObject.optJSONArray("rows");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject notice = jsonArray.optJSONObject(i);
+                        JSONObject noticeDetail = notice.optJSONObject("cell");
+                        mNoticeListData.add(new NoticeList(noticeDetail.optString("NOTICENAME"), noticeDetail.optString("NOTICEEMPNAME"), noticeDetail.optString("SDATE"), noticeDetail.optInt("ID"), false));
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
-
-        ArrayList<String> objects = new ArrayList<>();
-        objects.add("");
-        objects.add("");
-        objects.add("");
-        objects.add("");
-        objects.add("");
-        objects.add("");
-        objects.add("");
-        NoticeInformListDialog noticeInformListDialog = new NoticeInformListDialog(objects);
-        noticeInformListDialog.show(getSupportFragmentManager(), "NoticeInformListDialog");
+        ViewsUitls.runInMainThread(new TimerTask() {
+            @Override
+            public void run() {
+                cancelConfine();
+                if (mNoticeListData != null) {
+                    if (mNoticeListData.size() > 0) {
+                        NoticeInformListDialog noticeInformListDialog = new NoticeInformListDialog(mNoticeListData);
+                        noticeInformListDialog.show(getSupportFragmentManager(), "NoticeInformListDialog");
+                    } else {
+                        ToastUtil.showToast(ViewsUitls.getContext(), "无公告");
+                    }
+                } else {
+                    ToastUtil.showToast(ViewsUitls.getContext(), "公告异常");
+                }
+            }
+        });
     }
 
     /* 取消点击事件阻止和加载页面 */
