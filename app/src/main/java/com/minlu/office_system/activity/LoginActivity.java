@@ -99,6 +99,7 @@ public class LoginActivity extends Activity {
         mLoginPassWord = (EditText) findViewById(R.id.login_password);
         mLoginButton = (Button) findViewById(R.id.bt_login_button);
         mRememberPassWord = (CheckBox) findViewById(R.id.cb_login_remember_password);
+        mRememberPassWord.setChecked(mIsAuto);
 
         // 根据历史记录来设置显示
         if (!mHistoryUser.isEmpty() && !mHistoryPassWord.isEmpty()) {
