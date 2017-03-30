@@ -26,7 +26,7 @@ public class StringUtils {
                 return false;
             } else if (value.contains("Error")) {
                 return false;
-            } else if (value.contains("html")) {
+            } else if (value.contains("<html")) {
                 return false;
             }
         }
