@@ -3,6 +3,7 @@ package com.minlu.office_system.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.ListView;
 
 import com.minlu.baselibrary.base.BaseFragment;
 import com.minlu.baselibrary.base.ContentPage;
@@ -12,6 +13,7 @@ import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.R;
 import com.minlu.office_system.StringsFiled;
+import com.minlu.office_system.adapter.FormListAdapter;
 import com.minlu.office_system.bean.TaskListItem;
 import com.minlu.office_system.fragment.form.formPremise.AllForms;
 import com.minlu.office_system.http.OkHttpMethod;
@@ -43,33 +45,9 @@ public class FormListFragment extends BaseFragment<TaskListItem> {
     @Override
     protected View onCreateSuccessView() {
 
-        // 获取用来区分流程的流程id
-        String distinguishProcess = null;
-        if (data.size() > 0) {
-            distinguishProcess = data.get(0).getProcessId();
-        }
-
-        // 正式区分流程
-        if (distinguishProcess != null) {
-            switch (distinguishProcess) {
-                case StringsFiled.Bus_ProcessId:
-                    break;
-                case StringsFiled.Leave_ProcessId:
-                    break;
-                case StringsFiled.PlanSummary_ProcessId:
-                    break;
-                case StringsFiled.PostManagement_ProcessId:
-                    break;
-                case StringsFiled.RecordManagement_ProcessId:
-                    break;
-                case StringsFiled.WorkMonthlyReport_ProcessId:
-                    break;
-            }
-        }
-
-
         View inflate = ViewsUitls.inflate(R.layout.form_list_view);
-
+        ListView listView = (ListView) inflate.findViewById(R.id.list_view);
+        listView.setAdapter(new FormListAdapter(data));
 
         return inflate;
     }
