@@ -61,7 +61,7 @@
         setting:iscache="gone"
         setting:isright="visible"
         setting:isswitch="gone"
-        setting:setting_itm_miaoshu="退出"
+        setting:setting_itm_miaoshu="注销"
         setting:setting_itm_tubiao="@null" />
 
 </LinearLayout>
