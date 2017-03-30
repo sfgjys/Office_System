@@ -49,7 +49,7 @@ public class FormListFragment extends BaseFragment {
         hashMap.put("processid", AllForms.values()[mFormTypePosition].getGetListParam());
 
         Response response = OkHttpMethod.synPostRequest(IpFiled.MANY_MANAGE_LIST, hashMap);
-
+        if (response != null && response.isSuccessful()){}
 
         return chat(null);
     }

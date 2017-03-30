@@ -40,8 +40,8 @@ public class StringsFiled {
 
 
     // processid为固定值
-    public final static String LeaveManagement_ProcessId = "5ba62e2b649b493d8462b96c5a3e76ce";// 请假审批
-    public final static String BusManagement_ProcessId = "a24f18f112a2414aae76accbe62a4cc4";// 车辆审批
+    public final static String Leave_ProcessId = "5ba62e2b649b493d8462b96c5a3e76ce";// 请假审批
+    public final static String Bus_ProcessId = "a24f18f112a2414aae76accbe62a4cc4";// 车辆审批
     public final static String PlanSummary_ProcessId = "0cfc092d8e44454382fd68d5538656bc";// 计划总结
     public final static String RecordManagement_ProcessId = "739ba060ba08406abab4aa1fa0ae6346";// 收文管理
     public final static String PostManagement_ProcessId = "8289579875e346da8ddc563bacf23081";// 发文管理

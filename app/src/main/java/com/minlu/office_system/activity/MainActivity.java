@@ -125,7 +125,7 @@ public class MainActivity extends FragmentActivity {
     private void showNoticeInform() {
         Response response = OkHttpMethod.synPostRequest(IpFiled.NOTICE_LIST, null);
 
-        if (response.isSuccessful()) {// 请求成功则获取返回结果字符串
+        if (response != null && response.isSuccessful()) {// 请求成功则获取返回结果字符串
             try {
                 mNoticeListResult = response.body().string();
             } catch (IOException e) {

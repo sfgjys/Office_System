@@ -73,7 +73,7 @@ public class NoticeInformFragment extends BaseFragment<NoticeList> {
 
         Response response = OkHttpMethod.synPostRequest(IpFiled.NOTICE_LIST, null);
 
-        if (response.isSuccessful()) {// 请求成功则获取返回结果字符串
+        if (response != null && response.isSuccessful()) {// 请求成功则获取返回结果字符串
             try {
                 noticeListResult = response.body().string();
             } catch (IOException e) {

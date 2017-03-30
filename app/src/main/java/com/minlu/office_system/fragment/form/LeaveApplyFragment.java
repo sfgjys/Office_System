@@ -8,15 +8,22 @@ import android.widget.EditText;
 import com.minlu.baselibrary.base.ContentPage;
 import com.minlu.baselibrary.util.TimeTool;
 import com.minlu.baselibrary.util.ViewsUitls;
+import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.R;
+import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.customview.EditTextTimeSelector;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
+import com.minlu.office_system.http.OkHttpMethod;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Response;
 
 
 public class LeaveApplyFragment extends FormFragment {
@@ -119,13 +126,35 @@ public class LeaveApplyFragment extends FormFragment {
 
     @Override
     protected ContentPage.ResultState onLoad() {
+
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("processId", StringsFiled.Leave_ProcessId);
+        hashMap.put("orderId", "");
+        hashMap.put("taskId", "");
+        hashMap.put("taskName", "qjsh");
+
+        Response response = OkHttpMethod.synPostRequest(IpFiled.LEAVE_APPLY_PREMISE, hashMap);
+        if (response != null && response.isSuccessful()){
+            try {
+                String string = response.body().string();
+                System.out.println();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
         mLeaveType = new ArrayList<>();
         mLeaveType.add("事假");
-        mLeaveType.add("病假");
         mLeaveType.add("婚假");
         mLeaveType.add("产假");
+        mLeaveType.add("陪产假");
+        mLeaveType.add("丧假");
         mLeaveType.add("年假");
-        mLeaveType.add("休假");
+        mLeaveType.add("病假");
+        mLeaveType.add("其他");
+
         return chat(mLeaveType);
     }
 
