@@ -62,6 +62,14 @@ public class TimeTool {
         return timeWeek;
     }
 
+    public static long getDayLongTime() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day_of_month = calendar.get(Calendar.DAY_OF_MONTH);
+        return textTimeToLongTime(year + "-" + month + "-" + day_of_month, "yyyy-MM-dd");
+    }
+
     /**
      * @param textTime       想要转换为Long时间的文本时间
      * @param textTimeFormat 文本时间的格式 例如:"yyyy-MM-dd HH:mm:ss" ss可省略
