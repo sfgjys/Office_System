@@ -1,10 +1,13 @@
 package com.minlu.office_system.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.minlu.baselibrary.BaseStringsFiled;
 import com.minlu.baselibrary.base.BaseFragment;
 import com.minlu.baselibrary.base.ContentPage;
 import com.minlu.baselibrary.util.SharedPreferencesUtil;
@@ -13,6 +16,7 @@ import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.R;
 import com.minlu.office_system.StringsFiled;
+import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.adapter.FormListAdapter;
 import com.minlu.office_system.bean.TaskListItem;
 import com.minlu.office_system.fragment.form.formPremise.AllForms;
@@ -36,6 +40,7 @@ import okhttp3.Response;
 public class FormListFragment extends BaseFragment<TaskListItem> {
 
     private List<TaskListItem> data;
+    private int formTypePosition;
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -49,6 +54,29 @@ public class FormListFragment extends BaseFragment<TaskListItem> {
         ListView listView = (ListView) inflate.findViewById(R.id.list_view);
         listView.setAdapter(new FormListAdapter(data));
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String orderId = data.get(position).getOrderId();
+                String taskId = data.get(position).getTaskId();
+                String processId = data.get(position).getProcessId();
+
+                boolean isSuccess1 = SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_ORDER_ID, orderId);
+                boolean isSuccess2 = SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_TASK_ID, taskId);
+                boolean isSuccess3 = SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_PROCESS_ID, processId);
+
+                if (isSuccess1 && isSuccess2 && isSuccess3) {
+                    Intent intent = new Intent();
+                    // 标题
+                    intent.putExtra(BaseStringsFiled.ACTIVITY_TITLE, AllForms.values()[formTypePosition].getFormName());
+                    // 功能类型对应的position
+                    intent.putExtra(StringsFiled.HOME_PAGE_TO_FORM_LIST_POSITION, formTypePosition);
+                    intent.setClass(getContext(), FormActivity.class);
+                    getActivity().startActivity(intent);
+                }
+            }
+        });
+
         return inflate;
     }
 
@@ -59,7 +87,7 @@ public class FormListFragment extends BaseFragment<TaskListItem> {
 
         Bundle bundle = getBundle();
         // 从传递过来的Bundle中获取position
-        int formTypePosition = bundle.getInt(StringsFiled.HOME_PAGE_TO_FORM_LIST_POSITION);
+        formTypePosition = bundle.getInt(StringsFiled.HOME_PAGE_TO_FORM_LIST_POSITION);
 
         // 请求网络获取数据
         String mResultList = getResultListString(AllForms.values()[formTypePosition]);

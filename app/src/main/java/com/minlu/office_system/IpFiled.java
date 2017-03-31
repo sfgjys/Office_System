@@ -15,8 +15,10 @@ public class IpFiled {
     public final static String NOTICE_DETAIL = ip + "phone/noticeDetail.html";
 
     // 请假审批（管理），车辆审批（管理），计划总结，收文管理，发文管理，工作月报
-    public final static String MANY_MANAGE_LIST = ip + "/phone/getUserTask.html";
+    public final static String MANY_MANAGE_LIST = ip + "phone/getUserTask.html";
 
     // 请假申请前提
     public final static String LEAVE_APPLY_PREMISE = ip + "phone/leaveApply.html";
+
+    public final static String FORM_LIST_ITEM_DETAIL = ip + "phone/recdocPhone.html";
 }

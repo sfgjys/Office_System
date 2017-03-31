@@ -43,6 +43,11 @@ public class FormListHolder extends BaseHolder<TaskListItem> {
         String taskName = mData.getTaskName();
         String taskVariable = mData.getTaskVariable();
 
+        mCreator.setText(creator);
+        mProcessName.setText(processName);
+        mTaskCreateTime.setText(taskCreateTime);
+        mTaskName.setText(taskName);
+        mTaskVariable.setText(taskVariable);
 
     }
 }

@@ -48,6 +48,10 @@ public class StringsFiled {
     public final static String WorkMonthlyReport_ProcessId = "bf79e27c4f4047f0b67ad6e6402c093f";// 工作月报
     public final static String No_Need_ProcessId = "No_Need_ProcessId";// 没有
 
+    public static final String FORM_LIST_TO_FORM_ORDER_ID = "form_list_to_form_order_id";
+    public static final String FORM_LIST_TO_FORM_TASK_ID = "form_list_to_form_task_id";
+    public static final String FORM_LIST_TO_FORM_PROCESS_ID = "form_list_to_form_process_id";
+
     /*
     * 区别显示是否同意按钮还是提交按钮
     * */
@@ -58,5 +62,4 @@ public class StringsFiled {
     public final static int HOME_TO_LIST_SHOW_LIST = 0;
     public final static int HOME_TO_LIST_SHOW_FORM = 1;
     public final static int HOME_TO_LIST_SHOW_NULL = 2;
-
 }

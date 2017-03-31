@@ -13,15 +13,22 @@ import android.widget.PopupWindow;
 import android.widget.TimePicker;
 
 import com.minlu.baselibrary.base.BaseFragment;
+import com.minlu.baselibrary.util.SharedPreferencesUtil;
 import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.TimeTool;
 import com.minlu.baselibrary.util.ViewsUitls;
+import com.minlu.office_system.IpFiled;
+import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.customview.EditTextTimeSelector;
 import com.minlu.office_system.fragment.time.DatePickerFragment;
 import com.minlu.office_system.fragment.time.TimePickerFragment;
+import com.minlu.office_system.http.OkHttpMethod;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Response;
 
 public abstract class FormFragment extends BaseFragment {
 
@@ -134,4 +141,15 @@ public abstract class FormFragment extends BaseFragment {
             }
         });
     }
+
+
+    public Response requestFormListItemDetail() {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("processId", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_PROCESS_ID, ""));
+        hashMap.put("orderId", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_ORDER_ID, ""));
+        hashMap.put("taskId", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_TASK_ID, ""));
+        hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
+        return OkHttpMethod.synPostRequest(IpFiled.FORM_LIST_ITEM_DETAIL, hashMap);
+    }
+
 }

@@ -12,7 +12,10 @@ import com.minlu.office_system.customview.EditTextTimeSelector;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.Response;
 
 /**
  * Created by user on 2017/3/7.
@@ -64,6 +67,18 @@ public class LeaveManagementFragment extends FormFragment {
 
     @Override
     protected ContentPage.ResultState onLoad() {
+
+        Response response = requestFormListItemDetail();
+
+        if (response != null && response.isSuccessful()) {
+            try {
+                String mResultList = response.body().string();
+                System.out.println();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         excessive = new ArrayList<>();
         excessive.add("excessive");
         return chat(excessive);

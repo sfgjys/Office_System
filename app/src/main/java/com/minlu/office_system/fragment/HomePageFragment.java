@@ -75,7 +75,7 @@ public class HomePageFragment extends BaseFragment<HomePageItem> {
                 break;
         }
         if (intent != null) {
-            getContext().startActivity(intent);
+            getActivity().startActivity(intent);
         }
     }
 
