@@ -1,19 +1,20 @@
 package com.minlu.office_system.fragment.form;
 
+import android.content.DialogInterface;
 import android.view.View;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
 
 import com.minlu.baselibrary.base.ContentPage;
+import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.R;
 import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.customview.EditTextItem;
+import com.minlu.office_system.fragment.dialog.PromptDialog;
+import com.minlu.office_system.fragment.dialog.SelectNextUserDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
-import com.minlu.office_system.fragment.time.DatePickerFragment;
-import com.minlu.office_system.fragment.time.TimePickerFragment;
 
-import java.io.IOException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import okhttp3.Response;
@@ -30,7 +31,11 @@ public class RecordManagementFragment extends FormFragment {
     private int mDayOfMonth;
     private int mHourOfDay;
     private int mMinute;
-    private EditTextItem mSuperiorTextDay;
+    private EditTextItem mApproveIdea;
+    private String mTitle = "空";
+    private String mTextNumber = "空";
+    private String mTextUnit = "空";
+    private String mTextTime = "空";
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -54,70 +59,66 @@ public class RecordManagementFragment extends FormFragment {
 
     private void initView(View inflate) {
         EditTextItem superiorTextTitle = (EditTextItem) inflate.findViewById(R.id.form_record_management_title);
+        superiorTextTitle.setEditText(mTitle);
         EditTextItem superiorTextNumber = (EditTextItem) inflate.findViewById(R.id.form_record_management_number);
+        superiorTextNumber.setEditText(mTextNumber);
         EditTextItem superiorTextUnit = (EditTextItem) inflate.findViewById(R.id.form_record_management_unit);
-        mSuperiorTextDay = (EditTextItem) inflate.findViewById(R.id.form_record_management_day);
-        mSuperiorTextDay.getCustomEditTextRight().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showTimeSelectorDialog();
-            }
-        });
+        superiorTextUnit.setEditText(mTextUnit);
+        EditTextItem superiorTextDay = (EditTextItem) inflate.findViewById(R.id.form_record_management_day);
+        superiorTextDay.setEditText(mTextTime);
 
         EditTextItem superiorTextDetails = (EditTextItem) inflate.findViewById(R.id.form_record_management_details);
-        EditTextItem superiorTextRemark = (EditTextItem) inflate.findViewById(R.id.form_record_management_remark);
 
-        ViewsUitls.setWidthFromTargetView(superiorTextTitle.getCustomEditTextLeft(), superiorTextRemark.getCustomEditTextLeft());
-    }
-
-    /* 显示时间选择器 */
-    private void showTimeSelectorDialog() {
-        showDatePickerDialog(new DatePickerFragment.SetDateListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                mYear = year;
-                mMonth = month;
-                mDayOfMonth = dayOfMonth;
-                showTimePickerDialog(new TimePickerFragment.SetTimeListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        mHourOfDay = hourOfDay;
-                        mMinute = minute;
-                        mSuperiorTextDay.setEditText(mYear + "-" + mMonth + "-" + mDayOfMonth + " " + mHourOfDay + ":" + mMinute);
-                    }
-                });
-            }
-        });
+        mApproveIdea = (EditTextItem) inflate.findViewById(R.id.form_record_management_approve_idea);
     }
 
     @Override
     protected ContentPage.ResultState onLoad() {
 
         Response response = requestFormListItemDetail();
-
         if (response != null && response.isSuccessful()) {
             try {
-                String mResultList = response.body().string();
-                System.out.println();
-            } catch (IOException e) {
+                String resultList = response.body().string();
+                if (StringUtils.interentIsNormal(resultList)) {
+                    JSONObject jsonObject = new JSONObject(resultList);
+                    if (jsonObject.has("TITLE")) {// 有标题字段，说明返回的数据正常
+                        excessive = new ArrayList<>();
+                        excessive.add("excessive");// 给excessive创建实例，并添加元素，让界面走onCreateSuccessView()方法
+
+                        mTitle = jsonObject.optString("TITLE");
+                        mTextNumber = jsonObject.optString("CALL") + "( " + jsonObject.optString("NUM") + " )号";
+                        mTextUnit = jsonObject.optString("ORG_NAME");
+                        mTextTime = jsonObject.optString("REC_TIME");
+
+                    }
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-
-        excessive = new ArrayList<>();
-        excessive.add("excessive");
         return chat(excessive);
     }
 
     @Override
     public void disAgreeOnClick(View v) {
-        System.out.println("RecordManagementFragment-disAgreeOnClick");
+        PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
+            @Override
+            public void onSureClick(DialogInterface dialog, int id) {
+                System.out.println("RecordManagementFragment-disAgreeOnClick");
+            }
+        }, "是否不同意该收文签收 !");
+        promptDialog.show(getActivity().getSupportFragmentManager(), "RecordManagementDisAgree");
     }
 
     @Override
     public void agreeOnClick(View v) {
-        System.out.println("RecordManagementFragment-agreeOnClick");
+        SelectNextUserDialog selectNextUserDialog = new SelectNextUserDialog(new SelectNextUserDialog.OnSureButtonClick() {
+            @Override
+            public void onSureClick(DialogInterface dialog, int id) {
+                System.out.println("RecordManagementFragment-agreeOnClick");
+            }
+        });
+        selectNextUserDialog.show(getActivity().getSupportFragmentManager(), "RecordManagementAgree");
     }
 
     @Override
