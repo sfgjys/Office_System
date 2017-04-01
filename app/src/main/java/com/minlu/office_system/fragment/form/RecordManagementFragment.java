@@ -8,6 +8,8 @@ import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.R;
 import com.minlu.office_system.activity.FormActivity;
+import com.minlu.office_system.bean.CheckBoxChild;
+import com.minlu.office_system.bean.CheckBoxText;
 import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
 import com.minlu.office_system.fragment.dialog.SelectNextUserDialog;
@@ -16,6 +18,7 @@ import com.minlu.office_system.fragment.form.formPremise.FormFragment;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Response;
 
@@ -31,6 +34,7 @@ public class RecordManagementFragment extends FormFragment {
     private String mTextNumber = "空";
     private String mTextUnit = "空";
     private String mTextTime = "空";
+    private List<CheckBoxChild> mNextUsers;
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -91,6 +95,14 @@ public class RecordManagementFragment extends FormFragment {
                 e.printStackTrace();
             }
         }
+
+        // TODO 下一步用户数据
+        mNextUsers = new ArrayList<>();
+        mNextUsers.add(new CheckBoxChild("用户一"));
+        mNextUsers.add(new CheckBoxChild("用户二"));
+        mNextUsers.add(new CheckBoxChild("用户三"));
+        mNextUsers.add(new CheckBoxChild("用户四"));
+
         return chat(excessive);
     }
 
@@ -107,12 +119,18 @@ public class RecordManagementFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        SelectNextUserDialog selectNextUserDialog = new SelectNextUserDialog(new SelectNextUserDialog.OnSureButtonClick() {
+        SelectNextUserDialog<CheckBoxChild> selectNextUserDialog = new SelectNextUserDialog<>(new SelectNextUserDialog.OnSureButtonClick() {
             @Override
-            public void onSureClick(DialogInterface dialog, int id) {
-                System.out.println("RecordManagementFragment-agreeOnClick");
+            public void onSureClick(DialogInterface dialog, int id, List<Boolean> isChecks) {
+                List<CheckBoxText> sureUsers = new ArrayList<>();
+                for (int i = 0; i < isChecks.size(); i++) {
+                    if (isChecks.get(i)) {
+                        sureUsers.add(mNextUsers.get(i));
+                    }
+                }
+                // TODO 使用sureUsers集合去进行网络请求
             }
-        });
+        }, mNextUsers);
         selectNextUserDialog.show(getActivity().getSupportFragmentManager(), "RecordManagementAgree");
     }
 
