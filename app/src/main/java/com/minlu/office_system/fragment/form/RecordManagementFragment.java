@@ -26,11 +26,6 @@ import okhttp3.Response;
 public class RecordManagementFragment extends FormFragment {
 
     private ArrayList<String> excessive;
-    private int mYear;
-    private int mMonth;
-    private int mDayOfMonth;
-    private int mHourOfDay;
-    private int mMinute;
     private EditTextItem mApproveIdea;
     private String mTitle = "空";
     private String mTextNumber = "空";
