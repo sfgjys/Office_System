@@ -120,6 +120,14 @@ public class EditTextTimeSelector extends LinearLayout {
         this.onSetTextListener = onSetTextListener;
     }
 
+    public EditText getmTimeOfDay() {
+        return mTimeOfDay;
+    }
+
+    public EditText getmDayOfYear() {
+        return mDayOfYear;
+    }
+
     public interface DayOrTimeOnClickListener {
         void onTimeClick(View v);
 

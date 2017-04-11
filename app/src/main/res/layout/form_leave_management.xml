@@ -57,4 +57,12 @@
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="备注 : "
         edittextitem:editText_max_lines="6" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_leave_management_approve_idea"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="填写审批意见"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_left_text="审批意见 : "
+        edittextitem:editText_max_lines="99" />
 </LinearLayout>
