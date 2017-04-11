@@ -206,6 +206,8 @@ public class LoginActivity extends Activity {
             }
         });
 
+        SharedPreferencesUtil.saveBoolean(ViewsUitls.getContext(), StringsFiled.IS_FIRST_START_MAIN, true);
+
         Intent mainActivity = new Intent(ViewsUitls.getContext(), MainActivity.class);
         mainActivity.putExtra(BaseStringsFiled.ACTIVITY_TITLE, "主页面");
         startActivity(mainActivity);

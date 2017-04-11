@@ -19,8 +19,11 @@ public class StringsFiled {
     public static final String TO_FORM_SHOW_IS_USE_SCROLL = "to_form_show_is_use_scroll";
     public static final String HTML_DETAIL_CODE = "html_detail_code";
 
+    public static final String IS_FIRST_START_MAIN = "is_first_start_main";
 
     public static final String HOME_PAGE_TO_FORM_LIST_POSITION = "HOME_PAGE_TO_FORM_LIST_POSITION";
+
+    public static final String NOTICE_DIALOG_SAVE_DATA = "notice_dialog_save_data";
 
     /*
     * 打开表单Fragment的Tag

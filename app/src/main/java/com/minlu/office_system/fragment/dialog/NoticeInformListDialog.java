@@ -20,6 +20,7 @@ import com.minlu.office_system.R;
 import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.NoticeInformActivity;
 import com.minlu.office_system.adapter.NoticeInformAdapter;
+import com.minlu.office_system.bean.DialogBean;
 import com.minlu.office_system.bean.NoticeList;
 
 import java.util.List;
@@ -30,16 +31,19 @@ import java.util.List;
 
 public class NoticeInformListDialog extends DialogFragment {
 
-    private final List<NoticeList> data;
     private AlertDialog alertDialog;
+    private DialogBean dialogBean;
 
-    public NoticeInformListDialog(List<NoticeList> data) {
-        this.data = data;
+    public NoticeInformListDialog() {
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            dialogBean = (DialogBean) savedInstanceState.getSerializable(StringsFiled.NOTICE_DIALOG_SAVE_DATA);
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
@@ -55,13 +59,13 @@ public class NoticeInformListDialog extends DialogFragment {
             }
         });
 
-        listView.setAdapter(new NoticeInformAdapter(data));
+        listView.setAdapter(new NoticeInformAdapter(dialogBean.getData()));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ViewsUitls.getContext(), NoticeInformActivity.class);
                 intent.putExtra(BaseStringsFiled.ACTIVITY_TITLE, "公告详情");
-                intent.putExtra(StringsFiled.HTML_DETAIL_CODE, data.get(position).getmNoticeContentId());
+                intent.putExtra(StringsFiled.HTML_DETAIL_CODE, dialogBean.getData().get(position).getmNoticeContentId());
                 getActivity().startActivity(intent);
             }
         });
@@ -77,7 +81,6 @@ public class NoticeInformListDialog extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-
         WindowManager windowManager = getActivity().getWindowManager();
         Display display = windowManager.getDefaultDisplay();  //为获取屏幕宽、高
 
@@ -88,6 +91,16 @@ public class NoticeInformListDialog extends DialogFragment {
         layoutParams.width = (int) (display.getWidth() * 0.8);
         layoutParams.height = (int) (display.getHeight() * 0.4);
         window.setAttributes(layoutParams);
+    }
 
+    public void setData(List<NoticeList> mNoticeListData) {
+        dialogBean = new DialogBean();
+        dialogBean.setData(mNoticeListData);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(StringsFiled.NOTICE_DIALOG_SAVE_DATA, dialogBean);
+        super.onSaveInstanceState(outState);
     }
 }

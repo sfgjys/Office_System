@@ -13,12 +13,14 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.minlu.baselibrary.customview.MyLinearLayout;
 import com.minlu.baselibrary.manager.ThreadManager;
+import com.minlu.baselibrary.util.SharedPreferencesUtil;
 import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.ToastUtil;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.FragmentShowHide;
 import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.R;
+import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.bean.NoticeList;
 import com.minlu.office_system.fragment.HomePageFragment;
 import com.minlu.office_system.fragment.MeFragment;
@@ -112,6 +114,13 @@ public class MainActivity extends FragmentActivity {
             showFragment(tagList, fragmentList, saveWhichFragment);
         }
 
+        if (SharedPreferencesUtil.getBoolean(ViewsUitls.getContext(), StringsFiled.IS_FIRST_START_MAIN, false)) {
+            SharedPreferencesUtil.saveBoolean(ViewsUitls.getContext(), StringsFiled.IS_FIRST_START_MAIN, false);
+            startNoticeInformThread();
+        }
+    }
+
+    private void startNoticeInformThread() {
         myLinearLayout.setIsInterruptTouch(true);
         mLoadingUI.setVisibility(View.VISIBLE);
         ThreadManager.getInstance().execute(new TimerTask() {
@@ -156,7 +165,8 @@ public class MainActivity extends FragmentActivity {
                 cancelConfine();
                 if (mNoticeListData != null) {
                     if (mNoticeListData.size() > 0) {
-                        NoticeInformListDialog noticeInformListDialog = new NoticeInformListDialog(mNoticeListData);
+                        NoticeInformListDialog noticeInformListDialog = new NoticeInformListDialog();
+                        noticeInformListDialog.setData(mNoticeListData);
                         noticeInformListDialog.show(getSupportFragmentManager(), "NoticeInformListDialog");
                     } else {
                         ToastUtil.showToast(ViewsUitls.getContext(), "无公告");

@@ -1,10 +1,14 @@
 package com.minlu.office_system.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by user on 2017/3/29.
  */
 
-public class NoticeList {
+public class NoticeList implements Serializable {
+
+    private static final long serialVersionUID = 2L;
 
     private String mNoticeTitle;
     private String mNoticeIssuer;
