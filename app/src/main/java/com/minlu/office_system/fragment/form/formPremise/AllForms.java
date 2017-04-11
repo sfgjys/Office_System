@@ -22,29 +22,29 @@ public enum AllForms {
     *   打开表单Fragment时使用的替换id布局是不是ScrollView, 请求列表时的参数ProcessId，
     * */
     RECORD_MANAGEMENT("收文管理", R.mipmap.home_page_icon1, RecordManagementFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON,
-            StringsFiled.RecordManagementFragment_TAG, true, StringsFiled.RecordManagement_ProcessId,StringsFiled.HOME_TO_LIST_SHOW_LIST),
+            StringsFiled.RecordManagementFragment_TAG, true, StringsFiled.RecordManagement_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_LIST),
     POST_MANAGEMENT("发文管理", R.mipmap.home_page_icon2, PostManagementFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON,
-            StringsFiled.PostManagementFragment_TAG, true, StringsFiled.PostManagement_ProcessId,StringsFiled.HOME_TO_LIST_SHOW_LIST),
+            StringsFiled.PostManagementFragment_TAG, true, StringsFiled.PostManagement_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_LIST),
     LEAVE_MANAGEMENT("请假管理", R.mipmap.home_page_icon3, LeaveManagementFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON,
-            StringsFiled.LeaveManagementFragment_TAG, true, StringsFiled.Leave_ProcessId,StringsFiled.HOME_TO_LIST_SHOW_LIST),
+            StringsFiled.LeaveManagementFragment_TAG, true, StringsFiled.Leave_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_LIST),
     BUS_MANAGEMENT("车辆管理", R.mipmap.home_page_icon4, BusManagementFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON,
-            StringsFiled.BusManagementFragment_TAG, true, StringsFiled.Bus_ProcessId,StringsFiled.HOME_TO_LIST_SHOW_LIST),
-    PLAN_SUMMARY("计划总结", R.mipmap.home_page_icon5, PlanSummaryFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON,
-            StringsFiled.PlanSummaryFragment_TAG, true, StringsFiled.PlanSummary_ProcessId,StringsFiled.HOME_TO_LIST_SHOW_LIST),
+            StringsFiled.BusManagementFragment_TAG, true, StringsFiled.Bus_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_LIST),
+    PLAN_SUMMARY("计划总结", R.mipmap.home_page_icon5, PlanSummaryFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON,
+            StringsFiled.PlanSummaryFragment_TAG, true, StringsFiled.PlanSummary_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_LIST),
     ASSETS_MANAGEMENT("资产管理", R.mipmap.home_page_icon6, AssetsManagementFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON,
-            StringsFiled.AssetsManagementFragment_TAG, true, StringsFiled.No_Need_ProcessId,StringsFiled.HOME_TO_LIST_SHOW_NULL),
+            StringsFiled.AssetsManagementFragment_TAG, true, StringsFiled.No_Need_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_NULL),
     WORK_MONTHLY_REPORT("工作月报", R.mipmap.home_page_icon7, WorkMonthlyReportFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON,
-            StringsFiled.WorkMonthlyReportFragment_TAG, true, StringsFiled.WorkMonthlyReport_ProcessId,StringsFiled.HOME_TO_LIST_SHOW_LIST),
+            StringsFiled.WorkMonthlyReportFragment_TAG, true, StringsFiled.WorkMonthlyReport_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_LIST),
     MEETING_ORDER("会议预约", R.mipmap.home_page_icon8, MeetingOrderFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON,
-            StringsFiled.MeetingOrderFragment_TAG, true, StringsFiled.No_Need_ProcessId,StringsFiled.HOME_TO_LIST_SHOW_NULL),
+            StringsFiled.MeetingOrderFragment_TAG, true, StringsFiled.No_Need_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_NULL),
     LEAVE_REQUEST("请假申请", R.mipmap.home_page_icon9, LeaveApplyFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON,
-            StringsFiled.LeaveApplyFragment_TAG, true, StringsFiled.No_Need_ProcessId,StringsFiled.HOME_TO_LIST_SHOW_FORM),
+            StringsFiled.LeaveApplyFragment_TAG, true, StringsFiled.No_Need_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_FORM),
     BUS_REQUEST("车辆申请", R.mipmap.home_page_icon10, BusRequestFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON,
-            StringsFiled.BusRequestFragment_TAG, true, StringsFiled.No_Need_ProcessId,StringsFiled.HOME_TO_LIST_SHOW_FORM),
+            StringsFiled.BusRequestFragment_TAG, true, StringsFiled.No_Need_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_FORM),
     OTHER_ITEM("其他栏目", R.mipmap.home_page_icon11, OtherItemFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON,
-            StringsFiled.OtherItemFragment_TAG, true, StringsFiled.No_Need_ProcessId,StringsFiled.HOME_TO_LIST_SHOW_NULL),
+            StringsFiled.OtherItemFragment_TAG, true, StringsFiled.No_Need_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_NULL),
     NOTICE_INFORM("公告通知", R.mipmap.home_page_icon11, NoticeInformFragment.class, StringsFiled.NO_SHOW_BUTTON,
-            StringsFiled.NoticeInformFragment_TAG, false, StringsFiled.No_Need_ProcessId,StringsFiled.HOME_TO_LIST_SHOW_FORM);
+            StringsFiled.NoticeInformFragment_TAG, false, StringsFiled.No_Need_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_FORM);
 
     private String formName;
     private int formIconId;

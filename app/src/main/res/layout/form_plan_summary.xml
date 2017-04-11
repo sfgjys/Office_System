@@ -28,30 +28,35 @@
         android:id="@+id/form_plan_summary_year"
         style="@style/width_match_height_wrap"
         edittextitem:editText_hint="请输入第几年度"
+        edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="年度 : " />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_plan_summary_quarter"
         style="@style/editText_item_top"
         edittextitem:editText_hint="请输入第几季度"
-        edittextitem:editText_left_text="季度 : " />
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="季月 : " />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_plan_summary_user_name"
         style="@style/editText_item_top"
         edittextitem:editText_hint="请输入姓名"
+        edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="姓名 : " />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_plan_summary_job"
         style="@style/editText_item_top"
         edittextitem:editText_hint="请输入职位"
+        edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="职位 : " />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_plan_summary_department"
         style="@style/editText_item_top"
         edittextitem:editText_hint="请输入所在部门"
+        edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="所在部门 : " />
 
     <com.minlu.office_system.customview.EditTextItem
@@ -67,6 +72,15 @@
         style="@style/editText_item_top"
         edittextitem:editText_hint="请输入工作计划"
         edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="工作计划 : "
-        edittextitem:editText_max_lines="6" />
+        edittextitem:editText_max_lines="99" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_plan_summary_approve_idea"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="选填审批意见"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_left_text="审批意见 : "
+        edittextitem:editText_max_lines="99" />
 </LinearLayout>
