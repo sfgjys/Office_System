@@ -13,7 +13,9 @@ import android.widget.LinearLayout;
 
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.R;
-import com.minlu.office_system.bean.CheckBoxText;
+import com.minlu.office_system.StringsFiled;
+import com.minlu.office_system.bean.CheckBoxBean;
+import com.minlu.office_system.bean.CheckBoxChild;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,32 +24,32 @@ import java.util.List;
  * Created by user on 2017/3/31.
  */
 
-public class SelectNextUserDialog<T> extends DialogFragment {
+public class SelectNextUserDialog extends DialogFragment {
 
     private OnSureButtonClick onSureButtonClick;
     private AlertDialog alertDialog;
-    private List<T> checkBoxTexts;
     private LinearLayout mAddCheckBox;
-
-    public interface OnSureButtonClick {
-        void onSureClick(DialogInterface dialog, int id, List<Boolean> isChecks);
-    }
-
-    /**
-     * 参数三集合中的类必须是CheckBoxText的子类
-     */
-    public SelectNextUserDialog(OnSureButtonClick onSureButtonClick, List<T> checkBoxTexts) {
-        this.onSureButtonClick = onSureButtonClick;
-        this.checkBoxTexts = checkBoxTexts;
-    }
+    private CheckBoxBean checkBoxBean;
 
     public SelectNextUserDialog() {
-        this.onSureButtonClick = null;
+    }
+
+    public void setOnSureButtonClick(OnSureButtonClick onSureButtonClick) {
+        this.onSureButtonClick = onSureButtonClick;
+    }
+
+    public void setCheckBoxTexts(List<CheckBoxChild> checkBoxTexts) {
+        checkBoxBean = new CheckBoxBean();
+        checkBoxBean.setCheckBoxChild(checkBoxTexts);
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            checkBoxBean = (CheckBoxBean) savedInstanceState.getSerializable(StringsFiled.SELECT_NEXT_DIALOG_SAVE_DATA);
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -55,10 +57,10 @@ public class SelectNextUserDialog<T> extends DialogFragment {
 
         mAddCheckBox = (LinearLayout) view.findViewById(R.id.ll_add_check_box);
 
-        for (int i = 0; i < checkBoxTexts.size(); i++) {
+        for (int i = 0; i < checkBoxBean.getCheckBoxChild().size(); i++) {
             // 创建要添加进addCheckBox控件的checkbos子控件
             CheckBox checkBox = (CheckBox) ViewsUitls.inflate(R.layout.custom_check_box_style);
-            checkBox.setText(((CheckBoxText) checkBoxTexts.get(i)).getCheckBoxRightText());
+            checkBox.setText(checkBoxBean.getCheckBoxChild().get(i).getCheckBoxRightText());
 
             // 添加
             mAddCheckBox.addView(checkBox);
@@ -71,7 +73,7 @@ public class SelectNextUserDialog<T> extends DialogFragment {
                             public void onClick(DialogInterface dialog, int id) {
                                 List<Boolean> isChecks = new ArrayList<>();
                                 // 从父布局中获取子控件，获取其是否被选中
-                                for (int i = 0; i < checkBoxTexts.size(); i++) {
+                                for (int i = 0; i < checkBoxBean.getCheckBoxChild().size(); i++) {
                                     if (mAddCheckBox.getChildAt(i) instanceof CheckBox) {
                                         isChecks.add(((CheckBox) mAddCheckBox.getChildAt(i)).isChecked());
                                     } else {
@@ -97,4 +99,9 @@ public class SelectNextUserDialog<T> extends DialogFragment {
         super.onStart();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(StringsFiled.SELECT_NEXT_DIALOG_SAVE_DATA, checkBoxBean);
+        super.onSaveInstanceState(outState);
+    }
 }

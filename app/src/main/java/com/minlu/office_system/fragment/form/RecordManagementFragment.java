@@ -9,12 +9,13 @@ import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.R;
 import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.bean.CheckBoxChild;
-import com.minlu.office_system.bean.CheckBoxText;
 import com.minlu.office_system.customview.EditTextItem;
+import com.minlu.office_system.fragment.dialog.OnSureButtonClick;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
 import com.minlu.office_system.fragment.dialog.SelectNextUserDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -30,10 +31,10 @@ public class RecordManagementFragment extends FormFragment {
 
     private ArrayList<String> excessive;
     private EditTextItem mApproveIdea;
-    private String mTitle = "空";
-    private String mTextNumber = "空";
-    private String mTextUnit = "空";
-    private String mTextTime = "空";
+    private String mTitle = "";
+    private String mTextNumber = "";
+    private String mTextUnit = "";
+    private String mTextTime = "";
     private List<CheckBoxChild> mNextUsers;
 
     @Override
@@ -89,20 +90,18 @@ public class RecordManagementFragment extends FormFragment {
                         mTextUnit = jsonObject.optString("ORG_NAME");
                         mTextTime = jsonObject.optString("REC_TIME");
 
+                        JSONArray jsonArray = jsonObject.optJSONArray("USERLIST");
+                        mNextUsers = new ArrayList<>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject nextUserData = jsonArray.getJSONObject(i);
+                            mNextUsers.add(new CheckBoxChild(nextUserData.optString("TRUENAME"), nextUserData.optString("USERNAME"), nextUserData.optString("ORG_INFOR")));
+                        }
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-        // TODO 下一步用户数据
-        mNextUsers = new ArrayList<>();
-        mNextUsers.add(new CheckBoxChild("用户一"));
-        mNextUsers.add(new CheckBoxChild("用户二"));
-        mNextUsers.add(new CheckBoxChild("用户三"));
-        mNextUsers.add(new CheckBoxChild("用户四"));
-
         return chat(excessive);
     }
 
@@ -119,18 +118,23 @@ public class RecordManagementFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        SelectNextUserDialog<CheckBoxChild> selectNextUserDialog = new SelectNextUserDialog<>(new SelectNextUserDialog.OnSureButtonClick() {
+        SelectNextUserDialog selectNextUserDialog = new SelectNextUserDialog();
+        selectNextUserDialog.setCheckBoxTexts(mNextUsers);
+        selectNextUserDialog.setOnSureButtonClick(new OnSureButtonClick() {
             @Override
             public void onSureClick(DialogInterface dialog, int id, List<Boolean> isChecks) {
-                List<CheckBoxText> sureUsers = new ArrayList<>();
+                List<CheckBoxChild> sureUsers = new ArrayList<>();
+                // 通过isChecks集合中的选择数据去判断哪些数据选中，并将选中的数据填进sureUsers集合中
                 for (int i = 0; i < isChecks.size(); i++) {
                     if (isChecks.get(i)) {
                         sureUsers.add(mNextUsers.get(i));
                     }
                 }
-                // TODO 使用sureUsers集合去进行网络请求
+                String approveIdea = mApproveIdea.getCustomEditTextRight().getText().toString();
+                System.out.println(approveIdea + sureUsers.size());
+                // TODO 使用sureUsers集合和审批意见去进行网络请求
             }
-        }, mNextUsers);
+        });
         selectNextUserDialog.show(getActivity().getSupportFragmentManager(), "RecordManagementAgree");
     }
 

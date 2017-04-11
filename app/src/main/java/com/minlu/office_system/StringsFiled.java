@@ -25,6 +25,8 @@ public class StringsFiled {
 
     public static final String NOTICE_DIALOG_SAVE_DATA = "notice_dialog_save_data";
 
+    public static final String SELECT_NEXT_DIALOG_SAVE_DATA = "select_next_dialog_save_data";
+
     /*
     * 打开表单Fragment的Tag
     * */
