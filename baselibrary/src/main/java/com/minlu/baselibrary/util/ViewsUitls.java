@@ -30,6 +30,14 @@ public class ViewsUitls {
         return (int) (dip * density + 0.5);
     }
 
+    public static int dpToPx(Context context,int dip) {
+        float density = context.getResources().getDisplayMetrics().density;
+        // px = dip * density
+        // 3.3 3.8 3
+        // 3.6 4.1 4
+        return (int) (dip * density + 0.5);
+    }
+
     /**
      * xml 转成View对象
      *

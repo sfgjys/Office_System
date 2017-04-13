@@ -6,11 +6,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CheckBox;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.minlu.baselibrary.customview.SmoothCheckBox;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.R;
 import com.minlu.office_system.StringsFiled;
@@ -59,11 +63,19 @@ public class SelectNextUserDialog extends DialogFragment {
 
         for (int i = 0; i < checkBoxBean.getCheckBoxChild().size(); i++) {
             // 创建要添加进addCheckBox控件的checkbos子控件
-            CheckBox checkBox = (CheckBox) ViewsUitls.inflate(R.layout.custom_check_box_style);
-            checkBox.setText(checkBoxBean.getCheckBoxChild().get(i).getCheckBoxRightText());
+            View inflate = ViewsUitls.inflate(R.layout.custom_check_box_style);
+            final SmoothCheckBox smoothCheckBox = (SmoothCheckBox) inflate.findViewById(R.id.smooth_check_box);
+            TextView textView = (TextView) inflate.findViewById(R.id.tv_custom_check_box_text);
+            textView.setText(checkBoxBean.getCheckBoxChild().get(i).getCheckBoxRightText());
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    smoothCheckBox.setChecked(!smoothCheckBox.isChecked(), true);
+                }
+            });
 
             // 添加
-            mAddCheckBox.addView(checkBox);
+            mAddCheckBox.addView(inflate);
         }
 
         builder.setView(view)
@@ -74,8 +86,12 @@ public class SelectNextUserDialog extends DialogFragment {
                                 List<Boolean> isChecks = new ArrayList<>();
                                 // 从父布局中获取子控件，获取其是否被选中
                                 for (int i = 0; i < checkBoxBean.getCheckBoxChild().size(); i++) {
-                                    if (mAddCheckBox.getChildAt(i) instanceof CheckBox) {
-                                        isChecks.add(((CheckBox) mAddCheckBox.getChildAt(i)).isChecked());
+                                    if (mAddCheckBox.getChildAt(i) instanceof LinearLayout) {
+
+                                        LinearLayout linearLayout = (LinearLayout) mAddCheckBox.getChildAt(i);
+                                        SmoothCheckBox smoothCheckBox = (SmoothCheckBox) linearLayout.getChildAt(0);
+
+                                        isChecks.add(smoothCheckBox.isChecked());
                                     } else {
                                         isChecks.add(false);
                                     }
@@ -92,11 +108,22 @@ public class SelectNextUserDialog extends DialogFragment {
 
     @Override
     public void onStart() {
+        super.onStart();
         if (onSureButtonClick == null) {//当展示对话框的时候，如果没有setDateListener监听那就不让对话框显示
             alertDialog.cancel();
             alertDialog.dismiss();
+        } else {
+            // 注意 该修改对话框的宽度必须在super.onStart();后面
+            WindowManager windowManager = getActivity().getWindowManager();
+            Display display = windowManager.getDefaultDisplay();  //为获取屏幕宽、高
+
+            Window window = alertDialog.getWindow();
+
+            WindowManager.LayoutParams layoutParams = window.getAttributes();
+            // 设置透明度为0.3
+            layoutParams.width = (int) (display.getWidth() * 0.7);
+            window.setAttributes(layoutParams);
         }
-        super.onStart();
     }
 
     @Override

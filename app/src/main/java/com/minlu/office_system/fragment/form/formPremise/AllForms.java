@@ -33,7 +33,7 @@ public enum AllForms {
             StringsFiled.PlanSummaryFragment_TAG, true, StringsFiled.PlanSummary_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_LIST),
     ASSETS_MANAGEMENT("资产管理", R.mipmap.home_page_icon6, AssetsManagementFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON,
             StringsFiled.AssetsManagementFragment_TAG, true, StringsFiled.No_Need_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_NULL),
-    WORK_MONTHLY_REPORT("工作月报", R.mipmap.home_page_icon7, WorkMonthlyReportFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON,
+    WORK_MONTHLY_REPORT("工作月报", R.mipmap.home_page_icon7, WorkMonthlyReportFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON,
             StringsFiled.WorkMonthlyReportFragment_TAG, true, StringsFiled.WorkMonthlyReport_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_LIST),
     MEETING_ORDER("会议预约", R.mipmap.home_page_icon8, MeetingOrderFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON,
             StringsFiled.MeetingOrderFragment_TAG, true, StringsFiled.No_Need_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_NULL),

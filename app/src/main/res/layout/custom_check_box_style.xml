@@ -1,7 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="用户一"
-    android:textColor="@color/black"
-    android:textSize="20dp" />
+    android:layout_marginLeft="6dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="6dp">
+
+    <!--
+        duration	integer	动画持续时间
+        stroke_width	dimension	未选中时边框宽度
+        color_tick	color	对勾颜色
+        color_checked	color	选中时填充颜色
+        color_unchecked	color	未选中时填充颜色
+        color_unchecked_stroke	color	未选中时边框颜色-->
+
+    <com.minlu.baselibrary.customview.SmoothCheckBox
+        android:id="@+id/smooth_check_box"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        app:color_checked="@color/action_bar_background"
+        app:color_tick="@color/white"
+        app:color_unchecked="@color/white"
+        app:color_unchecked_stroke="@color/main_bottom_gray"
+        app:duration="1"
+        app:stroke_width="2dp" />
+
+    <TextView
+        android:id="@+id/tv_custom_check_box_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:text="上官正龙"
+        android:textColor="@color/black"
+        android:textSize="22dp" />
+
+</LinearLayout>

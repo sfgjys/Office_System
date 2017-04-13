@@ -108,7 +108,7 @@ public abstract class FormFragment extends BaseFragment {
     /*
     * 将需要展示时间选择对话框的EditTextTimeSelector控件传入进行具体操作代码
     * */
-    public void setEditTextOnClickShowTimePicker(final EditTextTimeSelector editTextTimeSelector) {
+    public void startUseEditTextOnClickShowTimePicker(final EditTextTimeSelector editTextTimeSelector) {
         editTextTimeSelector.setDayOrTimeOnClickListener(new EditTextTimeSelector.DayOrTimeOnClickListener() {
             @Override
             public void onTimeClick(View v) { // 点击24h的事件

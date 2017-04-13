@@ -6,7 +6,7 @@ package com.minlu.office_system;
 
 public class IpFiled {
 
-    private final static String ip = "http://192.168.1.31:8080/MJOA/";
+    private final static String ip = "http://192.168.1.29:8080/MJOA/";
 
     public final static String LOGIN = ip + "phone/moblogin.html";
 
