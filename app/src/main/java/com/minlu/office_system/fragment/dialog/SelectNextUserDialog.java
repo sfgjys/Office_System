@@ -65,9 +65,10 @@ public class SelectNextUserDialog extends DialogFragment {
             // 创建要添加进addCheckBox控件的checkbos子控件
             View inflate = ViewsUitls.inflate(R.layout.custom_check_box_style);
             final SmoothCheckBox smoothCheckBox = (SmoothCheckBox) inflate.findViewById(R.id.smooth_check_box);
+            smoothCheckBox.setClickable(false);
             TextView textView = (TextView) inflate.findViewById(R.id.tv_custom_check_box_text);
             textView.setText(checkBoxBean.getCheckBoxChild().get(i).getCheckBoxRightText());
-            textView.setOnClickListener(new View.OnClickListener() {
+            inflate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     smoothCheckBox.setChecked(!smoothCheckBox.isChecked(), true);
