@@ -1,108 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:edittextitem="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="6dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/form_work_monthly_report_office"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="填报单位 : (办公室)"
+            android:textColor="@color/black"
+            android:textSize="22dp" />
+
+        <TextView
+            android:id="@+id/form_work_monthly_report_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="日期 : 2017-2-22"
+            android:textColor="@color/black"
+            android:textSize="22dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_work_monthly_report_job_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:background="@color/main_bottom_gray"
         android:orientation="vertical"
         android:padding="1dp">
 
         <TextView
+            android:id="@+id/tv_title_job_summary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/main_bottom_gray"
-            android:gravity="center"
-            android:padding="6dp"
-            android:text="工作一"
+            android:gravity="center_vertical"
+            android:padding="9dp"
+            android:text="3月份工作总结"
             android:textColor="@color/white"
             android:textSize="20dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            android:layout_marginTop="1dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginRight="1dp"
-                android:background="@color/white"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="工作安排"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:padding="10dp"
-                android:text="      要明确何时实现目标和完成任务，，这是实现计划的保证。,总之，要根据客观条件，统筹安排，将“怎么做”写得明确具体，切实可行"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginRight="1dp"
-                android:background="@color/white"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="工作汇报"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:padding="10dp"
-                android:text="      工作汇报必须有情况的概述和叙述，，。、有利和不利条件以及工作的环境和基础等进行分析。"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginRight="1dp"
-                android:background="@color/white"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="工作总结"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:padding="10dp"
-                android:text="       生活处处有学习。，刚来时，、。，我越来越懂得谦逊，谦虚使人进步，骄傲使人落后。"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-        </LinearLayout>
     </LinearLayout>
-</FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_work_monthly_report_job_performance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@color/main_bottom_gray"
+        android:orientation="vertical"
+        android:padding="1dp">
+
+        <TextView
+            android:id="@+id/tv_title_job_performance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="9dp"
+            android:text="4月份工作完成情况"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_work_monthly_report_job_plan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@color/main_bottom_gray"
+        android:orientation="vertical"
+        android:padding="1dp">
+
+        <TextView
+            android:id="@+id/tv_title_job_plan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="9dp"
+            android:text="5月份工作安排"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+    </LinearLayout>
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_work_monthly_report_approve_idea_rect3"
+        style="@style/editText_item_top"
+        android:layout_marginTop="25dp"
+        edittextitem:editText_hint="选填备注"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_left_text="分管领导意见 : "
+        edittextitem:editText_max_lines="99" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_work_monthly_report_approve_idea_rect4"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="选填备注"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_left_text="办公室意见 : "
+        edittextitem:editText_max_lines="99" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_work_monthly_report_approve_idea_rect5"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="选填备注"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_left_text="领导审核 : "
+        edittextitem:editText_max_lines="99" />
+
+</LinearLayout>
