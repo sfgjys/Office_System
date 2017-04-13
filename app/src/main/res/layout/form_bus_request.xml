@@ -38,24 +38,34 @@
         android:id="@+id/form_bus_request_office"
         style="@style/editText_item_top"
         edittextitem:editText_hint="请输入处室"
+        edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="申请处室 : " />
 
     <com.minlu.office_system.customview.EditTextItem
-        android:id="@+id/form_bus_request_bus_number"
+        android:id="@+id/form_bus_request_person"
         style="@style/editText_item_top"
-        android:layout_marginRight="50dp"
-        edittextitem:editText_hint="请选择车号"
+        edittextitem:editText_hint="请输入申请人"
         edittextitem:editText_is_edit="false"
-        edittextitem:editText_left_text="车号 : "
-        edittextitem:editText_right_icon="@drawable/selector_pull_down" />
+        edittextitem:editText_left_text="申请人 : " />
 
     <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_bus_request_bus_type"
+        style="@style/editText_item_top"
+        android:layout_marginRight="100dp"
+        edittextitem:editText_hint="请选择车座类型"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="类型 : "
+        edittextitem:editText_right_icon="@drawable/selector_pull_down" />
+
+    <com.minlu.office_system.customview.EditTextTimeSelector
         android:id="@+id/form_bus_request_start_time"
         style="@style/editText_item_top"
-        edittextitem:editText_hint="请选择用车开始时间"
-        edittextitem:editText_is_edit="false"
-        edittextitem:editText_left_text="开始时间 : "
-        edittextitem:editText_right_icon="@drawable/selector_calendar" />
+        edittextitem:time_selector_left_text="开始时间 : " />
+
+    <com.minlu.office_system.customview.EditTextTimeSelector
+        android:id="@+id/form_bus_request_end_time"
+        style="@style/editText_item_top"
+        edittextitem:time_selector_left_text="结束时间 : " />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_bus_request_destination"
@@ -63,7 +73,7 @@
         edittextitem:editText_hint="请编写目的地"
         edittextitem:editText_input_type="textMultiLine"
         edittextitem:editText_left_text="目的地 : "
-        edittextitem:editText_max_lines="3" />
+        edittextitem:editText_max_lines="99" />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_bus_request_cause"
@@ -71,5 +81,13 @@
         edittextitem:editText_hint="请编写用车是由"
         edittextitem:editText_input_type="textMultiLine"
         edittextitem:editText_left_text="用车是由 : "
-        edittextitem:editText_max_lines="5" />
+        edittextitem:editText_max_lines="99" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_bus_request_go_along_person"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请填写随行人员"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_left_text="随行人员 : "
+        edittextitem:editText_max_lines="99" />
 </LinearLayout>
