@@ -90,7 +90,7 @@ public class FormListFragment extends BaseFragment<TaskListItem> {
         formTypePosition = bundle.getInt(StringsFiled.HOME_PAGE_TO_FORM_LIST_POSITION);
 
         // 请求网络获取数据
-        String mResultList = getResultListString(AllForms.values()[formTypePosition]);
+        String mResultList = getResultListString(AllForms.values()[formTypePosition].getGetListParam());
 
         // 根据mResultList的json数据来决定 data集合的不同状态，以决定显示界面
         if (StringUtils.interentIsNormal(mResultList)) {// 网络获取的结果正常，进行解析
@@ -137,12 +137,12 @@ public class FormListFragment extends BaseFragment<TaskListItem> {
      * 根据 AllForms参数获取对应的processid作为网络请求的参数，去获取网络数据
      */
     @NonNull
-    private String getResultListString(AllForms allForms) {
+    private String getResultListString(String processId) {
         String mResultList = "";
         // 并根据position获取processid作为网络请求参数，获取数据
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
-        hashMap.put("processid", allForms.getGetListParam());
+        hashMap.put("processid", processId);
         Response response = OkHttpMethod.synPostRequest(IpFiled.MANY_MANAGE_LIST, hashMap);
         if (response != null && response.isSuccessful()) {
             try {
