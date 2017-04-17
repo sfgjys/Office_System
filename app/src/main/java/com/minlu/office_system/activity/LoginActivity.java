@@ -179,6 +179,12 @@ public class LoginActivity extends Activity {
                             try {
                                 JSONObject jsonObject = new JSONObject(loginResult);
                                 if (jsonObject.optInt("status") == 1) {// 登录成功
+
+                                    SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.LOGIN_GET_USER_NAME, jsonObject.optString("username"));
+                                    SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.LOGIN_GET_USER_ORG_NAME, jsonObject.optString("orgname"));
+                                    SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.LOGIN_GET_USER_RESIDUE_YEAR_LEAVE, jsonObject.optString("year"));
+                                    SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.LOGIN_GET_USER_ADD_UP_LEAVE_DAYS, jsonObject.optString("allday"));
+
                                     loginSuccee();
                                 } else {
                                     ToastUtil.showToast(LoginActivity.this, "用户帐号或密码错误");
@@ -206,6 +212,7 @@ public class LoginActivity extends Activity {
             }
         });
 
+        // 存储是否第一次登录到主界面
         SharedPreferencesUtil.saveBoolean(ViewsUitls.getContext(), StringsFiled.IS_FIRST_START_MAIN, true);
 
         Intent mainActivity = new Intent(ViewsUitls.getContext(), MainActivity.class);

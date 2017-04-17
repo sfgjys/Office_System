@@ -6,7 +6,7 @@ package com.minlu.office_system;
 
 public class IpFiled {
 
-    private final static String ip = "http://192.168.1.31:8080/MJOA/";
+    private final static String ip = "http://192.168.1.40:8081/MJOA/";
 
     public final static String LOGIN = ip + "phone/moblogin.html";
 
@@ -19,9 +19,13 @@ public class IpFiled {
 
     // 请假申请前提
     public final static String LEAVE_APPLY_PREMISE = ip + "phone/leaveApply.html";
+    // 请假申请前提后的真正请求请假
+    public final static String LEAVE_APPLY_SUBMIT = ip + "phone/leaveProcess.html";
 
     public final static String FORM_LIST_ITEM_DETAIL = ip + "phone/recdocPhone.html";
 
     // 工作月报详情接口
     public final static String WORK_MONTHLY_REPORT_DETAIL = ip + "phone/bmgzView.html";
+
+    public final static String REQUEST_USER_LIST = ip + "phone/getUserList.html";
 }

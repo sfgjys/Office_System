@@ -27,6 +27,14 @@ public class StringsFiled {
 
     public static final String SELECT_NEXT_DIALOG_SAVE_DATA = "select_next_dialog_save_data";
 
+    public static final String LOGIN_GET_USER_NAME = "login_get_user_name";
+
+    public static final String LOGIN_GET_USER_ORG_NAME = "login_get_user_org_name";
+
+    public static final String LOGIN_GET_USER_RESIDUE_YEAR_LEAVE = "login_get_user_residue_year_leave";
+
+    public static final String LOGIN_GET_USER_ADD_UP_LEAVE_DAYS = "login_get_user_add_up_leave_days";
+
     /*
     * 打开表单Fragment的Tag
     * */
