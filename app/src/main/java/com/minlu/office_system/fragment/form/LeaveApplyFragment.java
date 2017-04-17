@@ -313,6 +313,14 @@ public class LeaveApplyFragment extends FormFragment {
         hashMap.put("taskName", mTaskName);
         hashMap.put("Method", "0");
         hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
+        hashMap.put("assignee", mAssignee);
+        String userList = "";
+        for (int i = 0; i < sureUsers.size(); i++) {
+            userList += (sureUsers.get(i).getUserName() + ",");
+        }
+        hashMap.put("userList", userList);
+
+        // 以下为表单上的填写数据
         hashMap.put("title", mLeaveTitle.getCustomEditTextRight().getText().toString());
         hashMap.put("qtype", mLeaveTypeEdit.getCustomEditTextRight().getText().toString());
         hashMap.put("stime", mStartTime.getmDayOfYear().getText().toString());
@@ -321,14 +329,6 @@ public class LeaveApplyFragment extends FormFragment {
         hashMap.put("allleave", leaveDayNumber);
         hashMap.put("bz", mLeaveRemark.getCustomEditTextRight().getText().toString());
         hashMap.put("result", mResult);
-
-        String userList = "";
-        for (int i = 0; i < sureUsers.size(); i++) {
-            userList += (sureUsers.get(i).getUserName() + ",");
-        }
-
-        hashMap.put("userList", userList);
-        hashMap.put("assignee", mAssignee);
 
         OkHttpMethod.asynPostRequest(IpFiled.LEAVE_APPLY_SUBMIT, hashMap, new Callback() {
             @Override
