@@ -33,18 +33,36 @@
         edittextitem:editText_right_icon="@mipmap/calendar_icon_default" />
 
     <com.minlu.office_system.customview.EditTextItem
-        android:id="@+id/form_record_management_details"
-        style="@style/editText_item_top"
-        edittextitem:editText_hint="请编写文件详情"
-        edittextitem:editText_input_type="textMultiLine"
-        edittextitem:editText_left_text="文件详情 : "
-        edittextitem:editText_max_lines="6" />
-
-    <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_record_management_approve_idea"
         style="@style/editText_item_top"
         edittextitem:editText_hint="选填备注"
         edittextitem:editText_input_type="textMultiLine"
         edittextitem:editText_left_text="审批意见 : "
         edittextitem:editText_max_lines="99" />
+
+    <LinearLayout
+        android:id="@+id/form_record_management_details"
+        style="@style/editText_item_top"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="附件下载 : "
+            android:textColor="@color/black"
+            android:textSize="18dp" />
+
+        <LinearLayout
+            android:id="@+id/form_record_management_details_right"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>

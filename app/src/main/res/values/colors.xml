@@ -16,5 +16,6 @@
     <color name="main_bottom_gray">#ACAEAF</color>
     <color name="black">#ff000000</color>
     <color name="red">#ff3939</color>
+    <color name="accessory_download_text_press">#8a8a8a</color>
 
 </resources>

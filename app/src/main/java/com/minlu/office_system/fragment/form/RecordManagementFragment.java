@@ -2,10 +2,13 @@ package com.minlu.office_system.fragment.form;
 
 import android.content.DialogInterface;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.minlu.baselibrary.base.ContentPage;
 import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.ViewsUitls;
+import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.R;
 import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.bean.CheckBoxChild;
@@ -14,13 +17,18 @@ import com.minlu.office_system.fragment.dialog.OnSureButtonClick;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
 import com.minlu.office_system.fragment.dialog.SelectNextUserDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
+import com.minlu.office_system.http.OkHttpMethod;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.Response;
 
 /**
@@ -36,6 +44,8 @@ public class RecordManagementFragment extends FormFragment {
     private String mTextUnit = "";
     private String mTextTime = "";
     private List<CheckBoxChild> mNextUsers;
+    private ArrayList<String> mDownloadFilePath;
+    private ArrayList<String> mDownloadFileName;
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -66,10 +76,51 @@ public class RecordManagementFragment extends FormFragment {
         superiorTextUnit.setEditText(mTextUnit);
         EditTextItem superiorTextDay = (EditTextItem) inflate.findViewById(R.id.form_record_management_day);
         superiorTextDay.setEditText(mTextTime);
-
-        EditTextItem superiorTextDetails = (EditTextItem) inflate.findViewById(R.id.form_record_management_details);
-
         mApproveIdea = (EditTextItem) inflate.findViewById(R.id.form_record_management_approve_idea);
+
+        View details = inflate.findViewById(R.id.form_record_management_details);
+        LinearLayout accessoryList = (LinearLayout) inflate.findViewById(R.id.form_record_management_details_right);
+        if (mDownloadFileName.size() > 0) {
+            details.setVisibility(View.VISIBLE);
+            for (int i = 0; i < mDownloadFileName.size(); i++) {
+                TextView textView = (TextView) ViewsUitls.inflate(R.layout.item_accessory_list);
+                textView.setText(mDownloadFileName.get(i));
+                final int pressIndex = i;
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final String fileName = mDownloadFileName.get(pressIndex);
+                        final String filePath = mDownloadFilePath.get(pressIndex);
+                        PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
+                            @Override
+                            public void onSureClick(DialogInterface dialog, int id) {
+                                startDownLoad(fileName, filePath);
+                            }
+                        }, "是否下载 “ " + fileName + " ” 附件");
+                        promptDialog.show(getActivity().getSupportFragmentManager(), "RecordManagementDisAgree");
+                    }
+                });
+                textView.setPadding(ViewsUitls.dpToPx(0), ViewsUitls.dpToPx(6), ViewsUitls.dpToPx(0), ViewsUitls.dpToPx(6));
+                accessoryList.addView(textView);
+            }
+        }
+    }
+
+    private void startDownLoad(String fileName, String filePath) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("oldfilename",fileName);
+        hashMap.put("path",filePath);
+        OkHttpMethod.asynPostRequest(IpFiled.DOWNLOAD_ACCESSORY, hashMap, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                 System.out.println();
+            }
+        });
     }
 
     @Override
@@ -82,20 +133,29 @@ public class RecordManagementFragment extends FormFragment {
                 if (StringUtils.interentIsNormal(resultList)) {
                     JSONObject jsonObject = new JSONObject(resultList);
                     if (jsonObject.has("TITLE")) {// 有标题字段，说明返回的数据正常
-                        excessive = new ArrayList<>();
-                        excessive.add("excessive");// 给excessive创建实例，并添加元素，让界面走onCreateSuccessView()方法
-
                         mTitle = jsonObject.optString("TITLE");
                         mTextNumber = jsonObject.optString("CALL") + "( " + jsonObject.optString("NUM") + " )号";
                         mTextUnit = jsonObject.optString("ORG_NAME");
                         mTextTime = jsonObject.optString("REC_TIME");
 
-                        JSONArray jsonArray = jsonObject.optJSONArray("USERLIST");
+                        JSONArray userList = jsonObject.optJSONArray("USERLIST");
                         mNextUsers = new ArrayList<>();
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject nextUserData = jsonArray.getJSONObject(i);
+                        for (int i = 0; i < userList.length(); i++) {
+                            JSONObject nextUserData = userList.getJSONObject(i);
                             mNextUsers.add(new CheckBoxChild(nextUserData.optString("TRUENAME"), nextUserData.optString("USERNAME"), nextUserData.optString("ORG_INFOR")));
                         }
+
+                        JSONArray fileList = jsonObject.optJSONArray("FILELIST");
+                        mDownloadFileName = new ArrayList<>();
+                        mDownloadFilePath = new ArrayList<>();
+                        for (int i = 0; i < fileList.length(); i++) {
+                            JSONObject file = fileList.getJSONObject(i);
+                            mDownloadFileName.add(file.optString("FILE_NAME"));
+                            mDownloadFilePath.add(file.optString("FILE_PATH"));
+                        }
+
+                        excessive = new ArrayList<>();
+                        excessive.add("excessive");// 给excessive创建实例，并添加元素，让界面走onCreateSuccessView()方法
                     }
                 }
             } catch (Exception e) {

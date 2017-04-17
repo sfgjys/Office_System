@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:drawableLeft="@drawable/selector_accessory_download_icon_background"
+    android:drawablePadding="8dp"
+    android:text="我是将要被下载的附件.doc"
+    android:textColor="@drawable/selector_accessory_download_text_background"
+    android:textSize="18dp" />

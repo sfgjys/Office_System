@@ -32,4 +32,6 @@ public class IpFiled {
     public final static String WORK_MONTHLY_REPORT_DETAIL = ip + "phone/bmgzView.html";
 
     public final static String REQUEST_USER_LIST = ip + "phone/getUserList.html";
+
+    public final static String DOWNLOAD_ACCESSORY = ip + "upload/download1.html";
 }
