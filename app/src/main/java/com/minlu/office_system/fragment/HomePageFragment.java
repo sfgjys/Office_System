@@ -20,9 +20,6 @@ import com.minlu.office_system.adapter.HomePageAdapter;
 import com.minlu.office_system.bean.HomePageItem;
 import com.minlu.office_system.fragment.form.formPremise.AllForms;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +43,6 @@ public class HomePageFragment extends BaseFragment<HomePageItem> {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                start();
                 skipFormListActivity(position);
             }
         });
@@ -86,33 +82,5 @@ public class HomePageFragment extends BaseFragment<HomePageItem> {
             date.add(new HomePageItem(AllForms.values()[i].getFormName(), AllForms.values()[i].getFormIconId()));
         }
         return chat(date);
-    }
-
-
-    private void start() {
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                BufferedReader bufferedReader = null;
-                try {
-                    bufferedReader = new BufferedReader(new InputStreamReader(getContext().getAssets().open("text1.txt")));
-                    String readLine;
-                    while ((readLine = bufferedReader.readLine()) != null) {
-                        System.out.println(readLine);
-                        System.out.println("Instant Run Runtime started. Android package is baidumapsdk.demo, real application class is baidumapsdk.demo.");
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        assert bufferedReader != null;
-                        bufferedReader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }.start();
     }
 }

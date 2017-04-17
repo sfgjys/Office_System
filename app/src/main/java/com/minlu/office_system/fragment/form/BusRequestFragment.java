@@ -3,18 +3,30 @@ package com.minlu.office_system.fragment.form;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.TimePicker;
 
 import com.minlu.baselibrary.base.ContentPage;
+import com.minlu.baselibrary.util.SharedPreferencesUtil;
+import com.minlu.baselibrary.util.ToastUtil;
 import com.minlu.baselibrary.util.ViewsUitls;
+import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.R;
+import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
+import com.minlu.office_system.bean.CheckBoxChild;
 import com.minlu.office_system.customview.EditTextItem;
+import com.minlu.office_system.customview.EditTextTimeSelector;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
-import com.minlu.office_system.fragment.time.TimePickerFragment;
+import com.minlu.office_system.http.OkHttpMethod;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.TimerTask;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * Created by user on 2017/3/7.
@@ -22,6 +34,18 @@ import java.util.List;
 public class BusRequestFragment extends FormFragment {
 
     private List<String> mBusNumberData;
+    private EditTextItem mTitle;
+    private EditTextItem mOffice;
+    private EditTextItem mRequestPerson;
+    private EditTextItem mBusNumber;
+    private EditTextItem mDestination;
+    private EditTextItem mCause;
+    private EditTextItem mGoAlongPerson;
+    private EditTextTimeSelector mEndTime;
+    private EditTextTimeSelector mStartTime;
+    private String mUserName;
+    private String mOrgName;
+    private EditTextItem mBusTypeRemark;
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -44,35 +68,38 @@ public class BusRequestFragment extends FormFragment {
     }
 
     private void initView(View inflate) {
-        EditTextItem title = (EditTextItem) inflate.findViewById(R.id.form_bus_request_title);
-        EditTextItem office = (EditTextItem) inflate.findViewById(R.id.form_bus_request_office);
-        EditTextItem destination = (EditTextItem) inflate.findViewById(R.id.form_bus_request_destination);
-        EditTextItem cause = (EditTextItem) inflate.findViewById(R.id.form_bus_request_cause);
+        mOffice = (EditTextItem) inflate.findViewById(R.id.form_bus_request_office);
+        mOffice.setEditText(mOrgName);
+        mRequestPerson = (EditTextItem) inflate.findViewById(R.id.form_bus_request_person);
+        mRequestPerson.setEditText(mUserName);
+
+        // 下面四个是用户编写，提交时获取数据
+        mTitle = (EditTextItem) inflate.findViewById(R.id.form_bus_request_title);
+        mDestination = (EditTextItem) inflate.findViewById(R.id.form_bus_request_destination);
+        mCause = (EditTextItem) inflate.findViewById(R.id.form_bus_request_cause);
+        mGoAlongPerson = (EditTextItem) inflate.findViewById(R.id.form_bus_request_go_along_person);
 
         // 展示时间选择
-        EditTextItem startTime = (EditTextItem) inflate.findViewById(R.id.form_bus_request_start_time);
-        final EditText startTimeEditText = startTime.getCustomEditTextRight();
-        startTimeEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showTimePickerDialog(new TimePickerFragment.SetTimeListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minuteOfDay) {
-                        String hour = (hourOfDay >= 0 && hourOfDay <= 9) ? ("0" + hourOfDay) : (hourOfDay + "");
-                        String minute = (minuteOfDay >= 0 && minuteOfDay <= 9) ? ("0" + minuteOfDay) : (minuteOfDay + "");
-                        startTimeEditText.setText(hour + " : " + minute);
-                    }
-                });
-            }
-        });
+        mStartTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_bus_request_start_time);
+        mStartTime.setNowDayOfYearAndTimeOfDay();
+        startUseEditTextOnClickShowTimePicker(mStartTime);
+        mEndTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_bus_request_end_time);
+        mEndTime.setNowDayOfYearAndTimeOfDay();
+        startUseEditTextOnClickShowTimePicker(mEndTime);
 
-        // 展示车号列表
-        EditTextItem busNumber = (EditTextItem) inflate.findViewById(R.id.form_bus_request_bus_number);
-        final EditText busNumberEditText = busNumber.getCustomEditTextRight();
+        // 展示车子座位类型
+        mBusTypeRemark = (EditTextItem) inflate.findViewById(R.id.form_bus_request_bus_type_remark);
+        mBusNumber = (EditTextItem) inflate.findViewById(R.id.form_bus_request_bus_type);
+        final EditText busNumberEditText = mBusNumber.getCustomEditTextRight();
         setWhichViewShowListPopupWindow(busNumberEditText, mBusNumberData, new ShowListPopupItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 busNumberEditText.setText(mBusNumberData.get(position));
+                if (mBusNumberData.get(position).contains("其他")) {
+                    mBusTypeRemark.setVisibility(View.VISIBLE);
+                } else {
+                    mBusTypeRemark.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -86,24 +113,21 @@ public class BusRequestFragment extends FormFragment {
             }
         }, getActivity());
 
-
-        ViewsUitls.setWidthFromTargetView(title.getCustomEditTextLeft(), busNumber.getCustomEditTextLeft());
-        ViewsUitls.setWidthFromTargetView(title.getCustomEditTextLeft(), destination.getCustomEditTextLeft());
+        ViewsUitls.setWidthFromTargetView(mTitle.getCustomEditTextLeft(), mBusNumber.getCustomEditTextLeft());
+        ViewsUitls.setWidthFromTargetView(mTitle.getCustomEditTextLeft(), mDestination.getCustomEditTextLeft());
+        ViewsUitls.setWidthFromTargetView(mTitle.getCustomEditTextLeft(), mRequestPerson.getCustomEditTextLeft());
     }
 
     @Override
     protected ContentPage.ResultState onLoad() {
+        mUserName = SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_GET_USER_NAME, "");
+        mOrgName = SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_GET_USER_ORG_NAME, "");
+
         mBusNumberData = new ArrayList<>();
-        mBusNumberData.add("苏D G23098F");
-        mBusNumberData.add("苏D N2435U9");
-        mBusNumberData.add("苏D F2398F2");
-        mBusNumberData.add("苏D 23RF124");
-        mBusNumberData.add("苏D SE380AS");
-        mBusNumberData.add("苏D SD20342");
-        mBusNumberData.add("苏D MRE45OI");
-        mBusNumberData.add("苏D G23098F");
-        mBusNumberData.add("苏D N2435U9");
-        mBusNumberData.add("苏D F2398F2");
+        mBusNumberData.add("五座");
+        mBusNumberData.add("七座");
+        mBusNumberData.add("其他");
+
         return chat(mBusNumberData);
     }
 
@@ -120,5 +144,65 @@ public class BusRequestFragment extends FormFragment {
     @Override
     public void submitOnClick(View v) {
         System.out.println("BusRequestFragment-submitOnClick");
+    }
+
+    private void officialBusUseApply(List<CheckBoxChild> sureUsers) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("processId", StringsFiled.Leave_ProcessId);
+        hashMap.put("orderId", "");
+        hashMap.put("taskId", "");
+        hashMap.put("taskName", "");
+        hashMap.put("Method", "0");
+        hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
+        hashMap.put("title", "");
+        hashMap.put("qtype", "");
+        hashMap.put("stime", "");
+        hashMap.put("etime", "");
+        hashMap.put("allleave", "");
+        hashMap.put("bz", "");
+        hashMap.put("result", "");
+
+        String userList = "";
+        for (int i = 0; i < sureUsers.size(); i++) {
+            userList += (sureUsers.get(i).getUserName() + ",");
+        }
+
+        hashMap.put("userList", userList);
+        hashMap.put("assignee", "");
+
+        OkHttpMethod.asynPostRequest(IpFiled.LEAVE_APPLY_SUBMIT, hashMap, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                showToast("服务器异常，请联系管理员");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response != null && response.isSuccessful()) {
+                    try {
+                        String resultList = response.body().string();
+                        if ("success".contains(resultList)) {
+                            showToast("申请成功");
+                            getActivity().finish();
+                        } else {
+                            showToast("服务器正忙请稍后");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    showToast("服务器异常，请联系管理员");
+                }
+            }
+        });
+    }
+
+    private void showToast(final String s) {
+        ViewsUitls.runInMainThread(new TimerTask() {
+            @Override
+            public void run() {
+                ToastUtil.showToast(ViewsUitls.getContext(), s);
+            }
+        });
     }
 }
