@@ -60,12 +60,14 @@ public class FormListFragment extends BaseFragment<TaskListItem> {
                 String orderId = data.get(position).getOrderId();
                 String taskId = data.get(position).getTaskId();
                 String processId = data.get(position).getProcessId();
+                String taskName = data.get(position).getTaskName();
 
                 boolean isSuccess1 = SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_ORDER_ID, orderId);
                 boolean isSuccess2 = SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_TASK_ID, taskId);
                 boolean isSuccess3 = SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_PROCESS_ID, processId);
+                boolean isSuccess4 = SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_TASK_NAME, taskName);
 
-                if (isSuccess1 && isSuccess2 && isSuccess3) {
+                if (isSuccess1 && isSuccess2 && isSuccess3 && isSuccess4) {
                     Intent intent = new Intent();
                     // 标题
                     intent.putExtra(BaseStringsFiled.ACTIVITY_TITLE, AllForms.values()[formTypePosition].getFormName());
@@ -107,16 +109,17 @@ public class FormListFragment extends BaseFragment<TaskListItem> {
                                 itemListData.has("taskName") && itemListData.has("taskCreateTime") && itemListData.has("creater")) {
                             for (int i = 0; i < mListDataJSON.length(); i++) {
                                 JSONObject optJSONObject = mListDataJSON.optJSONObject(i);
-                                String processId = optJSONObject.optString("processId");
+
                                 String processName = optJSONObject.optString("processName");// 流程名称
                                 String taskVariable = optJSONObject.optString("taskVariable");// 标题
-                                String taskName = optJSONObject.optString("taskName");// 任务名称
                                 String taskCreateTime = optJSONObject.optString("taskCreateTime");// 任务创建时间
                                 String creator = optJSONObject.optString("creater");// 创建人
 
                                 // 点击单条条目时需要传递到下个界面的数据
+                                String processId = optJSONObject.optString("processId");
                                 String orderId = optJSONObject.optString("orderId");
                                 String taskId = optJSONObject.optString("taskId");
+                                String taskName = optJSONObject.optString("taskName");// 任务名称
 
                                 data.add(new TaskListItem(processId, processName, taskVariable, taskName, taskCreateTime, creator, orderId, taskId));
                             }
