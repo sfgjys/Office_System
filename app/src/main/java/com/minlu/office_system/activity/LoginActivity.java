@@ -151,7 +151,6 @@ public class LoginActivity extends Activity {
                 .url(IpFiled.LOGIN)
                 .post(formBody)
                 .build();
-        System.out.println(IpFiled.LOGIN);
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
