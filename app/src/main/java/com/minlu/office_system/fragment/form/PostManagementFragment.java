@@ -6,12 +6,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.minlu.baselibrary.base.ContentPage;
-import com.minlu.baselibrary.util.SharedPreferencesUtil;
 import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.R;
-import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.bean.CheckBoxChild;
 import com.minlu.office_system.customview.EditTextItem;
@@ -241,44 +239,17 @@ public class PostManagementFragment extends FormFragment {
 
     private void officialLeaveApply(String userList, int method) {
         startLoading();
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("processId", getProcessIdFromList());
-        hashMap.put("orderId", getOrderIdFromList());
-        hashMap.put("taskId", getTaskIdFromList());
+
+        HashMap<String, String> hashMap = getUnifiedDataHashMap();
+
         hashMap.put("taskName", mTaskName);
         hashMap.put("assignee", mAssignee);
         hashMap.put("Method", "" + method);
-        hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
         hashMap.put("userList", userList);
 
         // 以下为表单上的填写数据
         hashMap.put("suggest", mApproveIdea.getCustomEditTextRight().getText().toString());
 
-        OkHttpMethod.asynPostRequest(IpFiled.SUBMIT_IS_AGREE_POST, hashMap, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                showThrow();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response != null && response.isSuccessful()) {
-                    try {
-                        String resultList = response.body().string();
-                        if ("success".contains(resultList)) {
-                            endLoading();
-                            getActivity().finish();
-                        } else {
-                            showThrow();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        showThrow();
-                    }
-                } else {
-                    showThrow();
-                }
-            }
-        });
+        startUltimatelySubmit(IpFiled.SUBMIT_IS_AGREE_POST, hashMap, "success", "服务器正忙,请稍后", "提交成功");
     }
 }

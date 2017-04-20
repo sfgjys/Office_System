@@ -4,29 +4,23 @@ import android.content.DialogInterface;
 import android.view.View;
 
 import com.minlu.baselibrary.base.ContentPage;
-import com.minlu.baselibrary.util.SharedPreferencesUtil;
 import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.R;
-import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.bean.CheckBoxChild;
 import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.customview.EditTextTimeSelector;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
-import com.minlu.office_system.http.OkHttpMethod;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.Response;
 
 /**
@@ -159,7 +153,7 @@ public class BusManagementFragment extends FormFragment {
         PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
             @Override
             public void onSureClick(DialogInterface dialog, int id) {
-                officialBusUseApply("",1);
+                officialBusUseApply("", 1);
             }
         }, "是否不同意该用车请求 !");
         promptDialog.show(getActivity().getSupportFragmentManager(), "BusManagementFragment");
@@ -181,44 +175,17 @@ public class BusManagementFragment extends FormFragment {
 
     private void officialBusUseApply(String userList, int method) {
         startLoading();
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("processId", getProcessIdFromList());
-        hashMap.put("orderId", getOrderIdFromList());
-        hashMap.put("taskId", getTaskIdFromList());
-        hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
+
+        HashMap<String, String> hashMap = getUnifiedDataHashMap();
+
         hashMap.put("taskName", mTaskName);
         hashMap.put("assignee", mAssignee);
-        hashMap.put("Method", method + "");
+        hashMap.put("Method", "" + method);
         hashMap.put("userList", userList);
 
         // 以下为表单上的填写数据
         hashMap.put("suggest", mApproveIdea.getCustomEditTextRight().getText().toString());
 
-        OkHttpMethod.asynPostRequest(IpFiled.BUS_REQUEST_APPLY_SUBMIT, hashMap, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                showThrow();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response != null && response.isSuccessful()) {
-                    try {
-                        String resultList = response.body().string();
-                        if ("success".contains(resultList)) {
-                            endLoading();
-                            getActivity().finish();
-                        } else {
-                            showThrow();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        showThrow();
-                    }
-                } else {
-                    showThrow();
-                }
-            }
-        });
+        startUltimatelySubmit(IpFiled.BUS_REQUEST_APPLY_SUBMIT, hashMap, "success", "服务器正忙,请稍后", "提交成功");
     }
 }

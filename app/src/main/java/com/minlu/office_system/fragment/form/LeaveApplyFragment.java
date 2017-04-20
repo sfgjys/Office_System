@@ -6,36 +6,26 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 
 import com.minlu.baselibrary.base.ContentPage;
-import com.minlu.baselibrary.manager.ThreadManager;
 import com.minlu.baselibrary.util.SharedPreferencesUtil;
 import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.TimeTool;
-import com.minlu.baselibrary.util.ToastUtil;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.R;
 import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
-import com.minlu.office_system.bean.CheckBoxChild;
 import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.customview.EditTextTimeSelector;
-import com.minlu.office_system.fragment.dialog.OnSureButtonClick;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
-import com.minlu.office_system.fragment.dialog.SelectNextUserDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
 import com.minlu.office_system.http.OkHttpMethod;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.TimerTask;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.Response;
 
 
@@ -48,8 +38,6 @@ public class LeaveApplyFragment extends FormFragment {
     private EditTextTimeSelector mEndTime;
     private EditTextItem mLeaveTitle;
     private EditTextItem mLeaveRemark;
-    private EditTextItem mAddUpLeaveDays;
-    private EditTextItem mResidueLeaveYears;
     private String mResidueYearLeaveText;
     private String mAddUpLeaveDaysText;
     private EditTextItem mSelectHour;
@@ -58,8 +46,6 @@ public class LeaveApplyFragment extends FormFragment {
     private String mOrd;
     private String mAssignee;
     private String mAutoOrg;
-    private String mUserName;
-    private List<CheckBoxChild> mNextUsers;
     private String mTaskId;
     private String mTaskName;
     private String mOrderId;
@@ -86,9 +72,9 @@ public class LeaveApplyFragment extends FormFragment {
     }
 
     private void initView(View inflate) {
-        mAddUpLeaveDays = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_add_up_leave_day_number);
+        EditTextItem mAddUpLeaveDays = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_add_up_leave_day_number);
         mAddUpLeaveDays.setEditText(mAddUpLeaveDaysText);
-        mResidueLeaveYears = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_residue_leave_year_number);
+        EditTextItem mResidueLeaveYears = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_residue_leave_year_number);
         mResidueLeaveYears.setEditText(mResidueYearLeaveText);
 
         mLeaveTitle = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_title);
@@ -197,32 +183,7 @@ public class LeaveApplyFragment extends FormFragment {
                 if (StringUtils.interentIsNormal(resultList)) {
                     JSONObject jsonObject = new JSONObject(resultList);
                     if (jsonObject.has("year")) {
-                        // 用来显示的
-                        mResidueYearLeaveText = jsonObject.optString("year");
-                        mAddUpLeaveDaysText = jsonObject.optString("allday");
-
-                        // 用来请求下一步操作人
-                        mOrd = jsonObject.optString("ord");
-                        mAssignee = jsonObject.optString("assignee");
-                        mAutoOrg = jsonObject.optString("autoOrg");
-                        mUserName = jsonObject.optString("userName");
-
-                        // 用于正式提交
-                        mResult = jsonObject.optString("result");
-                        mTaskId = jsonObject.optString("taskId");
-                        mTaskName = jsonObject.optString("taskName");
-                        mOrderId = jsonObject.optString("orderId");
-
-                        mLeaveType = new ArrayList<>();
-                        mLeaveType.add("事假");
-                        mLeaveType.add("婚假");
-                        mLeaveType.add("产假");
-                        mLeaveType.add("陪产假");
-                        mLeaveType.add("丧假");
-                        mLeaveType.add("年假");
-                        mLeaveType.add("病假");
-                        mLeaveType.add("其他");
-
+                        analyticalData(jsonObject);
                     }
                 }
             } catch (Exception e) {
@@ -230,6 +191,33 @@ public class LeaveApplyFragment extends FormFragment {
             }
         }
         return chat(mLeaveType);
+    }
+
+    private void analyticalData(JSONObject jsonObject) {
+        // 用来显示的
+        mResidueYearLeaveText = jsonObject.optString("year");
+        mAddUpLeaveDaysText = jsonObject.optString("allday");
+
+        // 用来请求下一步操作人
+        mAssignee = jsonObject.optString("assignee");
+        mOrd = jsonObject.optString("ord");
+        mAutoOrg = jsonObject.optString("autoOrg");
+
+        // 用于正式提交
+        mResult = jsonObject.optString("result");
+        mTaskId = jsonObject.optString("taskId");
+        mTaskName = jsonObject.optString("taskName");
+        mOrderId = jsonObject.optString("orderId");
+
+        mLeaveType = new ArrayList<>();
+        mLeaveType.add("事假");
+        mLeaveType.add("婚假");
+        mLeaveType.add("产假");
+        mLeaveType.add("陪产假");
+        mLeaveType.add("丧假");
+        mLeaveType.add("年假");
+        mLeaveType.add("病假");
+        mLeaveType.add("其他");
     }
 
     @Override
@@ -245,79 +233,29 @@ public class LeaveApplyFragment extends FormFragment {
         PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
             @Override
             public void onSureClick(DialogInterface dialog, int id) {
-                requestSubmitUserList();
+                getNextPersonData(mAssignee, "LeaveApplySubmit_Have_Next", "LeaveApplySubmit_No_Next", new PassNextPersonString() {
+                    @Override
+                    public void passNextPersonString(String userList) {
+                        officialLeaveApply(userList, 0);
+                    }
+                });
             }
         }, "是否将请假申请进行提交处理 !");
         promptDialog.show(getActivity().getSupportFragmentManager(), "LeaveApplySubmit");
     }
 
-    private void requestSubmitUserList() {
-        ThreadManager.getInstance().execute(new TimerTask() {
-            @Override
-            public void run() {
-                HashMap<String, String> requestUserList = new HashMap<>();
-                requestUserList.put("assignee", mAssignee);
-                requestUserList.put("org_id", mOrd);
-                requestUserList.put("autoOrg", mAutoOrg);
-                Response response = OkHttpMethod.synPostRequest(IpFiled.REQUEST_USER_LIST, requestUserList);
-                if (response != null && response.isSuccessful()) {
-                    try {
-                        String resultList = response.body().string();
-                        if (StringUtils.interentIsNormal(resultList)) {
-                            JSONArray jsonArray = new JSONArray(resultList);
-                            mNextUsers = new ArrayList<>();
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject nextUserData = jsonArray.getJSONObject(i);
-                                mNextUsers.add(new CheckBoxChild(nextUserData.optString("TRUENAME"), nextUserData.optString("USERNAME"), nextUserData.optString("ORG_INFOR")));
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                ViewsUitls.runInMainThread(new TimerTask() {
-                    @Override
-                    public void run() {
-                        SelectNextUserDialog selectNextUserDialog = new SelectNextUserDialog();
-                        selectNextUserDialog.setCheckBoxTexts(mNextUsers);
-                        selectNextUserDialog.setOnSureButtonClick(new OnSureButtonClick() {
-                            @Override
-                            public void onSureClick(DialogInterface dialog, int id, List<Boolean> isChecks) {
-                                List<CheckBoxChild> sureUsers = new ArrayList<>();
-                                // 通过isChecks集合中的选择数据去判断哪些数据选中，并将选中的数据填进sureUsers集合中
-                                for (int i = 0; i < isChecks.size(); i++) {
-                                    if (isChecks.get(i)) {
-                                        sureUsers.add(mNextUsers.get(i));
-                                    }
-                                }
-                                if (sureUsers.size() > 0) {
-                                    officialLeaveApply(sureUsers);
-                                } else {
-                                    ToastUtil.showToast(ViewsUitls.getContext(), "请选择下一步操作人");
-                                }
-                            }
-                        });
-                        selectNextUserDialog.show(getActivity().getSupportFragmentManager(), "LeaveApplyFragmentSelectNext");
-                    }
-                });
+    private void officialLeaveApply(String userList, int method) {
 
-            }
-        });
-    }
+        startLoading();
 
-    private void officialLeaveApply(List<CheckBoxChild> sureUsers) {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("processId", StringsFiled.Leave_ProcessId);
         hashMap.put("orderId", mOrderId);
         hashMap.put("taskId", mTaskId);
         hashMap.put("taskName", mTaskName);
-        hashMap.put("Method", "0");
+        hashMap.put("Method", "" + method);
         hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
         hashMap.put("assignee", mAssignee);
-        String userList = "";
-        for (int i = 0; i < sureUsers.size(); i++) {
-            userList += (sureUsers.get(i).getUserName() + ",");
-        }
         hashMap.put("userList", userList);
 
         // 以下为表单上的填写数据
@@ -330,30 +268,6 @@ public class LeaveApplyFragment extends FormFragment {
         hashMap.put("bz", mLeaveRemark.getCustomEditTextRight().getText().toString());
         hashMap.put("result", mResult);
 
-        OkHttpMethod.asynPostRequest(IpFiled.LEAVE_APPLY_SUBMIT, hashMap, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                showToastToMain("服务器异常，请联系管理员");
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response != null && response.isSuccessful()) {
-                    try {
-                        String resultList = response.body().string();
-                        if ("success".contains(resultList)) {
-                            showToastToMain("申请成功");
-                            getActivity().finish();
-                        } else {
-                            showToastToMain("服务器正忙请稍后");
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    showToastToMain("服务器异常，请联系管理员");
-                }
-            }
-        });
+        startUltimatelySubmit(IpFiled.LEAVE_APPLY_SUBMIT, hashMap, "success", "服务器正忙,请稍后", "请假申请提交成功");
     }
 }

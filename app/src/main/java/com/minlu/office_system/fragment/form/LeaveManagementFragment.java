@@ -16,18 +16,14 @@ import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.customview.EditTextTimeSelector;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
-import com.minlu.office_system.http.OkHttpMethod;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.Response;
 
 /**
@@ -194,44 +190,16 @@ public class LeaveManagementFragment extends FormFragment {
     private void officialLeaveApply(String userList, int method) {
         startLoading();
 
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("processId", getProcessIdFromList());
-        hashMap.put("orderId", getOrderIdFromList());
-        hashMap.put("taskId", getTaskIdFromList());
+        HashMap<String, String> hashMap = getUnifiedDataHashMap();
+
         hashMap.put("taskName", mTaskName);
         hashMap.put("assignee", mAssignee);
-        hashMap.put("Method", method + "");
-        hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
+        hashMap.put("Method", "" + method);
         hashMap.put("userList", userList);
 
         // 以下为表单上的填写数据
         hashMap.put("suggest", mApproveIdea.getCustomEditTextRight().getText().toString());
 
-        OkHttpMethod.asynPostRequest(IpFiled.LEAVE_APPLY_SUBMIT, hashMap, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                showThrow();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response != null && response.isSuccessful()) {
-                    try {
-                        String resultList = response.body().string();
-                        if ("success".contains(resultList)) {
-                            endLoading();
-                            getActivity().finish();
-                        } else {
-                            showThrow();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        showThrow();
-                    }
-                } else {
-                    showThrow();
-                }
-            }
-        });
+        startUltimatelySubmit(IpFiled.LEAVE_APPLY_SUBMIT, hashMap, "success", "服务器正忙,请稍后", "请假申请提交成功");
     }
 }

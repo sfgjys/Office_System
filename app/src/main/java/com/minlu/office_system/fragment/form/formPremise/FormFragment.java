@@ -2,6 +2,7 @@ package com.minlu.office_system.fragment.form.formPremise;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.ListPopupWindow;
 import android.view.View;
@@ -217,7 +218,7 @@ public abstract class FormFragment extends BaseFragment {
         OkHttpMethod.asynPostRequest(IpFiled.REQUEST_USER_LIST, hashMap, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                showThrow();
+                showToastAndEndLoading("服务器正忙,请稍后");
             }
 
             @Override
@@ -240,14 +241,14 @@ public abstract class FormFragment extends BaseFragment {
                                 }
                             });
                         } else {
-                            showThrow();
+                            showToastAndEndLoading("服务器正忙,请稍后");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        showThrow();
+                        showToastAndEndLoading("服务器正忙,请稍后");
                     }
                 } else {
-                    showThrow();
+                    showToastAndEndLoading("服务器正忙,请稍后");
                 }
             }
         });
@@ -299,10 +300,50 @@ public abstract class FormFragment extends BaseFragment {
         void passNextPersonString(String userList);
     }
 
+    /* 根据参数创建表单提交所需要的统一参数 */
+    @NonNull
+    public HashMap<String, String> getUnifiedDataHashMap() {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("processId", getProcessIdFromList());
+        hashMap.put("orderId", getOrderIdFromList());
+        hashMap.put("taskId", getTaskIdFromList());
+        hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
+        return hashMap;
+    }
 
-    public void showThrow() {
+    /* 最后提交表单的方法 */
+    public void startUltimatelySubmit(String url, HashMap<String, String> passingParameters, final String successCondition, final String throwText, final String successText) {
+        OkHttpMethod.asynPostRequest(url, passingParameters, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                showToastAndEndLoading(throwText);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response != null && response.isSuccessful()) {
+                    try {
+                        String resultList = response.body().string();
+                        if (successCondition.contains(resultList)) {
+                            showToastAndEndLoading(successText);
+                            getActivity().finish();
+                        } else {
+                            showToastAndEndLoading(throwText);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        showToastAndEndLoading(throwText);
+                    }
+                } else {
+                    showToastAndEndLoading(throwText);
+                }
+            }
+        });
+    }
+
+    public void showToastAndEndLoading(String text) {
         endLoading();
-        showToastToMain("服务器异常，请稍后");
+        showToastToMain(text);
     }
 
 

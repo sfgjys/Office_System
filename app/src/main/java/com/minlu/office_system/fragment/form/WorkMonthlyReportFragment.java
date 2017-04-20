@@ -23,13 +23,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.Response;
 
 /**
@@ -255,42 +252,18 @@ public class WorkMonthlyReportFragment extends FormFragment {
     }
 
     private void officialLeaveApply(String userList, int method) {
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("processId", getProcessIdFromList());
-        hashMap.put("orderId", getOrderIdFromList());
-        hashMap.put("taskId", getTaskIdFromList());
+        startLoading();
+
+        HashMap<String, String> hashMap = getUnifiedDataHashMap();
+
         hashMap.put("taskName", mTaskName);
         hashMap.put("assignee", mAssignee);
         hashMap.put("Method", "" + method);
-        hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
         hashMap.put("userList", userList);
 
         // 以下为表单上的填写数据
         hashMap.put("suggest", mApproveIdea.getCustomEditTextRight().getText().toString());
 
-        OkHttpMethod.asynPostRequest(IpFiled.SUBMIT_IS_AGREE_WORK_MONTHLY_REPORT, hashMap, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                showToastToMain("服务器异常，请联系管理员");
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response != null && response.isSuccessful()) {
-                    try {
-                        String resultList = response.body().string();
-                        if ("success".contains(resultList)) {
-                            getActivity().finish();
-                        } else {
-                            showToastToMain("服务器正忙请稍后");
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    showToastToMain("服务器异常，请联系管理员");
-                }
-            }
-        });
+        startUltimatelySubmit(IpFiled.SUBMIT_IS_AGREE_WORK_MONTHLY_REPORT, hashMap, "success", "服务器正忙,请稍候", "提交成功");
     }
 }

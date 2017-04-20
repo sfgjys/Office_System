@@ -6,35 +6,25 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 
 import com.minlu.baselibrary.base.ContentPage;
-import com.minlu.baselibrary.manager.ThreadManager;
 import com.minlu.baselibrary.util.SharedPreferencesUtil;
 import com.minlu.baselibrary.util.StringUtils;
-import com.minlu.baselibrary.util.ToastUtil;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.R;
 import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
-import com.minlu.office_system.bean.CheckBoxChild;
 import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.customview.EditTextTimeSelector;
-import com.minlu.office_system.fragment.dialog.OnSureButtonClick;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
-import com.minlu.office_system.fragment.dialog.SelectNextUserDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
 import com.minlu.office_system.http.OkHttpMethod;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.TimerTask;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.Response;
 
 /**
@@ -61,7 +51,6 @@ public class BusRequestFragment extends FormFragment {
     private String mTaskId;
     private String mTaskName;
     private String mOrderId;
-    private List<CheckBoxChild> mNextUsers;
     private String mStep;
 
     @Override
@@ -85,16 +74,11 @@ public class BusRequestFragment extends FormFragment {
     }
 
     private void initView(View inflate) {
+        // 展示的已知数据
         mOffice = (EditTextItem) inflate.findViewById(R.id.form_bus_request_office);
         mOffice.setEditText(mOrgName);
         mRequestPerson = (EditTextItem) inflate.findViewById(R.id.form_bus_request_person);
         mRequestPerson.setEditText(mUserName);
-
-        // 下面四个是用户编写，提交时获取数据
-        mTitle = (EditTextItem) inflate.findViewById(R.id.form_bus_request_title);
-        mDestination = (EditTextItem) inflate.findViewById(R.id.form_bus_request_destination);
-        mCause = (EditTextItem) inflate.findViewById(R.id.form_bus_request_cause);
-        mGoAlongPerson = (EditTextItem) inflate.findViewById(R.id.form_bus_request_go_along_person);
 
         // 展示时间选择
         mStartTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_bus_request_start_time);
@@ -130,6 +114,12 @@ public class BusRequestFragment extends FormFragment {
             }
         }, getActivity());
 
+        // 下面四个是用户编写，提交时获取数据
+        mTitle = (EditTextItem) inflate.findViewById(R.id.form_bus_request_title);
+        mDestination = (EditTextItem) inflate.findViewById(R.id.form_bus_request_destination);
+        mCause = (EditTextItem) inflate.findViewById(R.id.form_bus_request_cause);
+        mGoAlongPerson = (EditTextItem) inflate.findViewById(R.id.form_bus_request_go_along_person);
+
         ViewsUitls.setWidthFromTargetView(mTitle.getCustomEditTextLeft(), mBusType.getCustomEditTextLeft());
         ViewsUitls.setWidthFromTargetView(mTitle.getCustomEditTextLeft(), mDestination.getCustomEditTextLeft());
         ViewsUitls.setWidthFromTargetView(mTitle.getCustomEditTextLeft(), mRequestPerson.getCustomEditTextLeft());
@@ -154,22 +144,7 @@ public class BusRequestFragment extends FormFragment {
                 if (StringUtils.interentIsNormal(resultList)) {
                     JSONObject jsonObject = new JSONObject(resultList);
                     if (jsonObject.has("processId")) {
-
-                        // 用来请求下一步操作人
-                        mOrd = jsonObject.optString("ord");
-                        mAssignee = jsonObject.optString("assignee");
-                        mAutoOrg = jsonObject.optString("autoOrg");
-
-                        // 用于正式提交
-                        mTaskId = jsonObject.optString("taskId");
-                        mTaskName = jsonObject.optString("taskName");
-                        mOrderId = jsonObject.optString("orderId");
-                        mStep = jsonObject.optString("step");
-
-                        mBusNumberData = new ArrayList<>();
-                        mBusNumberData.add("五座");
-                        mBusNumberData.add("七座");
-                        mBusNumberData.add("其他");
+                        analyticalData(jsonObject);
                     }
                 }
             } catch (Exception e) {
@@ -179,14 +154,30 @@ public class BusRequestFragment extends FormFragment {
         return chat(mBusNumberData);
     }
 
+    private void analyticalData(JSONObject jsonObject) {
+        // 用来请求下一步操作人
+        mOrd = jsonObject.optString("ord");
+        mAssignee = jsonObject.optString("assignee");
+        mAutoOrg = jsonObject.optString("autoOrg");
+
+        // 用于正式提交
+        mTaskId = jsonObject.optString("taskId");
+        mTaskName = jsonObject.optString("taskName");
+        mOrderId = jsonObject.optString("orderId");
+        mStep = jsonObject.optString("step");
+
+        mBusNumberData = new ArrayList<>();
+        mBusNumberData.add("五座");
+        mBusNumberData.add("七座");
+        mBusNumberData.add("其他");
+    }
+
     @Override
     public void disAgreeOnClick(View v) {
-        System.out.println("BusRequestFragment-disAgreeOnClick");
     }
 
     @Override
     public void agreeOnClick(View v) {
-        System.out.println("BusRequestFragment-agreeOnClick");
     }
 
     @Override
@@ -194,68 +185,18 @@ public class BusRequestFragment extends FormFragment {
         PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
             @Override
             public void onSureClick(DialogInterface dialog, int id) {
-                requestSubmitUserList();
+                getNextPersonData(mAssignee, "BusRequestSubmit_Have_Next", "BusRequestSubmit_No_Next", new PassNextPersonString() {
+                    @Override
+                    public void passNextPersonString(String userList) {
+                        officialBusUseApply(userList, 0);
+                    }
+                });
             }
         }, "是否将车辆申请进行提交处理 !");
         promptDialog.show(getActivity().getSupportFragmentManager(), "BusRequestSubmit");
     }
 
-
-    private void requestSubmitUserList() {
-        ThreadManager.getInstance().execute(new TimerTask() {
-            @Override
-            public void run() {
-                HashMap<String, String> requestUserList = new HashMap<>();
-                requestUserList.put("assignee", mAssignee);
-                requestUserList.put("org_id", mOrd);
-                requestUserList.put("autoOrg", mAutoOrg);
-                Response response = OkHttpMethod.synPostRequest(IpFiled.REQUEST_USER_LIST, requestUserList);
-                if (response != null && response.isSuccessful()) {
-                    try {
-                        String resultList = response.body().string();
-                        if (StringUtils.interentIsNormal(resultList)) {
-                            JSONArray jsonArray = new JSONArray(resultList);
-                            mNextUsers = new ArrayList<>();
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject nextUserData = jsonArray.getJSONObject(i);
-                                mNextUsers.add(new CheckBoxChild(nextUserData.optString("TRUENAME"), nextUserData.optString("USERNAME"), nextUserData.optString("ORG_INFOR")));
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                ViewsUitls.runInMainThread(new TimerTask() {
-                    @Override
-                    public void run() {
-                        SelectNextUserDialog selectNextUserDialog = new SelectNextUserDialog();
-                        selectNextUserDialog.setCheckBoxTexts(mNextUsers);
-                        selectNextUserDialog.setOnSureButtonClick(new OnSureButtonClick() {
-                            @Override
-                            public void onSureClick(DialogInterface dialog, int id, List<Boolean> isChecks) {
-                                List<CheckBoxChild> sureUsers = new ArrayList<>();
-                                // 通过isChecks集合中的选择数据去判断哪些数据选中，并将选中的数据填进sureUsers集合中
-                                for (int i = 0; i < isChecks.size(); i++) {
-                                    if (isChecks.get(i)) {
-                                        sureUsers.add(mNextUsers.get(i));
-                                    }
-                                }
-                                if (sureUsers.size() > 0) {
-                                    officialBusUseApply(sureUsers);
-                                } else {
-                                    ToastUtil.showToast(ViewsUitls.getContext(), "请选择下一步操作人");
-                                }
-                            }
-                        });
-                        selectNextUserDialog.show(getActivity().getSupportFragmentManager(), "LeaveApplyFragmentSelectNext");
-                    }
-                });
-
-            }
-        });
-    }
-
-    private void officialBusUseApply(List<CheckBoxChild> sureUsers) {
+    private void officialBusUseApply(String userList, int method) {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("processId", StringsFiled.Bus_ProcessId);
         hashMap.put("orderId", mOrderId);
@@ -264,10 +205,7 @@ public class BusRequestFragment extends FormFragment {
         hashMap.put("assignee", mAssignee);
         hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
         hashMap.put("step", mStep);
-        String userList = "";
-        for (int i = 0; i < sureUsers.size(); i++) {
-            userList += (sureUsers.get(i).getUserName() + ",");
-        }
+        hashMap.put("Method", "" + method);
         hashMap.put("userList", userList);
 
         // 以下为表单上的填写数据
@@ -282,30 +220,6 @@ public class BusRequestFragment extends FormFragment {
         hashMap.put("ycsy", mCause.getCustomEditTextRight().getText().toString());
         hashMap.put("sxry", mGoAlongPerson.getCustomEditTextRight().getText().toString());
 
-        OkHttpMethod.asynPostRequest(IpFiled.BUS_REQUEST_APPLY_SUBMIT, hashMap, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                showToastToMain("服务器异常，请联系管理员");
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response != null && response.isSuccessful()) {
-                    try {
-                        String resultList = response.body().string();
-                        if ("success".contains(resultList)) {
-                            showToastToMain("申请成功");
-                            getActivity().finish();
-                        } else {
-                            showToastToMain("服务器正忙请稍后");
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    showToastToMain("服务器异常，请联系管理员");
-                }
-            }
-        });
+        startUltimatelySubmit(IpFiled.BUS_REQUEST_APPLY_SUBMIT, hashMap, "success", "服务器正忙,请稍后", "请假申请提交成功");
     }
 }
