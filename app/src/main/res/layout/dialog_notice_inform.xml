@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@mipmap/calendar_icon_default" />
+            android:src="@mipmap/notice_dialog_close" />
     </RelativeLayout>
 
     <FrameLayout
