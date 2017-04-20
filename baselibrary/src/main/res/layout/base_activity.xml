@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/top_background"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp">
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
 
         <ImageView
             android:id="@+id/iv_title_back"
@@ -44,7 +44,7 @@
             android:layout_centerInParent="true"
             android:text="标题"
             android:textColor="@color/white"
-            android:textSize="20dp" />
+            android:textSize="24dp" />
 
     </RelativeLayout>
 

@@ -67,7 +67,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/login_bottom_text_margin_bottom"
         android:text="POWERED BY 明鹿物联  版权所有"
-        android:textColor="@color/white"
+        android:textColor="@color/red"
         android:textSize="12dp" />
 
     <Button

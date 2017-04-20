@@ -4,24 +4,29 @@ import android.content.DialogInterface;
 import android.view.View;
 
 import com.minlu.baselibrary.base.ContentPage;
+import com.minlu.baselibrary.util.SharedPreferencesUtil;
 import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.ViewsUitls;
+import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.R;
+import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.bean.CheckBoxChild;
 import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.customview.EditTextTimeSelector;
-import com.minlu.office_system.fragment.dialog.OnSureButtonClick;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
-import com.minlu.office_system.fragment.dialog.SelectNextUserDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
+import com.minlu.office_system.http.OkHttpMethod;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.Response;
 
 /**
@@ -40,6 +45,10 @@ public class BusManagementFragment extends FormFragment {
     private String mGoAlongPerson;
     private String[] mStartTime;
     private String[] mEndTime;
+    private String mBusTypeRemarkText;
+    private String mOfficeIdeaText;
+    private String mAssignee;
+    private String mTaskName;
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -62,6 +71,8 @@ public class BusManagementFragment extends FormFragment {
     }
 
     private void initView(View inflate) {
+        // 正常数据显示
+        mApproveIdea = (EditTextItem) inflate.findViewById(R.id.form_bus_management_approve_idea);
         EditTextItem title = (EditTextItem) inflate.findViewById(R.id.form_bus_management_title);
         title.setEditText(mTitle);
         EditTextItem office = (EditTextItem) inflate.findViewById(R.id.form_bus_management_office);
@@ -80,42 +91,34 @@ public class BusManagementFragment extends FormFragment {
         EditTextTimeSelector endTime = (EditTextTimeSelector) inflate.findViewById(R.id.form_bus_management_end_time);
         endTime.setDayOfYearText(mEndTime[0]);
         endTime.setTimeOfDayText(mEndTime[1]);
-
-        mApproveIdea = (EditTextItem) inflate.findViewById(R.id.form_bus_management_approve_idea);
-
+        EditTextItem busTypeRemark = (EditTextItem) inflate.findViewById(R.id.form_bus_management_bus_type_remark);
+        if (StringUtils.isEmpty(mBusTypeRemarkText)) {
+            busTypeRemark.setVisibility(View.GONE);
+        } else {
+            busTypeRemark.setVisibility(View.VISIBLE);
+            busTypeRemark.setEditText(mBusTypeRemarkText);
+        }
         ViewsUitls.setWidthFromTargetView(title.getCustomEditTextLeft(), busType.getCustomEditTextLeft());
         ViewsUitls.setWidthFromTargetView(title.getCustomEditTextLeft(), destination.getCustomEditTextLeft());
+
+        // 审批各步骤的审批意见
+        EditTextItem officeIdea = (EditTextItem) inflate.findViewById(R.id.form_bus_management_office_idea);
+        officeIdea.setEditText(mOfficeIdeaText);
+
+        // 此时用户填写的意见
+        mApproveIdea = (EditTextItem) inflate.findViewById(R.id.form_bus_management_approve_idea);
     }
 
     @Override
     protected ContentPage.ResultState onLoad() {
-
         Response response = requestFormListItemDetail();
-
         if (response != null && response.isSuccessful()) {
             try {
                 String resultList = response.body().string();
                 if (StringUtils.interentIsNormal(resultList)) {
                     JSONObject jsonObject = new JSONObject(resultList);
                     if (jsonObject.has("TITLE")) {// 有标题字段，说明返回的数据正常
-                        excessive = new ArrayList<>();
-                        excessive.add("excessive");// 给excessive创建实例，并添加元素，让界面走onCreateSuccessView()方法
-
-                        mTitle = jsonObject.optString("TITLE");
-                        mOffice = jsonObject.optString("SQCS");
-                        mDestination = jsonObject.optString("MDD");
-                        mUseBusCause = jsonObject.optString("YCSY");
-                        mBusType = jsonObject.optString("CAR_NO");
-                        mGoAlongPerson = jsonObject.optString("SXRY");
-                        mStartTime = jsonObject.optString("BTIME").split(" ");
-                        mEndTime = jsonObject.optString("ETIME").split(" ");
-
-                        JSONArray jsonArray = jsonObject.optJSONArray("USERLIST");
-                        mNextUsers = new ArrayList<>();
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject nextUserData = jsonArray.getJSONObject(i);
-                            mNextUsers.add(new CheckBoxChild(nextUserData.optString("TRUENAME"), nextUserData.optString("USERNAME"), nextUserData.optString("ORG_INFOR")));
-                        }
+                        analyticalData(jsonObject);
                     }
                 }
             } catch (Exception e) {
@@ -125,12 +128,38 @@ public class BusManagementFragment extends FormFragment {
         return chat(excessive);
     }
 
+    private void analyticalData(JSONObject jsonObject) {
+        // 正常显示数据
+        mTitle = jsonObject.optString("TITLE");
+        mOffice = jsonObject.optString("SQCS");
+        mDestination = jsonObject.optString("MDD");
+        mUseBusCause = jsonObject.optString("YCSY");
+        mBusType = jsonObject.optString("CAR_NO");
+        mGoAlongPerson = jsonObject.optString("SXRY");
+        mStartTime = jsonObject.optString("BTIME").split(" ");
+        mEndTime = jsonObject.optString("ETIME").split(" ");
+        mBusTypeRemarkText = jsonObject.optString("JSY");
+
+        // 后面的接口需要到的数据
+        mAssignee = jsonObject.optString("ASSIGNEE");
+        mTaskName = jsonObject.optString("TASKNAME");
+
+        getAllSuggest(new AnalysisJSON() {
+            @Override
+            public void analysisJSON(JSONObject jsonObject) {
+                mOfficeIdeaText = jsonObject.optString("rect3suggest");
+                excessive = new ArrayList<>();
+                excessive.add("excessive");// 给excessive创建实例，并添加元素，让界面走onCreateSuccessView()方法
+            }
+        });
+    }
+
     @Override
     public void disAgreeOnClick(View v) {
         PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
             @Override
             public void onSureClick(DialogInterface dialog, int id) {
-                System.out.println("BusManagementFragment-disAgreeOnClick");
+                officialBusUseApply("",1);
             }
         }, "是否不同意该用车请求 !");
         promptDialog.show(getActivity().getSupportFragmentManager(), "BusManagementFragment");
@@ -138,28 +167,58 @@ public class BusManagementFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        SelectNextUserDialog selectNextUserDialog = new SelectNextUserDialog();
-        selectNextUserDialog.setCheckBoxTexts(mNextUsers);
-        selectNextUserDialog.setOnSureButtonClick(new OnSureButtonClick() {
+        getNextPersonData(mAssignee, "BusManagementAgree_Have_Next", "BusManagementAgree_No_Next", new PassNextPersonString() {
             @Override
-            public void onSureClick(DialogInterface dialog, int id, List<Boolean> isChecks) {
-                List<CheckBoxChild> sureUsers = new ArrayList<>();
-                // 通过isChecks集合中的选择数据去判断哪些数据选中，并将选中的数据填进sureUsers集合中
-                for (int i = 0; i < isChecks.size(); i++) {
-                    if (isChecks.get(i)) {
-                        sureUsers.add(mNextUsers.get(i));
-                    }
-                }
-                String approveIdea = mApproveIdea.getCustomEditTextRight().getText().toString();
-                System.out.println(approveIdea + sureUsers.size());
-                // TODO 使用sureUsers集合和审批意见去进行网络请求
+            public void passNextPersonString(String userList) {
+                officialBusUseApply(userList, 0);
             }
         });
-        selectNextUserDialog.show(getActivity().getSupportFragmentManager(), "BusManagementFragment");
     }
 
     @Override
     public void submitOnClick(View v) {
-        System.out.println("BusManagementFragment-submitOnClick");
+    }
+
+    private void officialBusUseApply(String userList, int method) {
+        startLoading();
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("processId", getProcessIdFromList());
+        hashMap.put("orderId", getOrderIdFromList());
+        hashMap.put("taskId", getTaskIdFromList());
+        hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
+        hashMap.put("taskName", mTaskName);
+        hashMap.put("assignee", mAssignee);
+        hashMap.put("Method", method + "");
+        hashMap.put("userList", userList);
+
+        // 以下为表单上的填写数据
+        hashMap.put("suggest", mApproveIdea.getCustomEditTextRight().getText().toString());
+
+        OkHttpMethod.asynPostRequest(IpFiled.BUS_REQUEST_APPLY_SUBMIT, hashMap, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                showThrow();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response != null && response.isSuccessful()) {
+                    try {
+                        String resultList = response.body().string();
+                        if ("success".contains(resultList)) {
+                            endLoading();
+                            getActivity().finish();
+                        } else {
+                            showThrow();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        showThrow();
+                    }
+                } else {
+                    showThrow();
+                }
+            }
+        });
     }
 }

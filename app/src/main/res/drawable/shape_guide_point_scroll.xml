@@ -9,6 +9,6 @@
         android:height="30dp"
         android:width="30dp" />
     <!-- 颜色 -->
-    <solid android:color="#000000" />
+    <solid android:color="@color/accessory_download_text_press" />
 
 </shape>

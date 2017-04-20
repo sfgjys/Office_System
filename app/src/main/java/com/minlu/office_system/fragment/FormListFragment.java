@@ -60,14 +60,13 @@ public class FormListFragment extends BaseFragment<TaskListItem> {
                 String orderId = data.get(position).getOrderId();
                 String taskId = data.get(position).getTaskId();
                 String processId = data.get(position).getProcessId();
-                String taskName = data.get(position).getTaskName();
 
+                // orderId，taskId，processId，taskName只有在点击列表条目时存储，进入了FormActivity后使用，FormActivity销毁后四个数据都要为-1
                 boolean isSuccess1 = SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_ORDER_ID, orderId);
                 boolean isSuccess2 = SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_TASK_ID, taskId);
                 boolean isSuccess3 = SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_PROCESS_ID, processId);
-                boolean isSuccess4 = SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_TASK_NAME, taskName);
 
-                if (isSuccess1 && isSuccess2 && isSuccess3 && isSuccess4) {
+                if (isSuccess1 && isSuccess2 && isSuccess3) {
                     Intent intent = new Intent();
                     // 标题
                     intent.putExtra(BaseStringsFiled.ACTIVITY_TITLE, AllForms.values()[formTypePosition].getFormName());

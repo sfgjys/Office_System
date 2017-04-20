@@ -285,7 +285,7 @@ public class BusRequestFragment extends FormFragment {
         OkHttpMethod.asynPostRequest(IpFiled.BUS_REQUEST_APPLY_SUBMIT, hashMap, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                showToast("服务器异常，请联系管理员");
+                showToastToMain("服务器异常，请联系管理员");
             }
 
             @Override
@@ -294,26 +294,17 @@ public class BusRequestFragment extends FormFragment {
                     try {
                         String resultList = response.body().string();
                         if ("success".contains(resultList)) {
-                            showToast("申请成功");
+                            showToastToMain("申请成功");
                             getActivity().finish();
                         } else {
-                            showToast("服务器正忙请稍后");
+                            showToastToMain("服务器正忙请稍后");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
-                    showToast("服务器异常，请联系管理员");
+                    showToastToMain("服务器异常，请联系管理员");
                 }
-            }
-        });
-    }
-
-    private void showToast(final String s) {
-        ViewsUitls.runInMainThread(new TimerTask() {
-            @Override
-            public void run() {
-                ToastUtil.showToast(ViewsUitls.getContext(), s);
             }
         });
     }

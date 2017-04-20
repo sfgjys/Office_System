@@ -22,6 +22,15 @@
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="类型 : " />
 
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_bus_management_bus_type_remark"
+        style="@style/editText_item_top"
+        android:visibility="gone"
+        edittextitem:editText_hint="请输入其他类型车辆的备注"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_left_text="类型备注 : "
+        edittextitem:editText_max_lines="6" />
+
     <com.minlu.office_system.customview.EditTextTimeSelector
         android:id="@+id/form_bus_management_start_time"
         style="@style/editText_item_top"
@@ -62,5 +71,13 @@
         edittextitem:editText_hint="选填审批意见"
         edittextitem:editText_input_type="textMultiLine"
         edittextitem:editText_left_text="审批意见 : "
+        edittextitem:editText_max_lines="99" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_bus_management_office_idea"
+        style="@style/editText_item_top"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="办公室意见 : "
         edittextitem:editText_max_lines="99" />
 </LinearLayout>

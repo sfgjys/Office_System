@@ -34,12 +34,12 @@
         edittextitem:editText_left_text="发文文号 : " />
 
     <com.minlu.office_system.customview.EditTextItem
-        android:id="@+id/form_post_management_is_open"
+        android:id="@+id/form_post_management_secret_grade"
         style="@style/editText_item_top"
         android:layout_marginRight="100dp"
-        edittextitem:editText_hint="是/否"
+        edittextitem:editText_hint="请选择"
         edittextitem:editText_is_edit="false"
-        edittextitem:editText_left_text="是否公开 : "
+        edittextitem:editText_left_text="密级 : "
         edittextitem:editText_right_icon="@drawable/selector_pull_down" />
 
     <com.minlu.office_system.customview.EditTextItem
@@ -66,5 +66,48 @@
         edittextitem:editText_hint="可编辑审批意见"
         edittextitem:editText_input_type="textMultiLine"
         edittextitem:editText_left_text="审批意见 : "
+        edittextitem:editText_max_lines="6" />
+
+
+    <LinearLayout
+        android:id="@+id/form_post_management_details"
+        style="@style/editText_item_top"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="附件下载 : "
+            android:textColor="@color/black"
+            android:textSize="18dp" />
+
+        <LinearLayout
+            android:id="@+id/form_post_management_details_right"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:orientation="vertical"/>
+    </LinearLayout>
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_post_management_nuclear_draft_idea"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="可编辑审批意见"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="核稿意见 : "
+        edittextitem:editText_max_lines="6" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_post_management_office_nuclear_draft_idea"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="可编辑审批意见"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="办公室核稿意见 : "
         edittextitem:editText_max_lines="6" />
 </LinearLayout>

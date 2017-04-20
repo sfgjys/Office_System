@@ -1,6 +1,7 @@
 package com.minlu.office_system.fragment.form.formPremise;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.ListPopupWindow;
 import android.view.View;
@@ -16,21 +17,37 @@ import com.minlu.baselibrary.base.BaseFragment;
 import com.minlu.baselibrary.util.SharedPreferencesUtil;
 import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.TimeTool;
+import com.minlu.baselibrary.util.ToastUtil;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.StringsFiled;
+import com.minlu.office_system.activity.FormActivity;
+import com.minlu.office_system.bean.CheckBoxChild;
 import com.minlu.office_system.customview.EditTextTimeSelector;
+import com.minlu.office_system.fragment.dialog.OnSureButtonClick;
+import com.minlu.office_system.fragment.dialog.PromptDialog;
+import com.minlu.office_system.fragment.dialog.SelectNextUserDialog;
 import com.minlu.office_system.fragment.time.DatePickerFragment;
 import com.minlu.office_system.fragment.time.TimePickerFragment;
 import com.minlu.office_system.http.OkHttpMethod;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimerTask;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.Response;
 
 public abstract class FormFragment extends BaseFragment {
+
+    private FormActivity mFormActivity;
 
     public interface ShowListPopupItemClickListener {
         void onItemClick(AdapterView<?> parent, View view, int position, long id);
@@ -143,13 +160,187 @@ public abstract class FormFragment extends BaseFragment {
     }
 
 
+    /* 同步网络请求获取表单详情 */
     public Response requestFormListItemDetail() {
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("processId", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_PROCESS_ID, ""));
-        hashMap.put("orderId", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_ORDER_ID, ""));
-        hashMap.put("taskId", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_TASK_ID, ""));
+        hashMap.put("processId", getProcessIdFromList());
+        hashMap.put("orderId", getOrderIdFromList());
+        hashMap.put("taskId", getTaskIdFromList());
         hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
         return OkHttpMethod.synPostRequest(IpFiled.FORM_LIST_ITEM_DETAIL, hashMap);
     }
 
+    public String getTaskIdFromList() {
+        return SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_TASK_ID, "");
+    }
+
+    public String getOrderIdFromList() {
+        return SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_ORDER_ID, "");
+    }
+
+    public String getProcessIdFromList() {
+        return SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_PROCESS_ID, "");
+    }
+
+    /* 六个审批模块请求网络获取审批建议 */
+    public void getAllSuggest(AnalysisJSON analysisJSON) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("orderId", getOrderIdFromList());
+        Response response = OkHttpMethod.synPostRequest(IpFiled.GET_ALL_SUGGEST, hashMap);
+        if (response != null && response.isSuccessful()) {
+            try {
+                String resultList = response.body().string();
+                if (StringUtils.interentIsNormal(resultList)) {
+                    JSONObject jsonObject = new JSONObject(resultList);
+                    analysisJSON.analysisJSON(jsonObject);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /* 解析审批意见json数据的接口 */
+    public interface AnalysisJSON {
+        void analysisJSON(JSONObject jsonObject);
+    }
+
+
+    /* 请求网络获取下一步操作数据 */
+    public void getNextPersonData(String assignee, final String tag1, final String tag2, final PassNextPersonString passNextPersonString) {
+        startLoading();
+
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("assignee", assignee);
+        hashMap.put("org_id", "");
+        hashMap.put("autoOrg", "");
+        OkHttpMethod.asynPostRequest(IpFiled.REQUEST_USER_LIST, hashMap, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                showThrow();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response != null && response.isSuccessful()) {
+                    try {
+                        String resultList = response.body().string();
+                        if (StringUtils.interentIsNormal(resultList)) {
+                            JSONArray jsonArray = new JSONArray(resultList);
+                            final List<CheckBoxChild> nextUsers = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject nextUserData = jsonArray.getJSONObject(i);
+                                nextUsers.add(new CheckBoxChild(nextUserData.optString("TRUENAME"), nextUserData.optString("USERNAME"), nextUserData.optString("ORG_INFOR")));
+                            }
+                            // 走到这mNextUsers里已经有了下一步操作人的数据(或者为空)
+                            ViewsUitls.runInMainThread(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    showNextPersonData(nextUsers, passNextPersonString, tag1, tag2);
+                                }
+                            });
+                        } else {
+                            showThrow();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        showThrow();
+                    }
+                } else {
+                    showThrow();
+                }
+            }
+        });
+    }
+
+    /* 将下一步操作人通过对话框展示出来 */
+    private void showNextPersonData(final List<CheckBoxChild> nextUsers, final PassNextPersonString passNextPersonString, String tag1, String tag2) {
+        if (nextUsers.size() > 0) {
+            endLoading();
+            SelectNextUserDialog selectNextUserDialog = new SelectNextUserDialog();
+            selectNextUserDialog.setCheckBoxTexts(nextUsers);
+            selectNextUserDialog.setOnSureButtonClick(new OnSureButtonClick() {
+                @Override
+                public void onSureClick(DialogInterface dialog, int id, List<Boolean> isChecks) {
+                    List<CheckBoxChild> sureUsers = new ArrayList<>();
+                    // 通过isChecks集合中的选择数据去判断哪些数据选中，并将选中的数据填进sureUsers集合中
+                    for (int i = 0; i < isChecks.size(); i++) {
+                        if (isChecks.get(i)) {
+                            sureUsers.add(nextUsers.get(i));
+                        }
+                    }
+                    // 用户有可能不选择下一步操作人，就点击了确定
+                    if (sureUsers.size() > 0) {
+                        String userList = "";
+                        for (int i = 0; i < sureUsers.size(); i++) {
+                            userList += (sureUsers.get(i).getUserName() + ",");
+                        }
+                        passNextPersonString.passNextPersonString(userList);
+                    } else {
+                        showToastToMain("请先选择下一步操作人");
+                    }
+                }
+            });
+            selectNextUserDialog.show(getActivity().getSupportFragmentManager(), tag1);
+        } else {
+            endLoading();
+            PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
+                @Override
+                public void onSureClick(DialogInterface dialog, int id) {
+                    passNextPersonString.passNextPersonString("");
+                }
+            }, "是否最终同意该收文签收 !");
+            promptDialog.show(getActivity().getSupportFragmentManager(), tag2);
+        }
+    }
+
+    /* 解析审批意见json数据的接口 */
+    public interface PassNextPersonString {
+        void passNextPersonString(String userList);
+    }
+
+
+    public void showThrow() {
+        endLoading();
+        showToastToMain("服务器异常，请稍后");
+    }
+
+
+    // 开启加载
+    public void startLoading() {
+        ViewsUitls.runInMainThread(new TimerTask() {
+            @Override
+            public void run() {
+                getFormActivity().setLoadingVisibility(View.VISIBLE);
+                getFormActivity().setIsInterruptTouch(true);
+            }
+        });
+    }
+
+    // 结束加载
+    public void endLoading() {
+        ViewsUitls.runInMainThread(new TimerTask() {
+            @Override
+            public void run() {
+                getFormActivity().setLoadingVisibility(View.GONE);
+                getFormActivity().setIsInterruptTouch(false);
+            }
+        });
+    }
+
+    public void showToastToMain(final String s) {
+        ViewsUitls.runInMainThread(new TimerTask() {
+            @Override
+            public void run() {
+                ToastUtil.showToast(ViewsUitls.getContext(), s);
+            }
+        });
+    }
+
+    public FormActivity getFormActivity() {
+        if (mFormActivity == null) {
+            mFormActivity = (FormActivity) getActivity();
+        }
+        return mFormActivity;
+    }
 }

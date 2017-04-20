@@ -64,6 +64,7 @@ public class StringsFiled {
     public static final String FORM_LIST_TO_FORM_ORDER_ID = "form_list_to_form_order_id";
     public static final String FORM_LIST_TO_FORM_TASK_ID = "form_list_to_form_task_id";
     public static final String FORM_LIST_TO_FORM_PROCESS_ID = "form_list_to_form_process_id";
+    public static final String FORM_LIST_TO_FORM_TASK_NAME = "form_list_to_form_task_name";
 
     /*
     * 区别显示是否同意按钮还是提交按钮

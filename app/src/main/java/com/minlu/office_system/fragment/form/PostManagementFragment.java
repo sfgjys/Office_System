@@ -2,25 +2,34 @@ package com.minlu.office_system.fragment.form;
 
 import android.content.DialogInterface;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.minlu.baselibrary.base.ContentPage;
+import com.minlu.baselibrary.util.SharedPreferencesUtil;
 import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.ViewsUitls;
+import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.R;
+import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.bean.CheckBoxChild;
 import com.minlu.office_system.customview.EditTextItem;
-import com.minlu.office_system.fragment.dialog.OnSureButtonClick;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
-import com.minlu.office_system.fragment.dialog.SelectNextUserDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
+import com.minlu.office_system.http.OkHttpMethod;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.Response;
 
 /**
@@ -37,6 +46,13 @@ public class PostManagementFragment extends FormFragment {
     private String mMainOfficeText = "";
     private List<CheckBoxChild> mNextUsers;
     private EditTextItem mApproveIdea;
+    private String mSecretGradeText = "";
+    private List<String> mDownloadFileName;
+    private List<String> mDownloadFilePath;
+    private String mNuclearDraftText;
+    private String mOfficeNuclearDraftIdeaText;
+    private String mAssignee;
+    private String mTaskName;
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -59,88 +75,95 @@ public class PostManagementFragment extends FormFragment {
     }
 
     private void initView(View inflate) {
+        // 正常显示数据
         EditTextItem drafter = (EditTextItem) inflate.findViewById(R.id.form_post_management_drafter);
         drafter.setEditText(mDrafterText);
         EditTextItem mainOffice = (EditTextItem) inflate.findViewById(R.id.form_post_management_main_office);
         mainOffice.setEditText(mMainOfficeText);
         ViewsUitls.setWidthFromTargetView(mainOffice.getCustomEditTextLeft(), drafter.getCustomEditTextLeft());
-
-        EditTextItem postNumber = (EditTextItem) inflate.findViewById(R.id.form_post_management_post_number);
         EditTextItem postTitle = (EditTextItem) inflate.findViewById(R.id.form_post_management_post_title);
         postTitle.setEditText(mPostTitleText);
         EditTextItem mainSendOffice = (EditTextItem) inflate.findViewById(R.id.form_post_management_main_send_office);
         mainSendOffice.setEditText(mMainSendOfficeText);
+        EditTextItem postType = (EditTextItem) inflate.findViewById(R.id.form_post_management_post_type);
+        postType.setEditText(mPostTypeText);
+        EditTextItem secretGrade = (EditTextItem) inflate.findViewById(R.id.form_post_management_secret_grade);
+        ViewsUitls.setWidthFromTargetView(mainOffice.getCustomEditTextLeft(), secretGrade.getCustomEditTextLeft());
+        secretGrade.setEditText(mSecretGradeText);
+
+        // 暂无数据
+        EditTextItem postNumber = (EditTextItem) inflate.findViewById(R.id.form_post_management_post_number);
+
+        // 各个步骤审批意见
+        EditTextItem officeNuclearDraftIdea = (EditTextItem) inflate.findViewById(R.id.form_post_management_office_nuclear_draft_idea);
+        officeNuclearDraftIdea.setEditText(mOfficeNuclearDraftIdeaText);
+        EditTextItem nuclearDraftIdea = (EditTextItem) inflate.findViewById(R.id.form_post_management_nuclear_draft_idea);
+        nuclearDraftIdea.setEditText(mNuclearDraftText);
+        ViewsUitls.setWidthFromTargetView(officeNuclearDraftIdea.getCustomEditTextLeft(), nuclearDraftIdea.getCustomEditTextLeft());
 
         mApproveIdea = (EditTextItem) inflate.findViewById(R.id.form_post_management_approve_idea);
 
-        EditTextItem postType = (EditTextItem) inflate.findViewById(R.id.form_post_management_post_type);
-        postType.setEditText(mPostTypeText);
-//        final EditText postTypeEditText = postType.getCustomEditTextRight();
-//        // 设置展示类型选择列表
-//        setWhichViewShowListPopupWindow(postTypeEditText, mPostTypeData, new ShowListPopupItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                postTypeEditText.setText(mPostTypeData.get(position));
-//            }
-//
-//            @Override
-//            public void onAnchorViewClick(View v) {
-//                setBackGroundDarkColor(0.6f);
-//            }
-//
-//            @Override
-//            public void onListPopupDismiss() {
-//                setBackGroundDarkColor(1.0f);
-//            }
-//        }, getActivity());
+        setDownloadView(inflate);
+    }
 
-        EditTextItem isOpen = (EditTextItem) inflate.findViewById(R.id.form_post_management_is_open);
-//        // 设置展示是否公开列表
-//        final EditText isOpenEditText = isOpen.getCustomEditTextRight();
-//        setWhichViewShowListPopupWindow(isOpenEditText, mYesOrNo, new ShowListPopupItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                isOpenEditText.setText(mYesOrNo.get(position));
-//            }
-//
-//            @Override
-//            public void onAnchorViewClick(View v) {
-//                setBackGroundDarkColor(0.6f);
-//            }
-//
-//            @Override
-//            public void onListPopupDismiss() {
-//                setBackGroundDarkColor(1.0f);
-//            }
-//        }, getActivity());
+    /* 设置下载控件操作 */
+    private void setDownloadView(View inflate) {
+        View details = inflate.findViewById(R.id.form_post_management_details);
+        LinearLayout accessoryList = (LinearLayout) inflate.findViewById(R.id.form_post_management_details_right);
+        if (mDownloadFileName.size() > 0) {
+            details.setVisibility(View.VISIBLE);
+            for (int i = 0; i < mDownloadFileName.size(); i++) {
+                TextView textView = (TextView) ViewsUitls.inflate(R.layout.item_accessory_list);
+                textView.setText(mDownloadFileName.get(i));
+                final int pressIndex = i;
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final String fileName = mDownloadFileName.get(pressIndex);
+                        final String filePath = mDownloadFilePath.get(pressIndex);
+                        PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
+                            @Override
+                            public void onSureClick(DialogInterface dialog, int id) {
+                                startDownLoad(fileName, filePath);
+                            }
+                        }, "是否下载 “ " + fileName + " ” 附件");
+                        promptDialog.show(getActivity().getSupportFragmentManager(), "PostManagementDisAgree");
+                    }
+                });
+                textView.setPadding(ViewsUitls.dpToPx(0), ViewsUitls.dpToPx(6), ViewsUitls.dpToPx(0), ViewsUitls.dpToPx(6));
+                accessoryList.addView(textView);
+            }
+        }
+    }
+
+    // TODO 下载附件的方法
+    private void startDownLoad(String fileName, String filePath) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("oldfilename", fileName);
+        hashMap.put("path", filePath);
+        OkHttpMethod.asynPostRequest(IpFiled.DOWNLOAD_ACCESSORY, hashMap, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                System.out.println();
+            }
+        });
     }
 
     @Override
     protected ContentPage.ResultState onLoad() {
-
         Response response = requestFormListItemDetail();
-
         if (response != null && response.isSuccessful()) {
             try {
                 String resultList = response.body().string();
                 if (StringUtils.interentIsNormal(resultList)) {
                     JSONObject jsonObject = new JSONObject(resultList);
                     if (jsonObject.has("TITLE")) {// 有标题字段，说明返回的数据正常
-                        excessive = new ArrayList<>();
-                        excessive.add("excessive");// 给excessive创建实例，并添加元素，让界面走onCreateSuccessView()方法
-
-                        mDrafterText = jsonObject.optString("DRAFTER");
-                        mMainOfficeText = jsonObject.optString("ZBCS");
-                        mPostTypeText = jsonObject.optString("DOCUMENT_TYPE");
-                        mPostTitleText = jsonObject.optString("TITLE");
-                        mMainSendOfficeText = jsonObject.optString("ZSJG");
-
-                        JSONArray jsonArray = jsonObject.optJSONArray("USERLIST");
-                        mNextUsers = new ArrayList<>();
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject nextUserData = jsonArray.getJSONObject(i);
-                            mNextUsers.add(new CheckBoxChild(nextUserData.optString("TRUENAME"), nextUserData.optString("USERNAME"), nextUserData.optString("ORG_INFOR")));
-                        }
+                        analyticalData(jsonObject);
                     }
                 }
             } catch (Exception e) {
@@ -150,12 +173,53 @@ public class PostManagementFragment extends FormFragment {
         return chat(excessive);
     }
 
+    private void analyticalData(JSONObject jsonObject) throws JSONException {
+        // 用于表单界面展示的数据
+        mDrafterText = jsonObject.optString("DRAFTER");
+        mMainOfficeText = jsonObject.optString("ZBCS");
+        mPostTypeText = jsonObject.optString("DOCUMENT_TYPE");
+        mPostTitleText = jsonObject.optString("TITLE");
+        mMainSendOfficeText = jsonObject.optString("ZSJG");
+        mSecretGradeText = jsonObject.optString("MIJI");
+
+        // 下载附件数据
+        JSONArray fileList = jsonObject.optJSONArray("FILELIST");
+        mDownloadFileName = new ArrayList<>();
+        mDownloadFilePath = new ArrayList<>();
+        if (fileList != null) {
+            for (int i = 0; i < fileList.length(); i++) {
+                JSONObject file = fileList.getJSONObject(i);
+                mDownloadFileName.add(file.optString("FILE_NAME"));
+                mDownloadFilePath.add(file.optString("FILE_PATH"));
+            }
+        }
+
+        // 后面的接口需要到的数据
+        mAssignee = jsonObject.optString("ASSIGNEE");
+        mTaskName = jsonObject.optString("TASKNAME");
+
+        // 获取审批建议
+        getAllSuggest(new AnalysisJSON() {
+            @Override
+            public void analysisJSON(JSONObject jsonObject) {
+                if (jsonObject.has("rect3suggest")) {
+                    mNuclearDraftText = jsonObject.optString("rect3suggest");
+                }
+                if (jsonObject.has("rect4suggest")) {
+                    mOfficeNuclearDraftIdeaText = jsonObject.optString("rect4suggest");
+                }
+                excessive = new ArrayList<>();
+                excessive.add("excessive");// 给excessive创建实例，并添加元素，让界面走onCreateSuccessView()方法
+            }
+        });
+    }
+
     @Override
     public void disAgreeOnClick(View v) {
         PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
             @Override
             public void onSureClick(DialogInterface dialog, int id) {
-                System.out.println("PostManagementFragment-disAgreeOnClick");
+                officialLeaveApply("", 1);
             }
         }, "是否不同意该发文拟稿 !");
         promptDialog.show(getActivity().getSupportFragmentManager(), "PostManagementDisAgree");
@@ -163,28 +227,58 @@ public class PostManagementFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        SelectNextUserDialog selectNextUserDialog = new SelectNextUserDialog();
-        selectNextUserDialog.setCheckBoxTexts(mNextUsers);
-        selectNextUserDialog.setOnSureButtonClick(new OnSureButtonClick() {
+        getNextPersonData(mAssignee, "PostManagementAgree_Have_Next", "PostManagementAgree_No_Next", new PassNextPersonString() {
             @Override
-            public void onSureClick(DialogInterface dialog, int id, List<Boolean> isChecks) {
-                List<CheckBoxChild> sureUsers = new ArrayList<>();
-                // 通过isChecks集合中的选择数据去判断哪些数据选中，并将选中的数据填进sureUsers集合中
-                for (int i = 0; i < isChecks.size(); i++) {
-                    if (isChecks.get(i)) {
-                        sureUsers.add(mNextUsers.get(i));
-                    }
-                }
-                String approveIdea = mApproveIdea.getCustomEditTextRight().getText().toString();
-                System.out.println(approveIdea + sureUsers.size());
-                // TODO 使用sureUsers集合和审批意见去进行网络请求
+            public void passNextPersonString(String userList) {
+                officialLeaveApply(userList, 0);
             }
         });
-        selectNextUserDialog.show(getActivity().getSupportFragmentManager(), "PostManagementAgree");
     }
 
     @Override
     public void submitOnClick(View v) {
-        System.out.println("PostManagementFragment-submitOnClick");
+    }
+
+    private void officialLeaveApply(String userList, int method) {
+        startLoading();
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("processId", getProcessIdFromList());
+        hashMap.put("orderId", getOrderIdFromList());
+        hashMap.put("taskId", getTaskIdFromList());
+        hashMap.put("taskName", mTaskName);
+        hashMap.put("assignee", mAssignee);
+        hashMap.put("Method", "" + method);
+        hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
+        hashMap.put("userList", userList);
+
+        // 以下为表单上的填写数据
+        hashMap.put("suggest", mApproveIdea.getCustomEditTextRight().getText().toString());
+
+        OkHttpMethod.asynPostRequest(IpFiled.SUBMIT_IS_AGREE_POST, hashMap, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                showThrow();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response != null && response.isSuccessful()) {
+                    try {
+                        String resultList = response.body().string();
+                        if ("success".contains(resultList)) {
+                            endLoading();
+                            getActivity().finish();
+                        } else {
+                            showThrow();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        showThrow();
+                    }
+                } else {
+                    showThrow();
+                }
+            }
+        });
     }
 }

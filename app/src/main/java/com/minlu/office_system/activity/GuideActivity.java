@@ -107,10 +107,8 @@ public class GuideActivity extends Activity implements OnPageChangeListener {
 
     // TODO 设置跳转按钮的一些属性
     private void setButtonParams() {
-        mIsSkip.setBackgroundColor(Color.TRANSPARENT);
-        mIsSkip.setText("立即跳转");
-        mIsSkip.setTextColor(Color.RED);
-        mIsSkip.setTextSize(ViewsUitls.dpToPx(9));
+        mIsSkip.setText("跳转");
+        mIsSkip.setTextColor(Color.WHITE);
     }
 
     // 获取要移动的标准距离

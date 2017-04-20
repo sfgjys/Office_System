@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/top_background"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp">
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -38,13 +38,56 @@
                 android:layout_marginLeft="6dp"
                 android:text="协同智能办公系统"
                 android:textColor="@color/white"
-                android:textSize="20dp"
+                android:textSize="24dp"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
 
     </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/fl_top_advertisement"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@mipmap/home_page_top_image_view" />
+    <!--<FrameLayout
+       android:id="@+id/fl_top_advertisement"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+
+      <android.support.v4.view.ViewPager
+           android:id="@+id/view_pager_top_advertisement"
+           android:layout_width="match_parent"
+           android:layout_height="160dp" />
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_gravity="bottom"
+           android:background="#a000"
+           android:orientation="vertical"
+           android:padding="5dp">
+
+           <TextView
+               android:id="@+id/tv_title"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="新闻标题"
+               android:textColor="#fff"
+               android:textSize="16sp" />
+
+           <LinearLayout
+               android:layout_margin="3dp"
+               android:id="@+id/ll_container"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_horizontal"
+               android:orientation="horizontal"/>
+       </LinearLayout>
+    </FrameLayout>-->
+
 
     <FrameLayout
         android:layout_width="match_parent"

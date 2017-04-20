@@ -15,19 +15,21 @@ import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.bean.CheckBoxChild;
 import com.minlu.office_system.customview.EditTextItem;
-import com.minlu.office_system.fragment.dialog.OnSureButtonClick;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
-import com.minlu.office_system.fragment.dialog.SelectNextUserDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
 import com.minlu.office_system.http.OkHttpMethod;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.Response;
 
 /**
@@ -35,6 +37,7 @@ import okhttp3.Response;
  */
 public class WorkMonthlyReportFragment extends FormFragment {
 
+    private ArrayList<String> excessive;
     private String mJobSummaryTitleText = "";
     private String mJobPerformanceTitleText = "";
     private String mJobPlanTitleText = "";
@@ -55,7 +58,10 @@ public class WorkMonthlyReportFragment extends FormFragment {
 
     private EditTextItem mRect3Idea;
     private EditTextItem mRect4Idea;
-    private EditTextItem mRect5Idea;
+    private String mAssignee = "";
+    private EditTextItem mApproveIdea;
+    private String mAutoOrg = "";
+    private String mTaskName;
 
     @Override
 
@@ -79,18 +85,17 @@ public class WorkMonthlyReportFragment extends FormFragment {
     }
 
     private void initView(View inflate) {
+        // 正常显示数据
         TextView office = (TextView) inflate.findViewById(R.id.form_work_monthly_report_office);
         office.setText("填报单位 : " + mOfficeText);
         TextView time = (TextView) inflate.findViewById(R.id.form_work_monthly_report_time);
         time.setText("日期 : " + mTimeText);
-
         TextView jobSummaryTitle = (TextView) inflate.findViewById(R.id.tv_title_job_summary);
         jobSummaryTitle.setText(mJobSummaryTitleText + "月份工作总结");
         TextView jobPerformanceTitle = (TextView) inflate.findViewById(R.id.tv_title_job_performance);
         jobPerformanceTitle.setText(mJobPerformanceTitleText + "月份工作完成情况");
         TextView jobPlanTitle = (TextView) inflate.findViewById(R.id.tv_title_job_plan);
         jobPlanTitle.setText(mJobPlanTitleText + "月份工作安排");
-
         LinearLayout jobSummary = (LinearLayout) inflate.findViewById(R.id.ll_work_monthly_report_job_summary);
         addTextToJobLinear(jobSummary, mJobSummaryData);
         LinearLayout jobPerformance = (LinearLayout) inflate.findViewById(R.id.ll_work_monthly_report_job_performance);
@@ -98,15 +103,30 @@ public class WorkMonthlyReportFragment extends FormFragment {
         LinearLayout jobPlan = (LinearLayout) inflate.findViewById(R.id.ll_work_monthly_report_job_plan);
         addTextToJobLinear(jobPlan, mJobPlanData);
 
+
+        // 此为用户进行审批意见编辑的控件
+        mApproveIdea = (EditTextItem) inflate.findViewById(R.id.form_work_monthly_report_approve_idea);
+
+
+        // 审批意见有可能有，这个意见只能展示不能编辑
         mRect3Idea = (EditTextItem) inflate.findViewById(R.id.form_work_monthly_report_approve_idea_rect3);
         mRect3Idea.setEditText(mBranchedPassageSuggest);
         mRect4Idea = (EditTextItem) inflate.findViewById(R.id.form_work_monthly_report_approve_idea_rect4);
         mRect4Idea.setEditText(mOfficeSuggest);
-        mRect5Idea = (EditTextItem) inflate.findViewById(R.id.form_work_monthly_report_approve_idea_rect5);
-        ViewsUitls.setWidthFromTargetView(mRect3Idea.getCustomEditTextLeft(), mRect4Idea.getCustomEditTextLeft());
-        ViewsUitls.setWidthFromTargetView(mRect3Idea.getCustomEditTextLeft(), mRect5Idea.getCustomEditTextLeft());
-
-        showWhichSuggest();
+        if (StringUtils.isEmpty(mBranchedPassageSuggest) && StringUtils.isEmpty(mOfficeSuggest)) {
+            mRect3Idea.setVisibility(View.GONE);
+            mRect4Idea.setVisibility(View.GONE);
+            mApproveIdea.setPadding(0, ViewsUitls.dpToPx(25), 0, 0);
+        } else if (StringUtils.isEmpty(mBranchedPassageSuggest) && !StringUtils.isEmpty(mOfficeSuggest)) {
+            mRect3Idea.setVisibility(View.GONE);
+            ViewsUitls.setWidthFromTargetView(mRect4Idea.getCustomEditTextLeft(), mApproveIdea.getCustomEditTextLeft());
+        } else if (!StringUtils.isEmpty(mBranchedPassageSuggest) && StringUtils.isEmpty(mOfficeSuggest)) {
+            mRect4Idea.setVisibility(View.GONE);
+            ViewsUitls.setWidthFromTargetView(mRect3Idea.getCustomEditTextLeft(), mApproveIdea.getCustomEditTextLeft());
+        } else if (!StringUtils.isEmpty(mBranchedPassageSuggest) && !StringUtils.isEmpty(mOfficeSuggest)) {
+            ViewsUitls.setWidthFromTargetView(mRect3Idea.getCustomEditTextLeft(), mRect4Idea.getCustomEditTextLeft());
+            ViewsUitls.setWidthFromTargetView(mRect3Idea.getCustomEditTextLeft(), mApproveIdea.getCustomEditTextLeft());
+        }
     }
 
     /* 根据条目数据去添加并显示条目 */
@@ -127,32 +147,14 @@ public class WorkMonthlyReportFragment extends FormFragment {
         }
     }
 
-    /* 根据步骤来选择显示哪几个审批意见 */
-    private void showWhichSuggest() {
-        switch (mWhichStep) {
-            case 0:
-                mRect4Idea.setVisibility(View.GONE);
-                mRect5Idea.setVisibility(View.GONE);
-                break;
-            case 1:
-                mRect3Idea.getCustomEditTextRight().setFocusableInTouchMode(false);
-                mRect3Idea.getCustomEditTextRight().setFocusable(false);
-                mRect5Idea.setVisibility(View.GONE);
-                break;
-            case 2:
-                mRect3Idea.getCustomEditTextRight().setFocusableInTouchMode(false);
-                mRect3Idea.getCustomEditTextRight().setFocusable(false);
-                mRect4Idea.getCustomEditTextRight().setFocusableInTouchMode(false);
-                mRect4Idea.getCustomEditTextRight().setFocusable(false);
-                break;
-        }
-    }
-
     @Override
     protected ContentPage.ResultState onLoad() {
 
         HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("orderId", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_ORDER_ID, ""));
+        hashMap.put("processId", getProcessIdFromList());
+        hashMap.put("orderId", getOrderIdFromList());
+        hashMap.put("taskId", getTaskIdFromList());
+        hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
         Response response = OkHttpMethod.synPostRequest(IpFiled.WORK_MONTHLY_REPORT_DETAIL, hashMap);
 
         if (response != null && response.isSuccessful()) {
@@ -161,58 +163,70 @@ public class WorkMonthlyReportFragment extends FormFragment {
                 if (StringUtils.interentIsNormal(resultList)) {
 
                     JSONArray jsonArray = new JSONArray(resultList);
-
-                    mJobSummaryData = new ArrayList<>();
-                    mJobPerformanceData = new ArrayList<>();
-                    mJobPlanData = new ArrayList<>();
-
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        if (jsonObject.has("one")) {// 有one说明是月报详细条目内容
-                            mJobSummaryData.add(jsonObject.optString("one"));
-                            mJobPerformanceData.add(jsonObject.optString("two"));
-                            mJobPlanData.add(jsonObject.optString("three"));
-                        }
-                        // 获取标题
-                        if (jsonObject.has("first")) {
-                            mJobSummaryTitleText = jsonObject.optString("first");
-                        }
-                        if (jsonObject.has("second")) {
-                            mJobPerformanceTitleText = jsonObject.optString("second");
-                        }
-                        if (jsonObject.has("third")) {
-                            mJobPlanTitleText = jsonObject.optString("third");
-                        }
-                        // 获取单位和日期
-                        if (jsonObject.has("dw")) {
-                            mOfficeText = jsonObject.optString("dw");
-                        }
-                        if (jsonObject.has("year")) {
-                            mTimeText = jsonObject.optString("year") + "-" + jsonObject.optString("month") + "-" + jsonObject.optString("day");
-                        }
-                        // 获取意见
-                        if (jsonObject.has("rect3suggest")) {
-                            mBranchedPassageSuggest = jsonObject.optString("rect3suggest");
-                        }
-                        if (jsonObject.has("rect4suggest")) {
-                            mOfficeSuggest = jsonObject.optString("rect4suggest");
-                        }
-                        // 用来判断第几步骤了
-                        if (!jsonObject.has("rect3method") && !jsonObject.has("rect4method")) {
-                            mWhichStep = 0;
-                        } else if (jsonObject.has("rect3method") && !jsonObject.has("rect4method")) {
-                            mWhichStep = 1;
-                        } else if (jsonObject.has("rect3method") && jsonObject.has("rect4method")) {
-                            mWhichStep = 2;
-                        }
-                    }
+                    analyticalData(jsonArray);
                 }
                 System.out.println();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return chat(mJobSummaryData);
+        return chat(excessive);
+    }
+
+    /* 解析网络获取的JSON数据 */
+    private void analyticalData(JSONArray jsonArray) throws JSONException {
+        mJobSummaryData = new ArrayList<>();
+        mJobPerformanceData = new ArrayList<>();
+        mJobPlanData = new ArrayList<>();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            if (jsonObject.has("one")) {// 有one说明是月报详细条目内容
+                mJobSummaryData.add(jsonObject.optString("one"));
+                mJobPerformanceData.add(jsonObject.optString("two"));
+                mJobPlanData.add(jsonObject.optString("three"));
+            }
+            // 获取标题
+            if (jsonObject.has("first")) {
+                mJobSummaryTitleText = jsonObject.optString("first");
+            }
+            if (jsonObject.has("second")) {
+                mJobPerformanceTitleText = jsonObject.optString("second");
+            }
+            if (jsonObject.has("third")) {
+                mJobPlanTitleText = jsonObject.optString("third");
+            }
+            // 获取单位和日期
+            if (jsonObject.has("dw")) {
+                mOfficeText = jsonObject.optString("dw");
+            }
+            if (jsonObject.has("year")) {
+                mTimeText = jsonObject.optString("year") + "-" + jsonObject.optString("month") + "-" + jsonObject.optString("day");
+            }
+
+            // 后面的接口需要到的数据
+            if (jsonObject.has("assignee")) {
+                mAssignee = jsonObject.optString("assignee");
+            }
+            if (jsonObject.has("taskName")) {
+                mTaskName = jsonObject.optString("taskName");
+            }
+
+            // 获取审批建议
+            getAllSuggest(new AnalysisJSON() {
+                @Override
+                public void analysisJSON(JSONObject jsonObject) {
+                    if (jsonObject.has("rect3suggest")) {
+                        mBranchedPassageSuggest = jsonObject.optString("rect3suggest");
+                    }
+                    if (jsonObject.has("rect4suggest")) {
+                        mOfficeSuggest = jsonObject.optString("rect4suggest");
+                    }
+                    excessive = new ArrayList<>();
+                    excessive.add("excessive");// 给excessive创建实例，并添加元素，让界面走onCreateSuccessView()方法
+                }
+            });
+        }
     }
 
     @Override
@@ -220,7 +234,7 @@ public class WorkMonthlyReportFragment extends FormFragment {
         PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
             @Override
             public void onSureClick(DialogInterface dialog, int id) {
-                System.out.println("WorkMonthlyReportFragment-disAgreeOnClick");
+                officialLeaveApply("", 1);
             }
         }, "是否不同意该工作月报 !");
         promptDialog.show(getActivity().getSupportFragmentManager(), "WorkMonthlyReportDisAgree");
@@ -228,40 +242,55 @@ public class WorkMonthlyReportFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        SelectNextUserDialog selectNextUserDialog = new SelectNextUserDialog();
-        selectNextUserDialog.setCheckBoxTexts(mNextUsers);
-        selectNextUserDialog.setOnSureButtonClick(new OnSureButtonClick() {
+        getNextPersonData(mAssignee, "WorkMonthlyReportManagementAgree_Have_Next", "WorkMonthlyReportManagementAgree_No_Next", new PassNextPersonString() {
             @Override
-            public void onSureClick(DialogInterface dialog, int id, List<Boolean> isChecks) {
-                List<CheckBoxChild> sureUsers = new ArrayList<>();
-                // 通过isChecks集合中的选择数据去判断哪些数据选中，并将选中的数据填进sureUsers集合中
-                for (int i = 0; i < isChecks.size(); i++) {
-                    if (isChecks.get(i)) {
-                        sureUsers.add(mNextUsers.get(i));
-                    }
-                }
-
-                String approveIdea="";
-                switch (mWhichStep){
-                    case 0:
-                        approveIdea=mRect3Idea.getCustomEditTextRight().getText().toString();
-                        break;
-                    case 1:
-                        approveIdea=mRect4Idea.getCustomEditTextRight().getText().toString();
-                        break;
-                    case 2:
-                        approveIdea=mRect5Idea.getCustomEditTextRight().getText().toString();
-                        break;
-                }
-                System.out.println(approveIdea + sureUsers.size());
-                // TODO 使用sureUsers集合和审批意见去进行网络请求
+            public void passNextPersonString(String userList) {
+                officialLeaveApply(userList, 0);
             }
         });
-        selectNextUserDialog.show(getActivity().getSupportFragmentManager(), "WorkMonthlyReportAgree");
     }
 
     @Override
     public void submitOnClick(View v) {
-        System.out.println("WorkMonthlyReportFragment-submitOnClick");
+    }
+
+    private void officialLeaveApply(String userList, int method) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("processId", getProcessIdFromList());
+        hashMap.put("orderId", getOrderIdFromList());
+        hashMap.put("taskId", getTaskIdFromList());
+        hashMap.put("taskName", mTaskName);
+        hashMap.put("assignee", mAssignee);
+        hashMap.put("Method", "" + method);
+        hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
+        hashMap.put("userList", userList);
+
+        // 以下为表单上的填写数据
+        hashMap.put("suggest", mApproveIdea.getCustomEditTextRight().getText().toString());
+
+        OkHttpMethod.asynPostRequest(IpFiled.SUBMIT_IS_AGREE_WORK_MONTHLY_REPORT, hashMap, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                showToastToMain("服务器异常，请联系管理员");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response != null && response.isSuccessful()) {
+                    try {
+                        String resultList = response.body().string();
+                        if ("success".contains(resultList)) {
+                            getActivity().finish();
+                        } else {
+                            showToastToMain("服务器正忙请稍后");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    showToastToMain("服务器异常，请联系管理员");
+                }
+            }
+        });
     }
 }
