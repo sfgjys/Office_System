@@ -225,7 +225,7 @@ public class PostManagementFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        getNextPersonData(mAssignee, "PostManagementAgree_Have_Next", "PostManagementAgree_No_Next", new PassNextPersonString() {
+        getNextPersonData(mAssignee, "PostManagementAgree_Have_Next", "PostManagementAgree_No_Next", "是否同意该发文拟稿", new PassNextPersonString() {
             @Override
             public void passNextPersonString(String userList) {
                 officialLeaveApply(userList, 0);

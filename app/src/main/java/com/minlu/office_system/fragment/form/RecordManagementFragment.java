@@ -208,7 +208,7 @@ public class RecordManagementFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        getNextPersonData(mAssignee, "RecordManagementAgree_Have_Next", "RecordManagementAgree_No_Next", new PassNextPersonString() {
+        getNextPersonData(mAssignee, "RecordManagementAgree_Have_Next", "RecordManagementAgree_No_Next", "是否同意该收文签收", new PassNextPersonString() {
             @Override
             public void passNextPersonString(String userList) {
                 officialLeaveApply(userList, 0);

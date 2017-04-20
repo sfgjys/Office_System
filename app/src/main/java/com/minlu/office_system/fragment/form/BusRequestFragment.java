@@ -185,12 +185,13 @@ public class BusRequestFragment extends FormFragment {
         PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
             @Override
             public void onSureClick(DialogInterface dialog, int id) {
-                getNextPersonData(mAssignee, "BusRequestSubmit_Have_Next", "BusRequestSubmit_No_Next", new PassNextPersonString() {
-                    @Override
-                    public void passNextPersonString(String userList) {
-                        officialBusUseApply(userList, 0);
-                    }
-                });
+                getNextPersonData(mAssignee, "BusRequestSubmit_Have_Next", "BusRequestSubmit_No_Next", "本界面是车辆申请的第一步,则必定有下一步操作人",
+                        new PassNextPersonString() {
+                            @Override
+                            public void passNextPersonString(String userList) {
+                                officialBusUseApply(userList, 0);
+                            }
+                        });
             }
         }, "是否将车辆申请进行提交处理 !");
         promptDialog.show(getActivity().getSupportFragmentManager(), "BusRequestSubmit");

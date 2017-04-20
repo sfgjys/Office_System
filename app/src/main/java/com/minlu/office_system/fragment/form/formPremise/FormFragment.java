@@ -208,7 +208,7 @@ public abstract class FormFragment extends BaseFragment {
 
 
     /* 请求网络获取下一步操作数据 */
-    public void getNextPersonData(String assignee, final String tag1, final String tag2, final PassNextPersonString passNextPersonString) {
+    public void getNextPersonData(String assignee, final String tag1, final String tag2, final String dialogHint, final PassNextPersonString passNextPersonString) {
         startLoading();
 
         HashMap<String, String> hashMap = new HashMap<>();
@@ -237,7 +237,7 @@ public abstract class FormFragment extends BaseFragment {
                             ViewsUitls.runInMainThread(new TimerTask() {
                                 @Override
                                 public void run() {
-                                    showNextPersonData(nextUsers, passNextPersonString, tag1, tag2);
+                                    showNextPersonData(nextUsers, passNextPersonString, tag1, tag2, dialogHint);
                                 }
                             });
                         } else {
@@ -255,7 +255,8 @@ public abstract class FormFragment extends BaseFragment {
     }
 
     /* 将下一步操作人通过对话框展示出来 */
-    private void showNextPersonData(final List<CheckBoxChild> nextUsers, final PassNextPersonString passNextPersonString, String tag1, String tag2) {
+    private void showNextPersonData(final List<CheckBoxChild> nextUsers, final PassNextPersonString passNextPersonString,
+                                    String tag1, String tag2, String dialogHint) {
         if (nextUsers.size() > 0) {
             endLoading();
             SelectNextUserDialog selectNextUserDialog = new SelectNextUserDialog();
@@ -290,7 +291,7 @@ public abstract class FormFragment extends BaseFragment {
                 public void onSureClick(DialogInterface dialog, int id) {
                     passNextPersonString.passNextPersonString("");
                 }
-            }, "是否最终同意该收文签收 !");
+            }, dialogHint);
             promptDialog.show(getActivity().getSupportFragmentManager(), tag2);
         }
     }

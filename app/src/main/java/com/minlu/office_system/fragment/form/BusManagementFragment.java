@@ -161,7 +161,7 @@ public class BusManagementFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        getNextPersonData(mAssignee, "BusManagementAgree_Have_Next", "BusManagementAgree_No_Next", new PassNextPersonString() {
+        getNextPersonData(mAssignee, "BusManagementAgree_Have_Next", "BusManagementAgree_No_Next", "是否同意该车辆申请", new PassNextPersonString() {
             @Override
             public void passNextPersonString(String userList) {
                 officialBusUseApply(userList, 0);

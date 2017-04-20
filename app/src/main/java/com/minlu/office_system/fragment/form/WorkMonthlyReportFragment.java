@@ -172,7 +172,7 @@ public class WorkMonthlyReportFragment extends FormFragment {
 
     /* 解析网络获取的JSON数据 */
     private void analyticalData(JSONArray jsonArray) throws JSONException {
-        mJobSummaryData = new ArrayList <>();
+        mJobSummaryData = new ArrayList<>();
         mJobPerformanceData = new ArrayList<>();
         mJobPlanData = new ArrayList<>();
 
@@ -239,12 +239,13 @@ public class WorkMonthlyReportFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        getNextPersonData(mAssignee, "WorkMonthlyReportManagementAgree_Have_Next", "WorkMonthlyReportManagementAgree_No_Next", new PassNextPersonString() {
-            @Override
-            public void passNextPersonString(String userList) {
-                officialLeaveApply(userList, 0);
-            }
-        });
+        getNextPersonData(mAssignee, "WorkMonthlyReportManagementAgree_Have_Next", "WorkMonthlyReportManagementAgree_No_Next", "是否同意该工作月报",
+                new PassNextPersonString() {
+                    @Override
+                    public void passNextPersonString(String userList) {
+                        officialLeaveApply(userList, 0);
+                    }
+                });
     }
 
     @Override
