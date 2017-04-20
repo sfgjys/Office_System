@@ -54,7 +54,6 @@ public class IpFiled {
     // ***********************************************************************************************************************************
 
     /* ***四个功能模块提交表单的接口*** */
-    public final static String SUBMIT_IS_AGREE = ip + "phone/process.html";
     // 计划总结，收文管理，发文管理，工作月报四个功能模块最后选择了下一步操作人后提交表单的接口
     public final static String SUBMIT_IS_AGREE_POST = ip + "phone/fwProcess.html";                  //--------------------1
     public final static String SUBMIT_IS_AGREE_RECORD = ip + "phone/swProcess.html";                //--------------------1

@@ -153,7 +153,7 @@ public class BusManagementFragment extends FormFragment {
         PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
             @Override
             public void onSureClick(DialogInterface dialog, int id) {
-                officialBusUseApply("", 1);
+                officialBusUseApply("", -1);
             }
         }, "是否不同意该用车请求 !");
         promptDialog.show(getActivity().getSupportFragmentManager(), "BusManagementFragment");
@@ -180,7 +180,7 @@ public class BusManagementFragment extends FormFragment {
 
         hashMap.put("taskName", mTaskName);
         hashMap.put("assignee", mAssignee);
-        hashMap.put("Method", "" + method);
+        hashMap.put("method", "" + method);
         hashMap.put("userList", userList);
 
         // 以下为表单上的填写数据

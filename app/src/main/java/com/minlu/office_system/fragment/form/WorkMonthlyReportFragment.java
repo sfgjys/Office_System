@@ -58,7 +58,7 @@ public class WorkMonthlyReportFragment extends FormFragment {
     private String mAssignee = "";
     private EditTextItem mApproveIdea;
     private String mAutoOrg = "";
-    private String mTaskName;
+    private String mTaskName = "";
 
     @Override
 
@@ -172,7 +172,7 @@ public class WorkMonthlyReportFragment extends FormFragment {
 
     /* 解析网络获取的JSON数据 */
     private void analyticalData(JSONArray jsonArray) throws JSONException {
-        mJobSummaryData = new ArrayList<>();
+        mJobSummaryData = new ArrayList <>();
         mJobPerformanceData = new ArrayList<>();
         mJobPlanData = new ArrayList<>();
 
@@ -231,7 +231,7 @@ public class WorkMonthlyReportFragment extends FormFragment {
         PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
             @Override
             public void onSureClick(DialogInterface dialog, int id) {
-                officialLeaveApply("", 1);
+                officialLeaveApply("", -1);
             }
         }, "是否不同意该工作月报 !");
         promptDialog.show(getActivity().getSupportFragmentManager(), "WorkMonthlyReportDisAgree");
@@ -258,7 +258,7 @@ public class WorkMonthlyReportFragment extends FormFragment {
 
         hashMap.put("taskName", mTaskName);
         hashMap.put("assignee", mAssignee);
-        hashMap.put("Method", "" + method);
+        hashMap.put("method", "" + method);
         hashMap.put("userList", userList);
 
         // 以下为表单上的填写数据

@@ -205,7 +205,7 @@ public class BusRequestFragment extends FormFragment {
         hashMap.put("assignee", mAssignee);
         hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
         hashMap.put("step", mStep);
-        hashMap.put("Method", "" + method);
+        hashMap.put("method", "" + method);
         hashMap.put("userList", userList);
 
         // 以下为表单上的填写数据

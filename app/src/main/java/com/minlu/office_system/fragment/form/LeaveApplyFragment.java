@@ -253,7 +253,7 @@ public class LeaveApplyFragment extends FormFragment {
         hashMap.put("orderId", mOrderId);
         hashMap.put("taskId", mTaskId);
         hashMap.put("taskName", mTaskName);
-        hashMap.put("Method", "" + method);
+        hashMap.put("method", "" + method);
         hashMap.put("userName", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
         hashMap.put("assignee", mAssignee);
         hashMap.put("userList", userList);
