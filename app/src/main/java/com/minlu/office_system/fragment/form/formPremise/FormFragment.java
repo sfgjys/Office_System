@@ -24,6 +24,7 @@ import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.bean.CheckBoxChild;
+import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.customview.EditTextTimeSelector;
 import com.minlu.office_system.fragment.dialog.OnSureButtonClick;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
@@ -345,6 +346,19 @@ public abstract class FormFragment extends BaseFragment {
     public void showToastAndEndLoading(String text) {
         endLoading();
         showToastToMain(text);
+    }
+
+    /* 设置EditTextItem控件可见并可以编辑 */
+    public void showEditTextItemCanEdit(EditTextItem editTextItem) {
+        editTextItem.setVisibility(View.VISIBLE);
+        editTextItem.getCustomEditTextRight().setFocusableInTouchMode(true);
+        editTextItem.getCustomEditTextRight().setFocusable(true);
+    }
+
+    /* 设置EditTextItem控件可见并可以点击 */
+    public void showEditTextItemCanClick(EditTextItem editTextItem) {
+        editTextItem.setVisibility(View.VISIBLE);
+        editTextItem.getCustomEditTextRight().setEnabled(true);
     }
 
 

@@ -27,7 +27,9 @@
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_plan_summary_year"
         style="@style/width_match_height_wrap"
+        android:layout_marginRight="140dp"
         edittextitem:editText_hint="请输入第几年度"
+        edittextitem:editText_is_clickable="false"
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="年度 : " />
 
@@ -35,6 +37,7 @@
         android:id="@+id/form_plan_summary_quarter"
         style="@style/editText_item_top"
         edittextitem:editText_hint="请输入第几季度"
+        edittextitem:editText_is_clickable="false"
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="季月 : " />
 
@@ -60,14 +63,6 @@
         edittextitem:editText_left_text="所在部门 : " />
 
     <com.minlu.office_system.customview.EditTextItem
-        android:id="@+id/form_plan_summary_time"
-        style="@style/editText_item_top"
-        edittextitem:editText_hint="请选择时间"
-        edittextitem:editText_is_edit="false"
-        edittextitem:editText_left_text="填写时间 : "
-        edittextitem:editText_right_icon="@drawable/selector_calendar" />
-
-    <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_plan_summary_work_plan"
         style="@style/editText_item_top"
         edittextitem:editText_hint="请输入工作计划"
@@ -77,10 +72,57 @@
         edittextitem:editText_max_lines="99" />
 
     <com.minlu.office_system.customview.EditTextItem
-        android:id="@+id/form_plan_summary_approve_idea"
+        android:id="@+id/form_plan_summary_plan_time"
         style="@style/editText_item_top"
-        edittextitem:editText_hint="选填审批意见"
+        edittextitem:editText_hint="请选择时间"
+        edittextitem:editText_is_clickable="false"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="计划时间 : "
+        edittextitem:editText_right_icon="@drawable/selector_calendar" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_plan_summary_lead_idea"
+        style="@style/editText_item_top"
+        android:visibility="gone"
         edittextitem:editText_input_type="textMultiLine"
-        edittextitem:editText_left_text="审批意见 : "
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="领导意见 : "
+        edittextitem:editText_max_lines="99" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_plan_summary_work_summary"
+        style="@style/editText_item_top"
+        android:visibility="gone"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="工作总结 : "
+        edittextitem:editText_max_lines="99" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_plan_summary_summary_time"
+        style="@style/editText_item_top"
+        android:visibility="gone"
+        edittextitem:editText_hint="请选择时间"
+        edittextitem:editText_is_clickable="false"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="总结时间 : "
+        edittextitem:editText_right_icon="@drawable/selector_calendar" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_plan_summary_lead_evaluate"
+        style="@style/editText_item_top"
+        android:visibility="gone"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="领导评价 : "
+        edittextitem:editText_max_lines="99" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_plan_summary_lead_criticism"
+        style="@style/editText_item_top"
+        android:visibility="gone"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="领导评鉴 : "
         edittextitem:editText_max_lines="99" />
 </LinearLayout>
