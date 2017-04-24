@@ -64,6 +64,8 @@ public class PlanSummaryFragment extends FormFragment {
     private List<String> mYearData;
     private FormActivity mFormActivity;
     private int mQuarterType;
+    private String mAutoOrg = "";
+    private String mOrd = "";
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -316,7 +318,7 @@ public class PlanSummaryFragment extends FormFragment {
                 String resultList = response.body().string();
                 if (StringUtils.interentIsNormal(resultList)) {
                     JSONObject jsonObject = new JSONObject(resultList);
-                    if (jsonObject.has("NAME")) {// 有标题字段，说明返回的数据正常
+                    if (jsonObject.has("MAPINFO")) {// 有标题字段，说明返回的数据正常
                         analyticalData(jsonObject);
                     }
                 }
@@ -341,8 +343,15 @@ public class PlanSummaryFragment extends FormFragment {
         mStep = jsonObject.optString("STEP");
 
         // 后面的接口需要到的数据
-        mAssignee = jsonObject.optString("ASSIGNEE");
         mTaskName = jsonObject.optString("TASKNAME");
+
+        //　请求下一步操作人需要的字段
+        JSONObject mapInfo = jsonObject.optJSONObject("MAPINFO");
+        mAssignee = mapInfo.optString("assignee");
+        if (mapInfo.has("ord")) {
+            mOrd = mapInfo.optInt("ord") + "";
+        }
+        mAutoOrg = mapInfo.optString("autoOrg");
 
         getAllSuggest(new AnalysisJSON() {
 
@@ -397,7 +406,7 @@ public class PlanSummaryFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        getNextPersonData(mAssignee, "", "", "PlanSummaryManagementAgree_Have_Next", "PlanSummaryManagementAgree_No_Next", "是否同意该计划总结", new PassBackStringData() {
+        getNextPersonData(mAssignee, "" + mOrd, mAutoOrg, "PlanSummaryManagementAgree_Have_Next", "PlanSummaryManagementAgree_No_Next", "是否同意该计划总结", new PassBackStringData() {
             @Override
             public void passBackStringData(String passBackData) {
                 HashMap<String, String> unifyHashMap = getUnifyHashMap(passBackData, 0);
@@ -409,7 +418,7 @@ public class PlanSummaryFragment extends FormFragment {
 
     @Override
     public void submitOnClick(View v) {
-        getNextPersonData(mAssignee, "", "", "PlanSummaryManagementSubmit_Have_Next", "PlanSummaryManagementSubmit_No_Next", "是否提交该工作总结", new PassBackStringData() {
+        getNextPersonData(mAssignee, "" + mOrd, mAutoOrg, "PlanSummaryManagementSubmit_Have_Next", "PlanSummaryManagementSubmit_No_Next", "是否提交该工作总结", new PassBackStringData() {
             @Override
             public void passBackStringData(String passBackData) {
                 HashMap<String, String> unifyHashMap = getUnifyHashMap(passBackData, 0);
