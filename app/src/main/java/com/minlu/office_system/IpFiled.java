@@ -70,4 +70,9 @@ public class IpFiled {
 
     // 请求网络下载附件
     public final static String DOWNLOAD_ACCESSORY = ip + "upload/download1.html";                   //--------------------2
+
+
+    // 请网络获取流程其中一个步骤如果驳回的的话,可以驳回到哪几个步骤
+    public final static String REJECT_WHICH_STEP=ip+"phone/taskBack.html";
+
 }

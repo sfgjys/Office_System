@@ -11,7 +11,10 @@ import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.R;
 import com.minlu.office_system.activity.FormActivity;
+import com.minlu.office_system.bean.SingleOption;
 import com.minlu.office_system.customview.EditTextItem;
+import com.minlu.office_system.fragment.dialog.MultipleChoiceDialog;
+import com.minlu.office_system.fragment.dialog.OnSureButtonClick;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
 import com.minlu.office_system.fragment.time.DatePickerFragment;
@@ -110,12 +113,12 @@ public class PlanSummaryFragment extends FormFragment {
         mQuarterView.getCustomEditTextRight().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("=============================================");
+                showSelectQuarterTypeDialog();
             }
         });
         mYearView = (EditTextItem) inflate.findViewById(R.id.form_plan_summary_year);
         // 设置年度控件可以弹出选择年的下拉框
-        setWhichViewShowListPopupWindow(mYearView.getCustomEditTextRight(), mYearData, new ShowListPopupItemClickListener() {
+        setWhichViewShowListPopupWindow(false, mYearView.getCustomEditTextRight(), mYearData, new ShowListPopupItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mYearView.getCustomEditTextRight().setText(mYearData.get(position));
@@ -166,6 +169,72 @@ public class PlanSummaryFragment extends FormFragment {
         accordingStepShowView();
     }
 
+    /* 显示季月类型选择对话框 */
+    private void showSelectQuarterTypeDialog() {
+        SingleOption singleOption1 = new SingleOption("按季度", "", "");
+        SingleOption singleOption2 = new SingleOption("按月份", "", "");
+        List<SingleOption> singleOptions = new ArrayList<>();
+        singleOptions.add(singleOption1);
+        singleOptions.add(singleOption2);
+        MultipleChoiceDialog multipleChoiceDialog = new MultipleChoiceDialog();
+        multipleChoiceDialog.setSingleOptions("请选择季月类型", singleOptions);
+        multipleChoiceDialog.setOnSureButtonClick(new OnSureButtonClick() {
+            @Override
+            public void onSureClick(DialogInterface dialog, int id, List<Boolean> isChecks) {
+                showHomologousPopup(isChecks);
+            }
+        });
+        multipleChoiceDialog.show(getActivity().getSupportFragmentManager(), "Plan_Summary_Select_Quarter_Type");
+    }
+
+    /* 根据参数去添加不同的数据,展示Popup下拉框 */
+    private void showHomologousPopup(List<Boolean> isChecks) {
+        final List<String> quarterData = new ArrayList<>();
+        for (int i = 0; i < isChecks.size(); i++) {
+            if (isChecks.get(i)) {
+                switch (i) {
+                    case 0:
+                        quarterData.add("第一季度");
+                        quarterData.add("第二季度");
+                        quarterData.add("第三季度");
+                        quarterData.add("第四季度");
+                        break;
+                    case 1:
+                        quarterData.add("第一月份");
+                        quarterData.add("第二月份");
+                        quarterData.add("第三月份");
+                        quarterData.add("第四月份");
+                        quarterData.add("第五月份");
+                        quarterData.add("第六月份");
+                        quarterData.add("第七月份");
+                        quarterData.add("第八月份");
+                        quarterData.add("第九月份");
+                        quarterData.add("第十月份");
+                        quarterData.add("第十一月份");
+                        quarterData.add("第十二月份");
+                        break;
+                }
+                break;
+            }
+        }
+        setWhichViewShowListPopupWindow(true, mQuarterView.getCustomEditTextRight(), quarterData, new ShowListPopupItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mQuarterView.getCustomEditTextRight().setText(quarterData.get(position));
+            }
+
+            @Override
+            public void onAnchorViewClick(View v) {
+                setBackGroundDarkColor(0.7f);
+            }
+
+            @Override
+            public void onListPopupDismiss() {
+                setBackGroundDarkColor(1.0f);
+            }
+        }, getActivity());
+    }
+
     private void accordingStepShowView() {
         if (!StringUtils.isEmpty(mWorkPlanIdeaText)) {// 有工作计划的意见
             mWorkPlanIdeaView.setVisibility(View.VISIBLE);
@@ -190,24 +259,24 @@ public class PlanSummaryFragment extends FormFragment {
                 showEditTextItemCanClick(mYearView);
                 showEditTextItemCanClick(mQuarterView);
                 showEditTextItemCanClick(mWorkPlanTimeView);
-                showEditTextItemDifferentState(mWorkPlanView, "请编写工作计划", "(流程步骤被反驳前的工作计划是) : ");
+                showEditTextItemDifferentState(mWorkPlanView, "请编写工作计划", "(流程步骤被反驳前的工作计划) : ");
                 mApproveIdea = null;
                 break;
             case 2:
-                showEditTextItemDifferentState(mWorkPlanIdeaView, "请编写对本工作计划的意见", "(流程步骤被反驳前的工作计划意见是) : ");
+                showEditTextItemDifferentState(mWorkPlanIdeaView, "请编写对本工作计划的意见", "(流程步骤被反驳前的工作计划意见) : ");
                 mApproveIdea = mWorkPlanIdeaView;// 最后记得将工作计划意见控件赋值给审批意见便于提交意见
                 break;
             case 3:
                 showEditTextItemCanClick(mWorkSummaryTimeView);
-                showEditTextItemDifferentState(mWorkSummaryView, "请编写对工作计划的总结", "(流程步骤被反驳前的工作总结是) : ");
+                showEditTextItemDifferentState(mWorkSummaryView, "请编写对工作计划的总结", "(流程步骤被反驳前的工作总结) : ");
                 mApproveIdea = null;
                 break;
             case 4:
-                showEditTextItemDifferentState(mWorkSummaryIdeaView, "请编写对本工作总结的评价", "(流程步骤被反驳前的工作总结评价是) : ");
+                showEditTextItemDifferentState(mWorkSummaryIdeaView, "请编写对本工作总结的评价", "(流程步骤被反驳前的工作总结评价) : ");
                 mApproveIdea = mWorkSummaryIdeaView;
                 break;
             case 5:
-                showEditTextItemDifferentState(mUltimatelyLeadIdeaView, "请编写对本计划总结的评鉴", "(流程步骤被反驳前的计划总结评鉴是) : ");
+                showEditTextItemDifferentState(mUltimatelyLeadIdeaView, "请编写对本计划总结的评鉴", "(流程步骤被反驳前的计划总结评鉴) : ");
                 mApproveIdea = mUltimatelyLeadIdeaView;
                 break;
         }
@@ -228,7 +297,6 @@ public class PlanSummaryFragment extends FormFragment {
             editTextItem.getCustomEditTextRight().setHint(haveTextHint + editTextItemRightText);
         }
     }
-
 
     @Override
     protected ContentPage.ResultState onLoad() {

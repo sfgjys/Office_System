@@ -35,6 +35,8 @@ public class StringsFiled {
 
     public static final String LOGIN_GET_USER_ADD_UP_LEAVE_DAYS = "login_get_user_add_up_leave_days";
 
+    public static final String MULTIPLE_CHOICE_DIALOG_TITLE = "multiple_choice_dialog_title";
+
     /*
     * 打开表单Fragment的Tag
     * */

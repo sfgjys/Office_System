@@ -11,7 +11,7 @@ import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.R;
 import com.minlu.office_system.activity.FormActivity;
-import com.minlu.office_system.bean.CheckBoxChild;
+import com.minlu.office_system.bean.SingleOption;
 import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
@@ -42,7 +42,7 @@ public class RecordManagementFragment extends FormFragment {
     private String mTextNumber = "";
     private String mTextUnit = "";
     private String mTextTime = "";
-    private List<CheckBoxChild> mNextUsers;
+    private List<SingleOption> mNextUsers;
     private List<String> mDownloadFilePath;
     private List<String> mDownloadFileName;
 

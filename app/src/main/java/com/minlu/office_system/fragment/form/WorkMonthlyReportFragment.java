@@ -13,7 +13,7 @@ import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.R;
 import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
-import com.minlu.office_system.bean.CheckBoxChild;
+import com.minlu.office_system.bean.SingleOption;
 import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
@@ -49,7 +49,7 @@ public class WorkMonthlyReportFragment extends FormFragment {
     private List<String> mJobPerformanceData;
     private List<String> mJobPlanData;
 
-    private List<CheckBoxChild> mNextUsers;
+    private List<SingleOption> mNextUsers;
 
     private int mWhichStep;
 

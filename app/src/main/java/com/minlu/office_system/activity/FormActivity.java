@@ -8,9 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.minlu.baselibrary.base.BaseActivity;
-import com.minlu.baselibrary.util.SharedPreferencesUtil;
 import com.minlu.baselibrary.util.ToastUtil;
-import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.R;
 import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.fragment.form.formPremise.AllForms;
@@ -124,13 +122,5 @@ public class FormActivity extends BaseActivity implements View.OnClickListener {
         ScrollView.LayoutParams layoutParams = (ScrollView.LayoutParams) scrollView.getLayoutParams();
         layoutParams.gravity = Gravity.NO_GRAVITY;
         scrollView.setLayoutParams(layoutParams);
-    }
-
-    @Override
-    protected void onDestroy() {
-        SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_ORDER_ID, "");
-        SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_TASK_ID, "");
-        SharedPreferencesUtil.saveString(ViewsUitls.getContext(), StringsFiled.FORM_LIST_TO_FORM_PROCESS_ID, "");
-        super.onDestroy();
     }
 }

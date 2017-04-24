@@ -6,16 +6,16 @@ import java.io.Serializable;
  * Created by user on 2017/4/1.
  */
 
-public class CheckBoxChild implements Serializable {
+public class SingleOption implements Serializable {
 
     private static final long serialVersionUID = 3L;
 
     private String userName;
     private String orgInform;
-    private String checkBoxRightText;
+    private String singleOptionRightText;
 
-    public CheckBoxChild(String checkBoxRightText, String userName, String orgInform) {
-        this.checkBoxRightText = checkBoxRightText;
+    public SingleOption(String singleOptionRightText, String userName, String orgInform) {
+        this.singleOptionRightText = singleOptionRightText;
         this.userName = userName;
         this.orgInform = orgInform;
     }
@@ -28,12 +28,12 @@ public class CheckBoxChild implements Serializable {
         this.userName = userName;
     }
 
-    public String getCheckBoxRightText() {
-        return checkBoxRightText;
+    public String getSingleOptionRightText() {
+        return singleOptionRightText;
     }
 
-    public void setCheckBoxRightText(String checkBoxRightText) {
-        this.checkBoxRightText = checkBoxRightText;
+    public void setSingleOptionRightText(String singleOptionRightText) {
+        this.singleOptionRightText = singleOptionRightText;
     }
 
     public String getOrgInform() {

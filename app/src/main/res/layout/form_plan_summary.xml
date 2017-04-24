@@ -27,11 +27,12 @@
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_plan_summary_year"
         style="@style/width_match_height_wrap"
-        android:layout_marginRight="140dp"
+        android:layout_marginRight="130dp"
         edittextitem:editText_hint="请输入第几年度"
         edittextitem:editText_is_clickable="false"
         edittextitem:editText_is_edit="false"
-        edittextitem:editText_left_text="年度 : " />
+        edittextitem:editText_left_text="年度 : "
+        edittextitem:editText_right_icon="@drawable/selector_pull_down" />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_plan_summary_quarter"

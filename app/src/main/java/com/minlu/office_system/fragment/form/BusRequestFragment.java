@@ -92,7 +92,7 @@ public class BusRequestFragment extends FormFragment {
         mBusTypeRemark = (EditTextItem) inflate.findViewById(R.id.form_bus_request_bus_type_remark);
         mBusType = (EditTextItem) inflate.findViewById(R.id.form_bus_request_bus_type);
         final EditText busNumberEditText = mBusType.getCustomEditTextRight();
-        setWhichViewShowListPopupWindow(busNumberEditText, mBusNumberData, new ShowListPopupItemClickListener() {
+        setWhichViewShowListPopupWindow(false, busNumberEditText, mBusNumberData, new ShowListPopupItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 busNumberEditText.setText(mBusNumberData.get(position));

@@ -87,7 +87,7 @@ public class LeaveApplyFragment extends FormFragment {
         // 类型列表展示
         mLeaveTypeEdit = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_type);
         EditText typeCustomEditTextRight = mLeaveTypeEdit.getCustomEditTextRight();
-        setWhichViewShowListPopupWindow(typeCustomEditTextRight, mLeaveType, new ShowListPopupItemClickListener() {
+        setWhichViewShowListPopupWindow(false, typeCustomEditTextRight, mLeaveType, new ShowListPopupItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mLeaveTypeEdit.setEditText(mLeaveType.get(position));
@@ -107,7 +107,7 @@ public class LeaveApplyFragment extends FormFragment {
         // 小时选择
         mSelectHour = (EditTextItem) inflate.findViewById(R.id.form_leave_apply_leave_day_number_select_hour);
         mSelectHour.getCustomEditTextRight().setText("0 小时");
-        setWhichViewShowListPopupWindow(mSelectHour.getCustomEditTextRight(), mSelectHourData, new ShowListPopupItemClickListener() {
+        setWhichViewShowListPopupWindow(false, mSelectHour.getCustomEditTextRight(), mSelectHourData, new ShowListPopupItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mSelectHour.setEditText(mSelectHourData.get(position));

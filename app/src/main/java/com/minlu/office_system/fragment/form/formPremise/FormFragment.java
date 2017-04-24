@@ -23,7 +23,7 @@ import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
-import com.minlu.office_system.bean.CheckBoxChild;
+import com.minlu.office_system.bean.SingleOption;
 import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.customview.EditTextTimeSelector;
 import com.minlu.office_system.fragment.dialog.OnSureButtonClick;
@@ -84,7 +84,7 @@ public abstract class FormFragment extends BaseFragment {
     /*
     * 在参数一控件下，展示参数二集合中的文本数据，参数三是自定义点击文本条目的监听事件
     * */
-    public void setWhichViewShowListPopupWindow(View anchorView, final List<String> date, final ShowListPopupItemClickListener clickListener, Context context) {
+    public void setWhichViewShowListPopupWindow(boolean isDirectShow, View anchorView, final List<String> date, final ShowListPopupItemClickListener clickListener, Context context) {
         final ListPopupWindow listPopupWindow = new ListPopupWindow(context);
         listPopupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         listPopupWindow.setHeight((date.size() > 3) ? ViewsUitls.dpToPx(200) : ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -92,13 +92,6 @@ public abstract class FormFragment extends BaseFragment {
         listPopupWindow.setModal(true);//设置是否是模式
         listPopupWindow.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, date));
 
-        anchorView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listPopupWindow.show();
-                clickListener.onAnchorViewClick(v);
-            }
-        });
         listPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -112,6 +105,18 @@ public abstract class FormFragment extends BaseFragment {
                 clickListener.onListPopupDismiss();
             }
         });
+        if (isDirectShow) {
+            listPopupWindow.show();
+            clickListener.onAnchorViewClick(null);
+        } else {
+            anchorView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listPopupWindow.show();
+                    clickListener.onAnchorViewClick(v);
+                }
+            });
+        }
     }
 
     /*
@@ -229,10 +234,10 @@ public abstract class FormFragment extends BaseFragment {
                         String resultList = response.body().string();
                         if (StringUtils.interentIsNormal(resultList)) {
                             JSONArray jsonArray = new JSONArray(resultList);
-                            final List<CheckBoxChild> nextUsers = new ArrayList<>();
+                            final List<SingleOption> nextUsers = new ArrayList<>();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject nextUserData = jsonArray.getJSONObject(i);
-                                nextUsers.add(new CheckBoxChild(nextUserData.optString("TRUENAME"), nextUserData.optString("USERNAME"), nextUserData.optString("ORG_INFOR")));
+                                nextUsers.add(new SingleOption(nextUserData.optString("TRUENAME"), nextUserData.optString("USERNAME"), nextUserData.optString("ORG_INFOR")));
                             }
                             // 走到这mNextUsers里已经有了下一步操作人的数据(或者为空)
                             ViewsUitls.runInMainThread(new TimerTask() {
@@ -256,16 +261,16 @@ public abstract class FormFragment extends BaseFragment {
     }
 
     /* 将下一步操作人通过对话框展示出来 */
-    private void showNextPersonData(final List<CheckBoxChild> nextUsers, final PassNextPersonString passNextPersonString,
+    private void showNextPersonData(final List<SingleOption> nextUsers, final PassNextPersonString passNextPersonString,
                                     String tag1, String tag2, String dialogHint) {
         if (nextUsers.size() > 0) {
             endLoading();
             SelectNextUserDialog selectNextUserDialog = new SelectNextUserDialog();
-            selectNextUserDialog.setCheckBoxTexts(nextUsers);
+            selectNextUserDialog.setDialogDataPacket(nextUsers);
             selectNextUserDialog.setOnSureButtonClick(new OnSureButtonClick() {
                 @Override
                 public void onSureClick(DialogInterface dialog, int id, List<Boolean> isChecks) {
-                    List<CheckBoxChild> sureUsers = new ArrayList<>();
+                    List<SingleOption> sureUsers = new ArrayList<>();
                     // 通过isChecks集合中的选择数据去判断哪些数据选中，并将选中的数据填进sureUsers集合中
                     for (int i = 0; i < isChecks.size(); i++) {
                         if (isChecks.get(i)) {

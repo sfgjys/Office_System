@@ -28,21 +28,25 @@ import java.util.List;
  * Created by user on 2017/3/31.
  */
 
-public class SelectNextUserDialog extends DialogFragment {
+public class MultipleChoiceDialog extends DialogFragment {
 
     private OnSureButtonClick onSureButtonClick;
     private AlertDialog alertDialog;
     private LinearLayout mAddSingleOption;
     private DialogDataPacket dialogDataPacket;
+    private String mDialogTitle;
 
-    public SelectNextUserDialog() {
+    public MultipleChoiceDialog() {
     }
 
+    /*设置确认按钮监听回调接口匿名对象*/
     public void setOnSureButtonClick(OnSureButtonClick onSureButtonClick) {
         this.onSureButtonClick = onSureButtonClick;
     }
 
-    public void setDialogDataPacket(List<SingleOption> singleOptions) {
+    /*设置对话框中展示的单项选择项的数据*/
+    public void setSingleOptions(String dialogTitle, List<SingleOption> singleOptions) {
+        mDialogTitle = dialogTitle;
         dialogDataPacket = new DialogDataPacket();
         dialogDataPacket.setSingleOptions(singleOptions);
     }
@@ -50,8 +54,9 @@ public class SelectNextUserDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null) {// 获取存储的单项选择项的数据
             dialogDataPacket = (DialogDataPacket) savedInstanceState.getSerializable(StringsFiled.SELECT_NEXT_DIALOG_SAVE_DATA);
+            mDialogTitle = savedInstanceState.getString(StringsFiled.MULTIPLE_CHOICE_DIALOG_TITLE, "");
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -59,19 +64,31 @@ public class SelectNextUserDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_select_next_user, null);
 
-        mAddSingleOption = (LinearLayout) view.findViewById(R.id.ll_add_check_box);
+        // 设置标题名字
+        TextView title = (TextView) view.findViewById(R.id.tv_next_user_dialog_title);
+        title.setText(mDialogTitle);
 
+        // 设置对话框内主要内容
+        mAddSingleOption = (LinearLayout) view.findViewById(R.id.ll_add_check_box);
         for (int i = 0; i < dialogDataPacket.getSingleOptions().size(); i++) {
             // 创建要添加进addCheckBox控件的checkbos子控件
             View inflate = ViewsUitls.inflate(R.layout.custom_check_box_style);
             final SmoothCheckBox smoothCheckBox = (SmoothCheckBox) inflate.findViewById(R.id.smooth_check_box);
             smoothCheckBox.setClickable(false);
+
             TextView textView = (TextView) inflate.findViewById(R.id.tv_custom_check_box_text);
             textView.setText(dialogDataPacket.getSingleOptions().get(i).getSingleOptionRightText());
+
             inflate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    smoothCheckBox.setChecked(!smoothCheckBox.isChecked(), true);
+                    for (int i = 0; i < dialogDataPacket.getSingleOptions().size(); i++) {
+                        LinearLayout linearLayout = (LinearLayout) mAddSingleOption.getChildAt(i);
+                        if (linearLayout.getChildAt(0) instanceof SmoothCheckBox) {
+                            ((SmoothCheckBox) linearLayout.getChildAt(0)).setChecked(false);
+                        }
+                    }
+                    smoothCheckBox.setChecked(true, true);
                 }
             });
 
@@ -114,6 +131,7 @@ public class SelectNextUserDialog extends DialogFragment {
             alertDialog.cancel();
             alertDialog.dismiss();
         } else {
+             /* 修改对话框整体样式 */
             // 注意 该修改对话框的宽度必须在super.onStart();后面
             WindowManager windowManager = getActivity().getWindowManager();
             Display display = windowManager.getDefaultDisplay();  //为获取屏幕宽、高
@@ -127,9 +145,11 @@ public class SelectNextUserDialog extends DialogFragment {
         }
     }
 
+    /* 存储单项选择项的数据 */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(StringsFiled.SELECT_NEXT_DIALOG_SAVE_DATA, dialogDataPacket);
+        outState.putString(StringsFiled.MULTIPLE_CHOICE_DIALOG_TITLE, mDialogTitle);
         super.onSaveInstanceState(outState);
     }
 }
