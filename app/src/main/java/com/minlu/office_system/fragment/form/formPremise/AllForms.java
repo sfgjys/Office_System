@@ -29,7 +29,7 @@ public enum AllForms {
             StringsFiled.LeaveManagementFragment_TAG, true, StringsFiled.Leave_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_LIST),
     BUS_MANAGEMENT("车辆管理", R.mipmap.home_page_icon4, BusManagementFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON,
             StringsFiled.BusManagementFragment_TAG, true, StringsFiled.Bus_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_LIST),
-    PLAN_SUMMARY("计划总结", R.mipmap.home_page_icon5, PlanSummaryFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON,
+    PLAN_SUMMARY("计划总结", R.mipmap.home_page_icon5, PlanSummaryFragment.class, StringsFiled.NO_SHOW_BUTTON,
             StringsFiled.PlanSummaryFragment_TAG, true, StringsFiled.PlanSummary_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_LIST),
     ASSETS_MANAGEMENT("资产管理", R.mipmap.home_page_icon6, AssetsManagementFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON,
             StringsFiled.AssetsManagementFragment_TAG, true, StringsFiled.No_Need_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_NULL),

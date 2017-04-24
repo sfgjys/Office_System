@@ -8,6 +8,7 @@ import com.minlu.baselibrary.util.SharedPreferencesUtil;
 import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.IpFiled;
+import com.minlu.office_system.PassBackStringData;
 import com.minlu.office_system.R;
 import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
@@ -175,10 +176,10 @@ public class LeaveManagementFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        getNextPersonData(mAssignee, "LeaveManagementAgree_Have_Next", "LeaveManagementAgree_No_Next", "是否同意该请假申请", new PassNextPersonString() {
+        getNextPersonData(mAssignee, "", "", "LeaveManagementAgree_Have_Next", "LeaveManagementAgree_No_Next", "是否同意该请假申请", new PassBackStringData() {
             @Override
-            public void passNextPersonString(String userList) {
-                officialLeaveApply(userList, 0);
+            public void passBackStringData(String passBackData) {
+                officialLeaveApply(passBackData, 0);
             }
         });
     }

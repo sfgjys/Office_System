@@ -97,16 +97,13 @@ public class FormActivity extends BaseActivity implements View.OnClickListener {
     private void showWhichButton(int whichButton) {
         switch (whichButton) {
             case StringsFiled.SHOW_IS_AGREE_BUTTON:
-                twoIsAgreeButtons.setVisibility(View.VISIBLE);
-                submitButton.setVisibility(View.GONE);
+                showAgreeSubmitButton(View.VISIBLE, View.GONE);
                 break;
             case StringsFiled.SHOW_SUBMIT_BUTTON:
-                twoIsAgreeButtons.setVisibility(View.GONE);
-                submitButton.setVisibility(View.VISIBLE);
+                showAgreeSubmitButton(View.GONE, View.VISIBLE);
                 break;
             case StringsFiled.NO_SHOW_BUTTON:
-                twoIsAgreeButtons.setVisibility(View.GONE);
-                submitButton.setVisibility(View.GONE);
+                showAgreeSubmitButton(View.GONE, View.GONE);
                 break;
             case -1:
                 ToastUtil.showToast(getApplication(), "home to form show which failure");
@@ -114,6 +111,10 @@ public class FormActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    public void showAgreeSubmitButton(int agreeShow, int submitShow) {
+        twoIsAgreeButtons.setVisibility(agreeShow);
+        submitButton.setVisibility(submitShow);
+    }
 
     /*
     * 设置R.id.sv_replace_form控件的展示形式

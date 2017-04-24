@@ -9,6 +9,7 @@ import com.minlu.baselibrary.base.ContentPage;
 import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.IpFiled;
+import com.minlu.office_system.PassBackStringData;
 import com.minlu.office_system.R;
 import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.bean.SingleOption;
@@ -208,10 +209,10 @@ public class RecordManagementFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        getNextPersonData(mAssignee, "RecordManagementAgree_Have_Next", "RecordManagementAgree_No_Next", "是否同意该收文签收", new PassNextPersonString() {
+        getNextPersonData(mAssignee, "", "", "RecordManagementAgree_Have_Next", "RecordManagementAgree_No_Next", "是否同意该收文签收", new PassBackStringData() {
             @Override
-            public void passNextPersonString(String userList) {
-                officialLeaveApply(userList, 0);
+            public void passBackStringData(String passBackData) {
+                officialLeaveApply(passBackData, 0);
             }
         });
     }

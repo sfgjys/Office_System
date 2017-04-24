@@ -21,11 +21,13 @@ import com.minlu.baselibrary.util.TimeTool;
 import com.minlu.baselibrary.util.ToastUtil;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.IpFiled;
+import com.minlu.office_system.PassBackStringData;
 import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.bean.SingleOption;
 import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.customview.EditTextTimeSelector;
+import com.minlu.office_system.fragment.dialog.MultipleChoiceDialog;
 import com.minlu.office_system.fragment.dialog.OnSureButtonClick;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
 import com.minlu.office_system.fragment.dialog.SelectNextUserDialog;
@@ -214,13 +216,13 @@ public abstract class FormFragment extends BaseFragment {
 
 
     /* 请求网络获取下一步操作数据 */
-    public void getNextPersonData(String assignee, final String tag1, final String tag2, final String dialogHint, final PassNextPersonString passNextPersonString) {
+    public void getNextPersonData(String assignee, String org_id, String autoOrg, final String tag1, final String tag2, final String dialogHint, final PassBackStringData passBackStringData) {
         startLoading();
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("assignee", assignee);
-        hashMap.put("org_id", "");
-        hashMap.put("autoOrg", "");
+        hashMap.put("org_id", org_id);
+        hashMap.put("autoOrg", autoOrg);
         OkHttpMethod.asynPostRequest(IpFiled.REQUEST_USER_LIST, hashMap, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -237,13 +239,13 @@ public abstract class FormFragment extends BaseFragment {
                             final List<SingleOption> nextUsers = new ArrayList<>();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject nextUserData = jsonArray.getJSONObject(i);
-                                nextUsers.add(new SingleOption(nextUserData.optString("TRUENAME"), nextUserData.optString("USERNAME"), nextUserData.optString("ORG_INFOR")));
+                                nextUsers.add(new SingleOption(nextUserData.optString("TRUENAME"), nextUserData.optString("USERNAME"), nextUserData.optString("ORG_INFOR"), ""));
                             }
                             // 走到这mNextUsers里已经有了下一步操作人的数据(或者为空)
                             ViewsUitls.runInMainThread(new TimerTask() {
                                 @Override
                                 public void run() {
-                                    showNextPersonData(nextUsers, passNextPersonString, tag1, tag2, dialogHint);
+                                    showNextPersonData(nextUsers, passBackStringData, tag1, tag2, dialogHint);
                                 }
                             });
                         } else {
@@ -261,7 +263,7 @@ public abstract class FormFragment extends BaseFragment {
     }
 
     /* 将下一步操作人通过对话框展示出来 */
-    private void showNextPersonData(final List<SingleOption> nextUsers, final PassNextPersonString passNextPersonString,
+    private void showNextPersonData(final List<SingleOption> nextUsers, final PassBackStringData passBackStringData,
                                     String tag1, String tag2, String dialogHint) {
         if (nextUsers.size() > 0) {
             endLoading();
@@ -283,7 +285,7 @@ public abstract class FormFragment extends BaseFragment {
                         for (int i = 0; i < sureUsers.size(); i++) {
                             userList += (sureUsers.get(i).getUserName() + ",");
                         }
-                        passNextPersonString.passNextPersonString(userList);
+                        passBackStringData.passBackStringData(userList);
                     } else {
                         showToastToMain("请先选择下一步操作人");
                     }
@@ -295,16 +297,77 @@ public abstract class FormFragment extends BaseFragment {
             PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
                 @Override
                 public void onSureClick(DialogInterface dialog, int id) {
-                    passNextPersonString.passNextPersonString("");
+                    passBackStringData.passBackStringData("");
                 }
             }, dialogHint);
             promptDialog.show(getActivity().getSupportFragmentManager(), tag2);
         }
     }
 
-    /* 解析审批意见json数据的接口 */
-    public interface PassNextPersonString {
-        void passNextPersonString(String userList);
+    /* 请求网络获取该流程步骤可以进行驳回的步骤 */
+    public void requestRejectWhichStep(final PassBackStringData passBackStringData) {
+        startLoading();
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("orderId", getOrderIdFromList());
+        hashMap.put("processId", getProcessIdFromList());
+        OkHttpMethod.asynPostRequest(IpFiled.REJECT_WHICH_STEP, hashMap, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                showToastAndEndLoading("服务器异常,请稍后");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response != null && response.isSuccessful()) {
+                    try {
+                        String resultList = response.body().string();
+                        if (StringUtils.interentIsNormal(resultList)) {
+                            JSONArray jsonArray = new JSONArray(resultList);
+                            final List<SingleOption> rejectSteps = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject rejectStep = jsonArray.getJSONObject(i);
+                                rejectSteps.add(new SingleOption(rejectStep.optString("displayName"), "", "", rejectStep.optString("taskName")));
+                            }
+                            /* 根据结果来真是驳回步骤的单选对话框 */
+                            ViewsUitls.runInMainThread(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    endLoading();
+                                    final MultipleChoiceDialog multipleChoiceDialog = new MultipleChoiceDialog();
+                                    multipleChoiceDialog.setSingleOptions("请选择驳回的流程步骤", rejectSteps);
+                                    multipleChoiceDialog.setOnSureButtonClick(new OnSureButtonClick() {
+                                        @Override
+                                        public void onSureClick(DialogInterface dialog, int id, List<Boolean> isChecks) {
+                                            String rejectStepTaskNam = "";
+                                            for (int i = 0; i < isChecks.size(); i++) {
+                                                if (isChecks.get(i)) {
+                                                    rejectStepTaskNam = rejectSteps.get(i).getRejectStepTaskName();
+                                                    break;
+                                                }
+                                            }
+                                            // 将选择的驳回步骤的taskName通过接口进行回调
+                                            if (StringUtils.isEmpty(rejectStepTaskNam)) {
+                                                ToastUtil.showToast(ViewsUitls.getContext(), "请先选择需要驳回的流程步骤");
+                                            } else {
+                                                passBackStringData.passBackStringData(rejectStepTaskNam);
+                                            }
+                                        }
+                                    });
+                                    multipleChoiceDialog.show(getActivity().getSupportFragmentManager(), "Plan_Summary_Select_Quarter_Type");
+                                }
+                            });
+                        } else {
+                            showToastAndEndLoading("服务器正忙,请稍后");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        showToastAndEndLoading("服务器正忙,请稍后");
+                    }
+                } else {
+                    showToastAndEndLoading("服务器正忙,请稍后");
+                }
+            }
+        });
     }
 
     /* 根据参数创建表单提交所需要的统一参数 */

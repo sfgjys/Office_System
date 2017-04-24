@@ -7,6 +7,7 @@ import com.minlu.baselibrary.base.ContentPage;
 import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.IpFiled;
+import com.minlu.office_system.PassBackStringData;
 import com.minlu.office_system.R;
 import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.bean.SingleOption;
@@ -161,10 +162,10 @@ public class BusManagementFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        getNextPersonData(mAssignee, "BusManagementAgree_Have_Next", "BusManagementAgree_No_Next", "是否同意该车辆申请", new PassNextPersonString() {
+        getNextPersonData(mAssignee, "", "", "BusManagementAgree_Have_Next", "BusManagementAgree_No_Next", "是否同意该车辆申请", new PassBackStringData() {
             @Override
-            public void passNextPersonString(String userList) {
-                officialBusUseApply(userList, 0);
+            public void passBackStringData(String passBackData) {
+                officialBusUseApply(passBackData, 0);
             }
         });
     }

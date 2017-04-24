@@ -10,6 +10,7 @@ import com.minlu.baselibrary.util.SharedPreferencesUtil;
 import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.IpFiled;
+import com.minlu.office_system.PassBackStringData;
 import com.minlu.office_system.R;
 import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
@@ -185,11 +186,11 @@ public class BusRequestFragment extends FormFragment {
         PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
             @Override
             public void onSureClick(DialogInterface dialog, int id) {
-                getNextPersonData(mAssignee, "BusRequestSubmit_Have_Next", "BusRequestSubmit_No_Next", "本界面是车辆申请的第一步,则必定有下一步操作人",
-                        new PassNextPersonString() {
+                getNextPersonData(mAssignee, "", "", "BusRequestSubmit_Have_Next", "BusRequestSubmit_No_Next", "本界面是车辆申请的第一步,则必定有下一步操作人",
+                        new PassBackStringData() {
                             @Override
-                            public void passNextPersonString(String userList) {
-                                officialBusUseApply(userList, 0);
+                            public void passBackStringData(String passBackData) {
+                                officialBusUseApply(passBackData, 0);
                             }
                         });
             }

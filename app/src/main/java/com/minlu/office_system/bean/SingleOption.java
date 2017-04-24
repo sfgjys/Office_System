@@ -13,11 +13,21 @@ public class SingleOption implements Serializable {
     private String userName;
     private String orgInform;
     private String singleOptionRightText;
+    private String rejectStepTaskName;
 
-    public SingleOption(String singleOptionRightText, String userName, String orgInform) {
+    public SingleOption(String singleOptionRightText, String userName, String orgInform, String rejectStepTaskName) {
         this.singleOptionRightText = singleOptionRightText;
         this.userName = userName;
         this.orgInform = orgInform;
+        this.rejectStepTaskName = rejectStepTaskName;
+    }
+
+    public String getRejectStepTaskName() {
+        return rejectStepTaskName;
+    }
+
+    public void setRejectStepTaskName(String rejectStepTaskName) {
+        this.rejectStepTaskName = rejectStepTaskName;
     }
 
     public String getUserName() {

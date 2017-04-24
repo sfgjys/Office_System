@@ -9,6 +9,7 @@ import com.minlu.baselibrary.base.ContentPage;
 import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.IpFiled;
+import com.minlu.office_system.PassBackStringData;
 import com.minlu.office_system.R;
 import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.bean.SingleOption;
@@ -61,6 +62,8 @@ public class PlanSummaryFragment extends FormFragment {
     private EditTextItem mYearView;
     private EditTextItem mQuarterView;
     private List<String> mYearData;
+    private FormActivity mFormActivity;
+    private int mQuarterType;
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -70,9 +73,9 @@ public class PlanSummaryFragment extends FormFragment {
     @Override
     protected View onCreateSuccessView() {
         // 因为本fragment是通过R.id.sv_replace_form控件replace开启的，但是R.id.sv_replace_form控件是居中属性，所以再次我们要使得居中属性去除
-        FormActivity formActivity = (FormActivity) getContext();
-        if (formActivity != null) {
-            formActivity.setScrollViewNoGravity();
+        mFormActivity = (FormActivity) getContext();
+        if (mFormActivity != null) {
+            mFormActivity.setScrollViewNoGravity();
         }
 
         View inflate = ViewsUitls.inflate(R.layout.form_plan_summary);
@@ -171,8 +174,8 @@ public class PlanSummaryFragment extends FormFragment {
 
     /* 显示季月类型选择对话框 */
     private void showSelectQuarterTypeDialog() {
-        SingleOption singleOption1 = new SingleOption("按季度", "", "");
-        SingleOption singleOption2 = new SingleOption("按月份", "", "");
+        SingleOption singleOption1 = new SingleOption("按季度", "", "", "");
+        SingleOption singleOption2 = new SingleOption("按月份", "", "", "");
         List<SingleOption> singleOptions = new ArrayList<>();
         singleOptions.add(singleOption1);
         singleOptions.add(singleOption2);
@@ -194,12 +197,14 @@ public class PlanSummaryFragment extends FormFragment {
             if (isChecks.get(i)) {
                 switch (i) {
                     case 0:
+                        mQuarterType = 0;
                         quarterData.add("第一季度");
                         quarterData.add("第二季度");
                         quarterData.add("第三季度");
                         quarterData.add("第四季度");
                         break;
                     case 1:
+                        mQuarterType = 1;
                         quarterData.add("第一月份");
                         quarterData.add("第二月份");
                         quarterData.add("第三月份");
@@ -259,25 +264,30 @@ public class PlanSummaryFragment extends FormFragment {
                 showEditTextItemCanClick(mYearView);
                 showEditTextItemCanClick(mQuarterView);
                 showEditTextItemCanClick(mWorkPlanTimeView);
-                showEditTextItemDifferentState(mWorkPlanView, "请编写工作计划", "(流程步骤被反驳前的工作计划) : ");
+                showEditTextItemDifferentState(mWorkPlanView, "请编写工作计划", "(流程步骤被驳回前的工作计划) : ");
                 mApproveIdea = null;
+                mFormActivity.showAgreeSubmitButton(View.GONE, View.VISIBLE);
                 break;
             case 2:
-                showEditTextItemDifferentState(mWorkPlanIdeaView, "请编写对本工作计划的意见", "(流程步骤被反驳前的工作计划意见) : ");
+                showEditTextItemDifferentState(mWorkPlanIdeaView, "请编写对本工作计划的意见", "(流程步骤被驳回前的工作计划意见) : ");
                 mApproveIdea = mWorkPlanIdeaView;// 最后记得将工作计划意见控件赋值给审批意见便于提交意见
+                mFormActivity.showAgreeSubmitButton(View.VISIBLE, View.GONE);
                 break;
             case 3:
                 showEditTextItemCanClick(mWorkSummaryTimeView);
-                showEditTextItemDifferentState(mWorkSummaryView, "请编写对工作计划的总结", "(流程步骤被反驳前的工作总结) : ");
+                showEditTextItemDifferentState(mWorkSummaryView, "请编写对工作计划的总结", "(流程步骤被驳回前的工作总结) : ");
                 mApproveIdea = null;
+                mFormActivity.showAgreeSubmitButton(View.GONE, View.VISIBLE);
                 break;
             case 4:
-                showEditTextItemDifferentState(mWorkSummaryIdeaView, "请编写对本工作总结的评价", "(流程步骤被反驳前的工作总结评价) : ");
+                showEditTextItemDifferentState(mWorkSummaryIdeaView, "请编写对本工作总结的评价", "(流程步骤被驳回前的工作总结评价) : ");
                 mApproveIdea = mWorkSummaryIdeaView;
+                mFormActivity.showAgreeSubmitButton(View.VISIBLE, View.GONE);
                 break;
             case 5:
-                showEditTextItemDifferentState(mUltimatelyLeadIdeaView, "请编写对本计划总结的评鉴", "(流程步骤被反驳前的计划总结评鉴) : ");
+                showEditTextItemDifferentState(mUltimatelyLeadIdeaView, "请编写对本计划总结的评鉴", "(流程步骤被驳回前的计划总结评鉴) : ");
                 mApproveIdea = mUltimatelyLeadIdeaView;
+                mFormActivity.showAgreeSubmitButton(View.VISIBLE, View.GONE);
                 break;
         }
     }
@@ -371,43 +381,64 @@ public class PlanSummaryFragment extends FormFragment {
         PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
             @Override
             public void onSureClick(DialogInterface dialog, int id) {
-                officialPlanSummary("", -1);
+                requestRejectWhichStep(new PassBackStringData() {
+                    @Override
+                    public void passBackStringData(String passBackData) {
+                        HashMap<String, String> unifyHashMap = getUnifyHashMap(passBackData, -1);
+                        unifyHashMap.put("suggest", mApproveIdea.getCustomEditTextRight().getText().toString());
+                        unifyHashMap.put("taskBack", passBackData);
+                        officialPlanSummary(unifyHashMap);
+                    }
+                });
             }
-        }, "是否不同意该工作计划 !");
+        }, "是否驳回该计划总结 !");
         promptDialog.show(getActivity().getSupportFragmentManager(), "RecordManagementDisAgree");
     }
 
     @Override
     public void agreeOnClick(View v) {
-        getNextPersonData(mAssignee, "PlanSummaryManagementAgree_Have_Next", "PlanSummaryManagementAgree_No_Next", "是否同意该计划总结", new PassNextPersonString() {
+        getNextPersonData(mAssignee, "", "", "PlanSummaryManagementAgree_Have_Next", "PlanSummaryManagementAgree_No_Next", "是否同意该计划总结", new PassBackStringData() {
             @Override
-            public void passNextPersonString(String userList) {
-                officialPlanSummary(userList, 0);
+            public void passBackStringData(String passBackData) {
+                HashMap<String, String> unifyHashMap = getUnifyHashMap(passBackData, 0);
+                unifyHashMap.put("suggest", mApproveIdea.getCustomEditTextRight().getText().toString());
+                officialPlanSummary(unifyHashMap);
             }
         });
     }
 
     @Override
     public void submitOnClick(View v) {
+        getNextPersonData(mAssignee, "", "", "PlanSummaryManagementSubmit_Have_Next", "PlanSummaryManagementSubmit_No_Next", "是否提交该工作总结", new PassBackStringData() {
+            @Override
+            public void passBackStringData(String passBackData) {
+                HashMap<String, String> unifyHashMap = getUnifyHashMap(passBackData, 0);
+                if (Integer.parseInt(mStep) == 1) {
+                    unifyHashMap.put("yd", mYearView.getCustomEditTextRight().getText().toString());
+                    unifyHashMap.put("type", mQuarterType + "");
+                    unifyHashMap.put("jd", mQuarterView.getCustomEditTextRight().getText().toString());
+                    unifyHashMap.put("gzjh", mWorkPlanView.getCustomEditTextRight().getText().toString());
+                    unifyHashMap.put("gzjhtime", mWorkPlanTimeView.getCustomEditTextRight().getText().toString());
+                } else {
+                    unifyHashMap.put("gzzj", mWorkSummaryView.getCustomEditTextRight().getText().toString());
+                    unifyHashMap.put("gzzjtime", mWorkSummaryTimeView.getCustomEditTextRight().getText().toString());
+                }
+                officialPlanSummary(unifyHashMap);
+            }
+        });
     }
 
-
-    private void officialPlanSummary(String userList, int method) {
-        startLoading();
-
+    public HashMap<String, String> getUnifyHashMap(String userList, int method) {
         HashMap<String, String> hashMap = getUnifiedDataHashMap();
-
         hashMap.put("taskName", mTaskName);
         hashMap.put("assignee", mAssignee);
         hashMap.put("method", "" + method);
         hashMap.put("userList", userList);
+        return hashMap;
+    }
 
-        // 以下为表单上的填写数据
-        hashMap.put("suggest", mApproveIdea.getCustomEditTextRight().getText().toString());
-
-        hashMap.put("gzzj", mWorkSummaryView.getCustomEditTextRight().getText().toString());
-        hashMap.put("gzzjtime", mWorkSummaryTimeView.getCustomEditTextRight().getText().toString());
-
+    private void officialPlanSummary(HashMap<String, String> hashMap) {
+        startLoading();
         startUltimatelySubmit(IpFiled.SUBMIT_IS_AGREE_PLAN_SUMMARY, hashMap, "success", "服务器异常，请联系管理员", "提交成功");
     }
 }
