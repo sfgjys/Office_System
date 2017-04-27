@@ -176,6 +176,8 @@ public class RecordManagementFragment extends FormFragment {
                 idea.setText(recordEndSuggestBean.getSuggestContent());
                 mEndStepSuggestView.addView(inflate);
             }
+        }else{
+            mEndStepSuggestView.setVisibility(View.GONE);
         }
     }
 
