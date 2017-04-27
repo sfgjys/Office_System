@@ -1,6 +1,7 @@
 package com.minlu.office_system.fragment.form;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -60,7 +61,7 @@ public class BusRequestFragment extends FormFragment {
     }
 
     @Override
-    protected View onCreateSuccessView() {
+    protected View onCreateSuccessView(Bundle savedInstanceState) {
         // 因为本fragment是通过R.id.sv_replace_form控件replace开启的，但是R.id.sv_replace_form控件是居中属性，所以再次我们要使得居中属性去除
         FormActivity formActivity = (FormActivity) getContext();
         if (formActivity != null) {
@@ -186,7 +187,7 @@ public class BusRequestFragment extends FormFragment {
         PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
             @Override
             public void onSureClick(DialogInterface dialog, int id) {
-                getNextPersonData(mAssignee, "", "", "BusRequestSubmit_Have_Next", "BusRequestSubmit_No_Next", "本界面是车辆申请的第一步,则必定有下一步操作人",
+                getNextPersonData(mAssignee, "", "", null, "BusRequestSubmit_Have_Next", "BusRequestSubmit_No_Next", "本界面是车辆申请的第一步,则必定有下一步操作人",
                         new PassBackStringData() {
                             @Override
                             public void passBackStringData(String passBackData) {

@@ -1,6 +1,7 @@
 package com.minlu.office_system.fragment.form;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -57,7 +58,7 @@ public class LeaveApplyFragment extends FormFragment {
     }
 
     @Override
-    protected View onCreateSuccessView() {
+    protected View onCreateSuccessView(Bundle savedInstanceState) {
 
         // 因为本fragment是通过R.id.sv_replace_form控件replace开启的，但是R.id.sv_replace_form控件是居中属性，所以再次我们要使得居中属性去除
         FormActivity formActivity = (FormActivity) getContext();
@@ -196,12 +197,12 @@ public class LeaveApplyFragment extends FormFragment {
 
     private void analyticalData(JSONObject jsonObject) {
         // 用来显示的
-        mResidueYearLeaveText = jsonObject.optString("year");
-        mAddUpLeaveDaysText = jsonObject.optString("allday");
+        mResidueYearLeaveText = jsonObject.optInt("year") + "";
+        mAddUpLeaveDaysText = jsonObject.optInt("allday") + "";
 
         // 用来请求下一步操作人
         mAssignee = jsonObject.optString("assignee");
-        mOrd = jsonObject.optString("ord");
+        mOrd = jsonObject.optInt("ord") + "";
         mAutoOrg = jsonObject.optString("autoOrg");
 
         // 用于正式提交
@@ -234,7 +235,7 @@ public class LeaveApplyFragment extends FormFragment {
         PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
             @Override
             public void onSureClick(DialogInterface dialog, int id) {
-                getNextPersonData(mAssignee, "", "", "LeaveApplySubmit_Have_Next", "LeaveApplySubmit_No_Next", "本界面是请假申请的第一步,则必定有下一步操作人",
+                getNextPersonData(mAssignee, mOrd, mAutoOrg, null, "LeaveApplySubmit_Have_Next", "LeaveApplySubmit_No_Next", "本界面是请假申请的第一步,则必定有下一步操作人",
                         new PassBackStringData() {
                             @Override
                             public void passBackStringData(String passBackData) {

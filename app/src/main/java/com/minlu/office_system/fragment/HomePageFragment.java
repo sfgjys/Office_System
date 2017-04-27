@@ -3,6 +3,7 @@ package com.minlu.office_system.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -33,7 +34,7 @@ public class HomePageFragment extends BaseFragment<HomePageItem> {
     }
 
     @Override
-    protected View onCreateSuccessView() {
+    protected View onCreateSuccessView(Bundle savedInstanceState) {
         View inflate = ViewsUitls.inflate(R.layout.layout_home_page);
         GridView gridView = (GridView) inflate.findViewById(R.id.gv_home_page);
         HomePageAdapter homePageAdapter = new HomePageAdapter(date);

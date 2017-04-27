@@ -1,16 +1,22 @@
 package com.minlu.office_system.activity;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.minlu.baselibrary.base.BaseActivity;
 import com.minlu.baselibrary.util.ToastUtil;
 import com.minlu.office_system.R;
 import com.minlu.office_system.StringsFiled;
+import com.minlu.office_system.fragment.form.RecordManagementFragment;
 import com.minlu.office_system.fragment.form.formPremise.AllForms;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
 
@@ -123,5 +129,37 @@ public class FormActivity extends BaseActivity implements View.OnClickListener {
         ScrollView.LayoutParams layoutParams = (ScrollView.LayoutParams) scrollView.getLayoutParams();
         layoutParams.gravity = Gravity.NO_GRAVITY;
         scrollView.setLayoutParams(layoutParams);
+    }
+
+    private static final int FILE_SELECT_CODE = 0;
+
+    /* 调用系统文件管理器后对结果的处理 */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {// 调用文件管理器失败
+            Log.e("FormActivity", "onActivityResult() error, resultCode: " + resultCode);
+            super.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
+        if (requestCode == FILE_SELECT_CODE) {// 调用文件管理器成功
+            Uri uri = data.getData();
+            RecordManagementFragment recordManagementFragment = (RecordManagementFragment) getSupportFragmentManager().findFragmentByTag(StringsFiled.RecordManagementFragment_TAG);
+            if (recordManagementFragment != null) {
+                recordManagementFragment.returnFilePath(uri.getPath());
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /* 调用系统文件管理器 */
+    public void chooseFile() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        try {
+            startActivityForResult(Intent.createChooser(intent, "选择文件"), FILE_SELECT_CODE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "亲，木有文件管理器啊-_-!!", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.minlu.office_system.fragment.form;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -68,7 +69,7 @@ public class WorkMonthlyReportFragment extends FormFragment {
     }
 
     @Override
-    protected View onCreateSuccessView() {
+    protected View onCreateSuccessView(Bundle savedInstanceState) {
         // 因为本fragment是通过R.id.sv_replace_form控件replace开启的，但是R.id.sv_replace_form控件是居中属性，所以再次我们要使得居中属性去除
         FormActivity formActivity = (FormActivity) getContext();
         if (formActivity != null) {
@@ -240,7 +241,7 @@ public class WorkMonthlyReportFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        getNextPersonData(mAssignee, "", "", "WorkMonthlyReportManagementAgree_Have_Next", "WorkMonthlyReportManagementAgree_No_Next", "是否同意该工作月报",
+        getNextPersonData(mAssignee, "", "", null, "WorkMonthlyReportManagementAgree_Have_Next", "WorkMonthlyReportManagementAgree_No_Next", "是否同意该工作月报",
                 new PassBackStringData() {
                     @Override
                     public void passBackStringData(String passBackData) {

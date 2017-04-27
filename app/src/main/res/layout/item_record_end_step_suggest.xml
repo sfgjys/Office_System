@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/item_record_end_step_suggest_name"
+        style="@style/record_end_step_suggest_text_style"
+        android:layout_weight="0.8"
+        android:text="阅者姓名"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/item_record_end_step_suggest_time"
+        style="@style/record_end_step_suggest_text_style"
+        android:layout_weight="1"
+        android:text="阅文时间"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/item_record_end_step_suggest_idea"
+        style="@style/record_end_step_suggest_text_style"
+        android:layout_weight="1"
+        android:text="领导批示"
+        android:textSize="16dp" />
+</LinearLayout>

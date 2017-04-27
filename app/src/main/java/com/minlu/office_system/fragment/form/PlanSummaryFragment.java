@@ -1,6 +1,7 @@
 package com.minlu.office_system.fragment.form;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
@@ -73,7 +74,7 @@ public class PlanSummaryFragment extends FormFragment {
     }
 
     @Override
-    protected View onCreateSuccessView() {
+    protected View onCreateSuccessView(Bundle savedInstanceState) {
         // 因为本fragment是通过R.id.sv_replace_form控件replace开启的，但是R.id.sv_replace_form控件是居中属性，所以再次我们要使得居中属性去除
         mFormActivity = (FormActivity) getContext();
         if (mFormActivity != null) {
@@ -294,22 +295,6 @@ public class PlanSummaryFragment extends FormFragment {
         }
     }
 
-    /* 根据流程步骤去设置对应控件的表现 */
-    public void showEditTextItemDifferentState(EditTextItem editTextItem, String textEmptyHint, String haveTextHint) {
-        // 先获取EditTextItem控件的文本(这个文本是从获取流程所有建议的接口那里解析出来的，有可能有,有可能没有)
-        String editTextItemRightText = editTextItem.getCustomEditTextRight().getText().toString();
-        // 在设置EditTextItem显示出来，并且可以编辑
-        showEditTextItemCanEdit(editTextItem);
-        // 设置文本初始值
-        editTextItem.setEditText("");
-        // 判断EditTextItem控件的文本是否为空，来区分EditTextItem控件是否初次显示
-        if (StringUtils.isEmpty(editTextItemRightText)) {
-            editTextItem.getCustomEditTextRight().setHint(textEmptyHint);
-        } else {
-            editTextItem.getCustomEditTextRight().setHint(haveTextHint + editTextItemRightText);
-        }
-    }
-
     @Override
     protected ContentPage.ResultState onLoad() {
         Response response = requestFormListItemDetail();
@@ -406,7 +391,7 @@ public class PlanSummaryFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        getNextPersonData(mAssignee, "" + mOrd, mAutoOrg, "PlanSummaryManagementAgree_Have_Next", "PlanSummaryManagementAgree_No_Next", "是否同意该计划总结", new PassBackStringData() {
+        getNextPersonData(mAssignee, "" + mOrd, mAutoOrg, null, "PlanSummaryManagementAgree_Have_Next", "PlanSummaryManagementAgree_No_Next", "是否同意该计划总结", new PassBackStringData() {
             @Override
             public void passBackStringData(String passBackData) {
                 HashMap<String, String> unifyHashMap = getUnifyHashMap(passBackData, 0);
@@ -418,7 +403,7 @@ public class PlanSummaryFragment extends FormFragment {
 
     @Override
     public void submitOnClick(View v) {
-        getNextPersonData(mAssignee, "" + mOrd, mAutoOrg, "PlanSummaryManagementSubmit_Have_Next", "PlanSummaryManagementSubmit_No_Next", "是否提交该工作总结", new PassBackStringData() {
+        getNextPersonData(mAssignee, "" + mOrd, mAutoOrg, null, "PlanSummaryManagementSubmit_Have_Next", "PlanSummaryManagementSubmit_No_Next", "是否提交该工作总结", new PassBackStringData() {
             @Override
             public void passBackStringData(String passBackData) {
                 HashMap<String, String> unifyHashMap = getUnifyHashMap(passBackData, 0);

@@ -1,5 +1,6 @@
 package com.minlu.office_system.fragment;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
@@ -25,7 +26,7 @@ public class ApprovalFlowFragment extends BaseFragment {
     }
 
     @Override
-    protected View onCreateSuccessView() {
+    protected View onCreateSuccessView(Bundle savedInstanceState) {
 
         View inflate = ViewsUitls.inflate(R.layout.layout_list);
         ListView listView = (ListView) inflate.findViewById(R.id.list_view);

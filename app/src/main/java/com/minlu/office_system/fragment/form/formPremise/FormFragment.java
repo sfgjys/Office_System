@@ -216,13 +216,16 @@ public abstract class FormFragment extends BaseFragment {
 
 
     /* 请求网络获取下一步操作数据 */
-    public void getNextPersonData(String assignee, String org_id, String autoOrg, final String tag1, final String tag2, final String dialogHint, final PassBackStringData passBackStringData) {
+    public void getNextPersonData(String assignee, String org_id, String autoOrg, HashMap<String, String> map, final String tag1, final String tag2, final String dialogHint, final PassBackStringData passBackStringData) {
         startLoading();
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("assignee", assignee);
         hashMap.put("org_id", org_id);
         hashMap.put("autoOrg", autoOrg);
+        if (map != null) {
+            hashMap.putAll(map);
+        }
         OkHttpMethod.asynPostRequest(IpFiled.REQUEST_USER_LIST, hashMap, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -411,9 +414,30 @@ public abstract class FormFragment extends BaseFragment {
         });
     }
 
+    /* 前提:editTextItem是编辑文本的，切editTextItem控件之前就已经设置了文本内容(不管有没有文本)
+     根据流程步骤去设置对应控件的表现 */
+    public void showEditTextItemDifferentState(EditTextItem editTextItem, String textEmptyHint, String haveTextHint) {
+        // 先获取EditTextItem控件的文本(这个文本是从获取流程所有建议的接口那里解析出来的，有可能有,有可能没有)
+        String editTextItemRightText = editTextItem.getCustomEditTextRight().getText().toString();
+        // 在设置EditTextItem显示出来，并且可以编辑
+        showEditTextItemCanEdit(editTextItem);
+        // 设置文本初始值
+        editTextItem.setEditText("");
+        // 判断EditTextItem控件的文本是否为空，来区分EditTextItem控件是否初次显示
+        if (StringUtils.isEmpty(editTextItemRightText)) {
+            editTextItem.getCustomEditTextRight().setHint(textEmptyHint);
+        } else {
+            editTextItem.getCustomEditTextRight().setHint(haveTextHint + editTextItemRightText);
+        }
+    }
+
     public void showToastAndEndLoading(String text) {
         endLoading();
         showToastToMain(text);
+    }
+
+    public String getSuggestIdea(JSONObject jsonObject, String suggestTextField, String suggestMethodField) {
+        return StringUtils.isEmpty(jsonObject.optString(suggestTextField)) ? ((Integer.parseInt(jsonObject.optString(suggestMethodField)) == 0) ? "(同意)" : "(不同意)") : jsonObject.optString(suggestTextField);
     }
 
     /* 设置EditTextItem控件可见并可以编辑 */

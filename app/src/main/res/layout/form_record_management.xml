@@ -11,6 +11,16 @@
         edittextitem:editText_left_text="来文标题 : " />
 
     <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_record_management_type"
+        style="@style/editText_item_top"
+        android:layout_marginRight="80dp"
+        android:visibility="gone"
+        edittextitem:editText_hint="请选择来文类型"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="来文类型 : "
+        edittextitem:editText_right_icon="@drawable/selector_pull_down" />
+
+    <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_record_management_number"
         style="@style/editText_item_top"
         edittextitem:editText_hint="请输入文号"
@@ -28,6 +38,7 @@
         android:id="@+id/form_record_management_day"
         style="@style/editText_item_top"
         edittextitem:editText_hint="请选择日期"
+        edittextitem:editText_is_clickable="false"
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="来文日期 : "
         edittextitem:editText_right_icon="@mipmap/calendar_icon_default" />
@@ -35,6 +46,7 @@
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_record_management_propose_to_idea"
         style="@style/editText_item_top"
+        edittextitem:editText_hint="请输入拟办意见"
         edittextitem:editText_input_type="textMultiLine"
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="拟办意见 : "
@@ -43,10 +55,76 @@
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_record_management_approve_idea"
         style="@style/editText_item_top"
-        edittextitem:editText_hint="选填备注"
+        edittextitem:editText_hint="请编写领导批示"
         edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="审批意见 : "
         edittextitem:editText_max_lines="99" />
+
+    <LinearLayout
+        android:id="@+id/form_record_management_end_step_suggest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@color/black"
+        android:orientation="vertical"
+        android:padding="0.5dp"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/record_end_step_suggest_text_style"
+                android:layout_weight="0.8"
+                android:text="阅者姓名"
+                android:textSize="16dp" />
+
+            <TextView
+                style="@style/record_end_step_suggest_text_style"
+                android:layout_weight="1"
+                android:text="阅文时间"
+                android:textSize="16dp" />
+
+            <TextView
+                style="@style/record_end_step_suggest_text_style"
+                android:layout_weight="1"
+                android:text="领导批示"
+                android:textSize="16dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_add_accessory_parent"
+        style="@style/editText_item_top"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="附件列表 : "
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/tv_add_accessory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/selector_add_accessory_background"
+            android:paddingBottom="6dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="6dp"
+            android:text="新增附件"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/form_record_management_details"
@@ -58,7 +136,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="附件下载 : "
+            android:text="附件列表 : "
             android:textColor="@color/black"
             android:textSize="18dp" />
 
@@ -69,7 +147,6 @@
             android:layout_marginLeft="6dp"
             android:layout_marginStart="6dp"
             android:layout_weight="1"
-            android:orientation="vertical"></LinearLayout>
-
+            android:orientation="vertical" />
     </LinearLayout>
 </LinearLayout>

@@ -43,14 +43,14 @@ public abstract class BaseFragment<T> extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
 
         contentPage = new ContentPage(ViewsUitls.getContext()) {
 
             @Override
             public View onCreateSuccessView() {
                 // 注意是调用谁的方法
-                return BaseFragment.this.onCreateSuccessView();
+                return BaseFragment.this.onCreateSuccessView(savedInstanceState);
             }
 
             @Override
@@ -79,8 +79,9 @@ public abstract class BaseFragment<T> extends DialogFragment {
      * 返回加载成功对应的界面
      *
      * @return
+     * @param savedInstanceState
      */
-    protected abstract View onCreateSuccessView();
+    protected abstract View onCreateSuccessView(Bundle savedInstanceState);
 
     /**
      * 加载网络数据的方法 在此抽象方法中子类最后必须调用父类的chat()方法

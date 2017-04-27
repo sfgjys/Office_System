@@ -21,7 +21,7 @@ public enum AllForms {
     * 主页中item的文本名字，主页中item的图片所在资源id，表单Fragment的class，在表单Fragment界面中显示的是什么按钮，打开表单Fragment时的Tag
     *   打开表单Fragment时使用的替换id布局是不是ScrollView, 请求列表时的参数ProcessId，
     * */
-    RECORD_MANAGEMENT("收文管理", R.mipmap.home_page_icon1, RecordManagementFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON,
+    RECORD_MANAGEMENT("收文管理", R.mipmap.home_page_icon1, RecordManagementFragment.class, StringsFiled.NO_SHOW_BUTTON,
             StringsFiled.RecordManagementFragment_TAG, true, StringsFiled.RecordManagement_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_LIST),
     POST_MANAGEMENT("发文管理", R.mipmap.home_page_icon2, PostManagementFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON,
             StringsFiled.PostManagementFragment_TAG, true, StringsFiled.PostManagement_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_LIST),

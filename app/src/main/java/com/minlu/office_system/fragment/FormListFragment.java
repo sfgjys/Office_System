@@ -48,7 +48,7 @@ public class FormListFragment extends BaseFragment<TaskListItem> {
     }
 
     @Override
-    protected View onCreateSuccessView() {
+    protected View onCreateSuccessView(Bundle savedInstanceState) {
 
         View inflate = ViewsUitls.inflate(R.layout.form_list_view);
         ListView listView = (ListView) inflate.findViewById(R.id.list_view);

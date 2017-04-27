@@ -1,6 +1,7 @@
 package com.minlu.office_system.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 
 import com.minlu.baselibrary.base.BaseFragment;
@@ -25,7 +26,7 @@ public class SettingFragment extends BaseFragment implements View.OnClickListene
     }
 
     @Override
-    protected View onCreateSuccessView() {
+    protected View onCreateSuccessView(Bundle savedInstanceState) {
         View inflate = ViewsUitls.inflate(R.layout.layout_setting);
 
         SettingItem versionInformation = (SettingItem) inflate.findViewById(R.id.setting_version_information);

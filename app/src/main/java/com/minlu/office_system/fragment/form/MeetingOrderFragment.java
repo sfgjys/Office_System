@@ -1,5 +1,6 @@
 package com.minlu.office_system.fragment.form;
 
+import android.os.Bundle;
 import android.view.View;
 
 import com.minlu.baselibrary.base.ContentPage;
@@ -23,7 +24,7 @@ public class MeetingOrderFragment extends FormFragment {
     }
 
     @Override
-    protected View onCreateSuccessView() {
+    protected View onCreateSuccessView(Bundle savedInstanceState) {
         // 因为本fragment是通过R.id.sv_replace_form控件replace开启的，但是R.id.sv_replace_form控件是居中属性，所以再次我们要使得居中属性去除
         FormActivity formActivity = (FormActivity) getContext();
         if (formActivity != null) {

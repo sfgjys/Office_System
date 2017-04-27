@@ -1,6 +1,7 @@
 package com.minlu.office_system.fragment.form;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.View;
 
 import com.minlu.baselibrary.base.ContentPage;
@@ -12,7 +13,6 @@ import com.minlu.office_system.PassBackStringData;
 import com.minlu.office_system.R;
 import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
-import com.minlu.office_system.bean.SingleOption;
 import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.customview.EditTextTimeSelector;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
@@ -23,7 +23,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import okhttp3.Response;
 
@@ -33,7 +32,6 @@ import okhttp3.Response;
 public class LeaveManagementFragment extends FormFragment {
 
     private ArrayList<String> excessive;
-    private List<SingleOption> mNextUsers;
     private String mTitle;
     private String mType;
     private String mRemark;
@@ -56,7 +54,7 @@ public class LeaveManagementFragment extends FormFragment {
     }
 
     @Override
-    protected View onCreateSuccessView() {
+    protected View onCreateSuccessView(Bundle savedInstanceState) {
         // 因为本fragment是通过R.id.sv_replace_form控件replace开启的，但是R.id.sv_replace_form控件是居中属性，所以再次我们要使得居中属性去除
         FormActivity formActivity = (FormActivity) getContext();
         if (formActivity != null) {
@@ -176,7 +174,7 @@ public class LeaveManagementFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        getNextPersonData(mAssignee, "", "", "LeaveManagementAgree_Have_Next", "LeaveManagementAgree_No_Next", "是否同意该请假申请", new PassBackStringData() {
+        getNextPersonData(mAssignee, "", "", null, "LeaveManagementAgree_Have_Next", "LeaveManagementAgree_No_Next", "是否同意该请假申请", new PassBackStringData() {
             @Override
             public void passBackStringData(String passBackData) {
                 officialLeaveApply(passBackData, 0);

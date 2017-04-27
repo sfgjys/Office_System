@@ -1,6 +1,7 @@
 package com.minlu.office_system.fragment.form;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,10 +49,13 @@ public class PostManagementFragment extends FormFragment {
     private String mSecretGradeText = "";
     private List<String> mDownloadFileName;
     private List<String> mDownloadFilePath;
-    private String mNuclearDraftText;
-    private String mOfficeNuclearDraftIdeaText;
-    private String mAssignee;
-    private String mTaskName;
+    private String mNuclearDraftText = "";
+    private String mOfficeNuclearDraftIdeaText = "";
+    private String mAssignee = "";
+    private String mTaskName = "";
+    private String mStep = "";
+    private String mAutoOrg = "";
+    private String mOrd = "";
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -59,7 +63,7 @@ public class PostManagementFragment extends FormFragment {
     }
 
     @Override
-    protected View onCreateSuccessView() {
+    protected View onCreateSuccessView(Bundle savedInstanceState) {
         // 因为本fragment是通过R.id.sv_replace_form控件replace开启的，但是R.id.sv_replace_form控件是居中属性，所以再次我们要使得居中属性去除
         FormActivity formActivity = (FormActivity) getContext();
         if (formActivity != null) {
@@ -112,7 +116,8 @@ public class PostManagementFragment extends FormFragment {
         if (mDownloadFileName.size() > 0) {
             details.setVisibility(View.VISIBLE);
             for (int i = 0; i < mDownloadFileName.size(); i++) {
-                TextView textView = (TextView) ViewsUitls.inflate(R.layout.item_accessory_list);
+                LinearLayout layout = (LinearLayout) ViewsUitls.inflate(R.layout.item_accessory_list);
+                TextView textView = (TextView) layout.findViewById(R.id.tv_accessory_name);
                 textView.setText(mDownloadFileName.get(i));
                 final int pressIndex = i;
                 textView.setOnClickListener(new View.OnClickListener() {
@@ -130,7 +135,7 @@ public class PostManagementFragment extends FormFragment {
                     }
                 });
                 textView.setPadding(ViewsUitls.dpToPx(0), ViewsUitls.dpToPx(6), ViewsUitls.dpToPx(0), ViewsUitls.dpToPx(6));
-                accessoryList.addView(textView);
+                accessoryList.addView(layout);
             }
         }
     }
@@ -161,7 +166,7 @@ public class PostManagementFragment extends FormFragment {
                 String resultList = response.body().string();
                 if (StringUtils.interentIsNormal(resultList)) {
                     JSONObject jsonObject = new JSONObject(resultList);
-                    if (jsonObject.has("TITLE")) {// 有标题字段，说明返回的数据正常
+                    if (jsonObject.has("DRAFTER")) {// 有标题字段，说明返回的数据正常
                         analyticalData(jsonObject);
                     }
                 }
@@ -174,12 +179,12 @@ public class PostManagementFragment extends FormFragment {
 
     private void analyticalData(JSONObject jsonObject) throws JSONException {
         // 用于表单界面展示的数据
-        mDrafterText = jsonObject.optString("DRAFTER");
-        mMainOfficeText = jsonObject.optString("ZBCS");
-        mPostTypeText = jsonObject.optString("DOCUMENT_TYPE");
-        mPostTitleText = jsonObject.optString("TITLE");
-        mMainSendOfficeText = jsonObject.optString("ZSJG");
-        mSecretGradeText = jsonObject.optString("MIJI");
+        mDrafterText = jsonObject.optString("DRAFTER");// 拟稿人
+        mMainOfficeText = jsonObject.optString("ZBCS");// 主办事处
+        mPostTypeText = jsonObject.optString("DOCUMENT_TYPE");// 发文类型
+        mPostTitleText = jsonObject.optString("TITLE");// 发文标题
+        mSecretGradeText = jsonObject.optString("MIJI");// 密级
+        mMainSendOfficeText = jsonObject.optString("ZSJG");// 主送机关
 
         // 下载附件数据
         JSONArray fileList = jsonObject.optJSONArray("FILELIST");
@@ -196,6 +201,13 @@ public class PostManagementFragment extends FormFragment {
         // 后面的接口需要到的数据
         mAssignee = jsonObject.optString("ASSIGNEE");
         mTaskName = jsonObject.optString("TASKNAME");
+        mStep = jsonObject.optString("STEP");
+
+        JSONObject mapInfo = jsonObject.optJSONObject("MAPINFO");
+        if (mapInfo.has("ord")) {
+            mOrd = mapInfo.optInt("ord") + "";
+        }
+        mAutoOrg = mapInfo.optString("autoOrg");
 
         // 获取审批建议
         getAllSuggest(new AnalysisJSON() {
@@ -207,12 +219,16 @@ public class PostManagementFragment extends FormFragment {
                 if (jsonObject.has("rect4suggest")) {
                     mOfficeNuclearDraftIdeaText = jsonObject.optString("rect4suggest");
                 }
+
+
+
                 excessive = new ArrayList<>();
                 excessive.add("excessive");// 给excessive创建实例，并添加元素，让界面走onCreateSuccessView()方法
             }
         });
     }
 
+    // ********************************************************************************************************************************************
     @Override
     public void disAgreeOnClick(View v) {
         PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
@@ -226,7 +242,7 @@ public class PostManagementFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        getNextPersonData(mAssignee, "", "", "PostManagementAgree_Have_Next", "PostManagementAgree_No_Next", "是否同意该发文拟稿", new PassBackStringData() {
+        getNextPersonData(mAssignee, "", "", null, "PostManagementAgree_Have_Next", "PostManagementAgree_No_Next", "是否同意该发文拟稿", new PassBackStringData() {
             @Override
             public void passBackStringData(String passBackData) {
                 officialLeaveApply(passBackData, 0);

@@ -1,6 +1,7 @@
 package com.minlu.office_system.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 
 import com.minlu.baselibrary.BaseStringsFiled;
@@ -20,7 +21,7 @@ public class MeFragment extends BaseFragment<String> implements View.OnClickList
     }
 
     @Override
-    protected View onCreateSuccessView() {
+    protected View onCreateSuccessView(Bundle savedInstanceState) {
         View inflate = ViewsUitls.inflate(R.layout.layout_me);
 
         SettingItem myLeave = (SettingItem) inflate.findViewById(R.id.me_my_leave);
