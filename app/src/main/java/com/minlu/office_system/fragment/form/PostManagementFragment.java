@@ -3,16 +3,20 @@ package com.minlu.office_system.fragment.form;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.minlu.baselibrary.base.ContentPage;
+import com.minlu.baselibrary.util.SharedPreferencesUtil;
 import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.baselibrary.util.ViewsUitls;
 import com.minlu.office_system.IpFiled;
 import com.minlu.office_system.PassBackStringData;
 import com.minlu.office_system.R;
+import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
+import com.minlu.office_system.bean.CountersignSuggestBean;
 import com.minlu.office_system.bean.SingleOption;
 import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
@@ -51,11 +55,28 @@ public class PostManagementFragment extends FormFragment {
     private List<String> mDownloadFilePath;
     private String mNuclearDraftText = "";
     private String mOfficeNuclearDraftIdeaText = "";
+    private String mEndSignAndIssueText = "";
     private String mAssignee = "";
     private String mTaskName = "";
     private String mStep = "";
     private String mAutoOrg = "";
     private String mOrd = "";
+    private List<CountersignSuggestBean> countersignSuggestData = new ArrayList<>();
+    private String mUserOneselfSuggest = "";
+    private EditTextItem drafter;
+    private EditTextItem mainOffice;
+    private EditTextItem postTitle;
+    private EditTextItem mainSendOffice;
+    private EditTextItem postType;
+    private EditTextItem secretGrade;
+    private EditTextItem postNumber;
+    private EditTextItem officeNuclearDraftIdea;
+    private EditTextItem nuclearDraftIdea;
+    private EditTextItem signAndIssue;
+    private LinearLayout mCountersignTable;
+    private View mCountersignTableLabel;
+    private EditTextItem mCountersignIdea;
+    private FormActivity formActivity;
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -65,7 +86,7 @@ public class PostManagementFragment extends FormFragment {
     @Override
     protected View onCreateSuccessView(Bundle savedInstanceState) {
         // 因为本fragment是通过R.id.sv_replace_form控件replace开启的，但是R.id.sv_replace_form控件是居中属性，所以再次我们要使得居中属性去除
-        FormActivity formActivity = (FormActivity) getContext();
+        formActivity = (FormActivity) getContext();
         if (formActivity != null) {
             formActivity.setScrollViewNoGravity();
         }
@@ -79,34 +100,161 @@ public class PostManagementFragment extends FormFragment {
 
     private void initView(View inflate) {
         // 正常显示数据
-        EditTextItem drafter = (EditTextItem) inflate.findViewById(R.id.form_post_management_drafter);
-        drafter.setEditText(mDrafterText);
-        EditTextItem mainOffice = (EditTextItem) inflate.findViewById(R.id.form_post_management_main_office);
-        mainOffice.setEditText(mMainOfficeText);
+        drafter = (EditTextItem) inflate.findViewById(R.id.form_post_management_drafter);
+        drafter.setEditText(mDrafterText);// 拟稿人
+        mainOffice = (EditTextItem) inflate.findViewById(R.id.form_post_management_main_office);
+        mainOffice.setEditText(mMainOfficeText);// 主办处室
         ViewsUitls.setWidthFromTargetView(mainOffice.getCustomEditTextLeft(), drafter.getCustomEditTextLeft());
-        EditTextItem postTitle = (EditTextItem) inflate.findViewById(R.id.form_post_management_post_title);
-        postTitle.setEditText(mPostTitleText);
-        EditTextItem mainSendOffice = (EditTextItem) inflate.findViewById(R.id.form_post_management_main_send_office);
-        mainSendOffice.setEditText(mMainSendOfficeText);
-        EditTextItem postType = (EditTextItem) inflate.findViewById(R.id.form_post_management_post_type);
-        postType.setEditText(mPostTypeText);
-        EditTextItem secretGrade = (EditTextItem) inflate.findViewById(R.id.form_post_management_secret_grade);
+        postTitle = (EditTextItem) inflate.findViewById(R.id.form_post_management_post_title);
+        postTitle.setEditText(mPostTitleText);// 发文标题
+        mainSendOffice = (EditTextItem) inflate.findViewById(R.id.form_post_management_main_send_office);
+        mainSendOffice.setEditText(mMainSendOfficeText);// 主送机关
+        postType = (EditTextItem) inflate.findViewById(R.id.form_post_management_post_type);
+        postType.setEditText(mPostTypeText);// 发文类型
+        secretGrade = (EditTextItem) inflate.findViewById(R.id.form_post_management_secret_grade);
         ViewsUitls.setWidthFromTargetView(mainOffice.getCustomEditTextLeft(), secretGrade.getCustomEditTextLeft());
-        secretGrade.setEditText(mSecretGradeText);
-
-        // 暂无数据
-        EditTextItem postNumber = (EditTextItem) inflate.findViewById(R.id.form_post_management_post_number);
+        secretGrade.setEditText(mSecretGradeText);// 密级
+        postNumber = (EditTextItem) inflate.findViewById(R.id.form_post_management_post_number);  // 发文文号 暂无数据
 
         // 各个步骤审批意见
-        EditTextItem officeNuclearDraftIdea = (EditTextItem) inflate.findViewById(R.id.form_post_management_office_nuclear_draft_idea);
-        officeNuclearDraftIdea.setEditText(mOfficeNuclearDraftIdeaText);
-        EditTextItem nuclearDraftIdea = (EditTextItem) inflate.findViewById(R.id.form_post_management_nuclear_draft_idea);
-        nuclearDraftIdea.setEditText(mNuclearDraftText);
-        ViewsUitls.setWidthFromTargetView(officeNuclearDraftIdea.getCustomEditTextLeft(), nuclearDraftIdea.getCustomEditTextLeft());
-
-        mApproveIdea = (EditTextItem) inflate.findViewById(R.id.form_post_management_approve_idea);
+        officeNuclearDraftIdea = (EditTextItem) inflate.findViewById(R.id.form_post_management_office_nuclear_draft_idea);
+        officeNuclearDraftIdea.setEditTextGistIsEmpty(mOfficeNuclearDraftIdeaText);
+        nuclearDraftIdea = (EditTextItem) inflate.findViewById(R.id.form_post_management_nuclear_draft_idea);
+        nuclearDraftIdea.setEditTextGistIsEmpty(mNuclearDraftText);
+        signAndIssue = (EditTextItem) inflate.findViewById(R.id.form_post_management_sign_and_issue);
+        signAndIssue.setEditTextGistIsEmpty(mEndSignAndIssueText);
+        ViewsUitls.setWidthFromTargetView(mainOffice.getCustomEditTextLeft(), nuclearDraftIdea.getCustomEditTextLeft());
+        ViewsUitls.setWidthFromTargetView(mainOffice.getCustomEditTextLeft(), officeNuclearDraftIdea.getCustomEditTextLeft());
+        ViewsUitls.setWidthFromTargetView(mainOffice.getCustomEditTextLeft(), signAndIssue.getCustomEditTextLeft());
 
         setDownloadView(inflate);
+
+        mCountersignIdea = (EditTextItem) inflate.findViewById(R.id.form_post_management_countersign_idea);
+        mCountersignIdea.setEditTextGistIsEmpty(mUserOneselfSuggest);// mUserOneselfSuggest文本只有在用户编辑过会签，且重新编辑会签时才会有内容，其他时候都为空
+        mCountersignTable = (LinearLayout) inflate.findViewById(R.id.form_post_management_countersign);
+        mCountersignTableLabel = inflate.findViewById(R.id.form_post_management_countersign_label);
+
+        showAlreadyCountersign();
+
+        showEachStepView();
+    }
+
+    private void showAlreadyCountersign() {
+        if (countersignSuggestData.size() > 0) {
+            mCountersignTable.setVisibility(View.VISIBLE);
+            mCountersignTableLabel.setVisibility(View.VISIBLE);
+            for (CountersignSuggestBean countersignSuggestBean : countersignSuggestData) {
+                View view = ViewsUitls.inflate(R.layout.item_record_end_step_suggest);
+                TextView name = (TextView) view.findViewById(R.id.item_record_end_step_suggest_name);
+                name.setText(countersignSuggestBean.getSuggestName());
+                TextView time = (TextView) view.findViewById(R.id.item_record_end_step_suggest_time);
+                time.setText(countersignSuggestBean.getSuggestTime());
+                TextView idea = (TextView) view.findViewById(R.id.item_record_end_step_suggest_idea);
+                idea.setText(countersignSuggestBean.getSuggestContent());
+                mCountersignTable.addView(view);
+            }
+        } else {
+            mCountersignTable.setVisibility(View.GONE);
+            mCountersignTableLabel.setVisibility(View.GONE);
+        }
+    }
+
+    private void showEachStepView() {
+        switch (Integer.parseInt(mStep)) {
+            case 1:// 发文被驳回回到第一步
+                setStep1ViewShow();
+                formActivity.showAgreeSubmitButton(View.GONE, View.VISIBLE);
+                break;
+            case 2:// 核稿步骤
+                showEditTextItemDifferentState(nuclearDraftIdea, "请填写核稿意见", "(原核稿意见)");
+                mApproveIdea = nuclearDraftIdea;
+                formActivity.showAgreeSubmitButton(View.VISIBLE, View.GONE);
+                break;
+            case 3:// 办公室核稿步骤
+                showEditTextItemDifferentState(officeNuclearDraftIdea, "请填写办公室核稿意见", "(原办公室核稿意见)");
+                mApproveIdea = officeNuclearDraftIdea;
+                formActivity.showAgreeSubmitButton(View.VISIBLE, View.GONE);
+                break;
+            case 4:// 会签
+                showEditTextItemDifferentState(mCountersignIdea, "请填写会签意见", "(原办会签意见)");
+                mApproveIdea = mCountersignIdea;
+                formActivity.showAgreeSubmitButton(View.VISIBLE, View.GONE);
+                break;
+            case 5:// 最终签发
+                showEditTextItemDifferentState(signAndIssue, "请填写签发意见", "(原签发意见)");
+                mApproveIdea = signAndIssue;
+                formActivity.showAgreeSubmitButton(View.VISIBLE, View.GONE);
+                break;
+        }
+    }
+
+    private void setStep1ViewShow() {
+        final List<String> postTypeData = new ArrayList<>();
+        postTypeData.add("常安帮");
+        postTypeData.add("常人调办");
+        postTypeData.add("常矫正");
+        postTypeData.add("常基协");
+        postTypeData.add("常司复");
+        postTypeData.add("常特管办");
+        postTypeData.add("常司群组发");
+        postTypeData.add("常多解办");
+        postTypeData.add("常律办");
+        postTypeData.add("常公协");
+        postTypeData.add("常法宣办");
+        postTypeData.add("常法宣");
+        postTypeData.add("常司机工");
+        postTypeData.add("常州市司法局信笺");
+        postTypeData.add("常司密电");
+        postTypeData.add("常司罚决字");
+        postTypeData.add("常司机党");
+        postTypeData.add("常司职");
+        postTypeData.add("常司函");
+        postTypeData.add("常司办");
+        postTypeData.add("常司党组");
+        postTypeData.add("常司通");
+        postTypeData.add("其他");
+        final List<String> secretGradeData = new ArrayList<>();
+        secretGradeData.add("公开");
+        secretGradeData.add("机密");
+        secretGradeData.add("秘密");
+        secretGradeData.add("内部");
+        secretGradeData.add("普通");
+        showEditTextItemCanEdit(postTitle);
+        showEditTextItemCanEdit(mainSendOffice);
+        showEditTextItemCanClick(postType);
+        showEditTextItemCanClick(secretGrade);
+        setWhichViewShowListPopupWindow(false, postType.getCustomEditTextRight(), postTypeData, new ShowListPopupItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                postType.getCustomEditTextRight().setText(postTypeData.get(position));
+            }
+
+            @Override
+            public void onAnchorViewClick(View v) {
+                setBackGroundDarkColor(0.7f);
+            }
+
+            @Override
+            public void onListPopupDismiss() {
+                setBackGroundDarkColor(1.0f);
+            }
+        }, getActivity());
+        setWhichViewShowListPopupWindow(false, secretGrade.getCustomEditTextRight(), secretGradeData, new ShowListPopupItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                secretGrade.getCustomEditTextRight().setText(secretGradeData.get(position));
+            }
+
+            @Override
+            public void onAnchorViewClick(View v) {
+                setBackGroundDarkColor(0.7f);
+            }
+
+            @Override
+            public void onListPopupDismiss() {
+                setBackGroundDarkColor(1.0f);
+            }
+        }, getActivity());
     }
 
     /* 设置下载控件操作 */
@@ -158,6 +306,7 @@ public class PostManagementFragment extends FormFragment {
         });
     }
 
+    // ***********************************************************************************************************************************************
     @Override
     protected ContentPage.ResultState onLoad() {
         Response response = requestFormListItemDetail();
@@ -213,17 +362,42 @@ public class PostManagementFragment extends FormFragment {
         getAllSuggest(new AnalysisJSON() {
             @Override
             public void analysisJSON(JSONObject jsonObject) {
-                if (jsonObject.has("rect3suggest")) {
-                    mNuclearDraftText = jsonObject.optString("rect3suggest");
+                if (jsonObject.has("rect3method")) {
+                    mNuclearDraftText = getSuggestIdea(jsonObject, "rect3suggest", "rect3method");
                 }
-                if (jsonObject.has("rect4suggest")) {
-                    mOfficeNuclearDraftIdeaText = jsonObject.optString("rect4suggest");
+                if (jsonObject.has("rect4method")) {
+                    mOfficeNuclearDraftIdeaText = getSuggestIdea(jsonObject, "rect4suggest", "rect4method");
+                }
+                if (jsonObject.has("rect9method")) {
+                    mEndSignAndIssueText = getSuggestIdea(jsonObject, "rect9suggest", "rect9method");
                 }
 
-
-
-                excessive = new ArrayList<>();
-                excessive.add("excessive");// 给excessive创建实例，并添加元素，让界面走onCreateSuccessView()方法
+                if (jsonObject.has("rect8")) {// 发文的会签建议
+                    try {
+                        JSONArray jsonArray = new JSONArray(jsonObject.optString("rect8"));
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                            if (Integer.parseInt(mStep) == 4) {// 去除在会签步骤时的用户自身的意见
+                                String string = SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_GET_USER_NAME, "");
+                                if (!jsonObject1.optString("truename").contains(string)) {
+                                    countersignSuggestData.add(new CountersignSuggestBean(jsonObject1.optString("truename"), jsonObject1.optString("method"), getSuggestIdea(jsonObject1, "suggest", "method"), jsonObject1.optString("time")));
+                                } else {
+                                    mUserOneselfSuggest = getSuggestIdea(jsonObject1, "suggest", "method");// 用户在会签步骤的自身的建议
+                                }
+                            } else {
+                                countersignSuggestData.add(new CountersignSuggestBean(jsonObject1.optString("truename"), jsonObject1.optString("method"), getSuggestIdea(jsonObject1, "suggest", "method"), jsonObject1.optString("time")));
+                            }
+                        }
+                        excessive = new ArrayList<>();
+                        excessive.add("excessive");// 给excessive创建实例，并添加元素，让界面走onCreateSuccessView()方法
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        excessive = null;
+                    }
+                } else {
+                    excessive = new ArrayList<>();
+                    excessive.add("excessive");// 给excessive创建实例，并添加元素，让界面走onCreateSuccessView()方法
+                }
             }
         });
     }
@@ -242,7 +416,7 @@ public class PostManagementFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        getNextPersonData(mAssignee, "", "", null, "PostManagementAgree_Have_Next", "PostManagementAgree_No_Next", "是否同意该发文拟稿", new PassBackStringData() {
+        getNextPersonData(mAssignee, mOrd, mAutoOrg, getUserNameHashMap(mStep,5), "PostManagementAgree_Have_Next", "PostManagementAgree_No_Next", "是否同意该发文拟稿", new PassBackStringData() {
             @Override
             public void passBackStringData(String passBackData) {
                 officialLeaveApply(passBackData, 0);
@@ -252,6 +426,12 @@ public class PostManagementFragment extends FormFragment {
 
     @Override
     public void submitOnClick(View v) {
+        getNextPersonData(mAssignee, mOrd, mAutoOrg, null, "PostManagementAgree_Have_Next", "PostManagementAgree_No_Next", "是否同意该发文拟稿", new PassBackStringData() {
+            @Override
+            public void passBackStringData(String passBackData) {
+                officialLeaveApply(passBackData, 0);
+            }
+        });
     }
 
     private void officialLeaveApply(String userList, int method) {
@@ -265,8 +445,14 @@ public class PostManagementFragment extends FormFragment {
         hashMap.put("userList", userList);
 
         // 以下为表单上的填写数据
-        hashMap.put("suggest", mApproveIdea.getCustomEditTextRight().getText().toString());
-
+        if (Integer.parseInt(mStep) != 1) {
+            hashMap.put("suggest", mApproveIdea.getCustomEditTextRight().getText().toString());
+        } else {
+            hashMap.put("document_type", postType.getCustomEditTextRight().getText().toString());
+            hashMap.put("title", postTitle.getCustomEditTextRight().getText().toString());
+            hashMap.put("miji", secretGrade.getCustomEditTextRight().getText().toString());
+            hashMap.put("first_zsjg", mainSendOffice.getCustomEditTextRight().getText().toString());
+        }
         startUltimatelySubmit(IpFiled.SUBMIT_IS_AGREE_POST, hashMap, "success", "服务器正忙,请稍后", "提交成功");
     }
 }

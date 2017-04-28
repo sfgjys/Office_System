@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.minlu.baselibrary.util.StringUtils;
 import com.minlu.office_system.R;
 
 
@@ -98,6 +99,14 @@ public class EditTextItem extends LinearLayout {
 
     public void setEditText(String editText) {
         customEditTextRight.setText(editText);
+    }
+
+    public void setEditTextGistIsEmpty(String editText) {
+        if (StringUtils.isEmpty(editText)) {
+            this.setVisibility(GONE);
+        } else {
+            customEditTextRight.setText(editText);
+        }
     }
 
     public interface OnCustomTouchToClick {

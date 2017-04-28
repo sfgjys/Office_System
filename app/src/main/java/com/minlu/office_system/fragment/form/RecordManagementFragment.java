@@ -18,7 +18,7 @@ import com.minlu.office_system.PassBackStringData;
 import com.minlu.office_system.R;
 import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
-import com.minlu.office_system.bean.RecordEndSuggestBean;
+import com.minlu.office_system.bean.CountersignSuggestBean;
 import com.minlu.office_system.customview.EditTextItem;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
@@ -65,9 +65,10 @@ public class RecordManagementFragment extends FormFragment {
     private LinearLayout mAccessoryList;
     private String mFromSdFilePath = "";
     private String mTextType = "普通";
-    private List<RecordEndSuggestBean> endSuggestData = new ArrayList<>();
+    private List<CountersignSuggestBean> endSuggestData = new ArrayList<>();
     private String mEndStepOneselfIdea = "";
     private LinearLayout mEndStepSuggestView;
+    private View mEndStepSuggestLabel;
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -123,11 +124,13 @@ public class RecordManagementFragment extends FormFragment {
         superiorTextType = (EditTextItem) inflate.findViewById(R.id.form_record_management_type);
         superiorTextType.setEditText(mTextType);
 
+        // 有拟办意见就先展示(具体这个能不能编辑就看下面的代码)，没有拟办意见就不展示
         EditTextItem proposeToIdea = (EditTextItem) inflate.findViewById(R.id.form_record_management_propose_to_idea);
-        proposeToIdea.setEditText(mProposeToIdeaText);// 拟办意见
+        proposeToIdea.setEditTextGistIsEmpty(mProposeToIdeaText);// 拟办意见
 
-        // 此为用户进行审批意见编辑的控件
+        // 有用户原先的审批意见(mEndStepOneselfIdea)就先展示(具体这个能不能编辑就看下面的代码)，没有就不展示
         mApproveIdea = (EditTextItem) inflate.findViewById(R.id.form_record_management_approve_idea);
+        mApproveIdea.setEditTextGistIsEmpty(mEndStepOneselfIdea);// mEndStepOneselfIdea只有在第3步才可能有值
 
         mAccessoryDownload = inflate.findViewById(R.id.form_record_management_details);// 附件下载整体控件
         mAccessoryList = (LinearLayout) inflate.findViewById(R.id.form_record_management_details_right);// 附件下载右边的附件列表
@@ -135,6 +138,8 @@ public class RecordManagementFragment extends FormFragment {
         refreshDownloadView();// 下载控件
 
         mEndStepSuggestView = (LinearLayout) inflate.findViewById(R.id.form_record_management_end_step_suggest);// 最后一步的建议显示控件
+        mEndStepSuggestLabel = inflate.findViewById(R.id.form_record_management_end_step_suggest_label);
+        show3StepSuggest();
 
         switch (Integer.parseInt(mStep)) {
             case 1:// 来文被打回
@@ -142,31 +147,25 @@ public class RecordManagementFragment extends FormFragment {
                 formActivity.showAgreeSubmitButton(View.GONE, View.VISIBLE);
                 break;
             case 2:// 来文拟办意见
-                mApproveIdea.setVisibility(View.GONE);// 隐藏审批意见控件
-                // 放开拟办意见控件的编辑
-                proposeToIdea.getCustomEditTextRight().setFocusableInTouchMode(true);
-                proposeToIdea.getCustomEditTextRight().setFocusable(true);
-                // 将拟办意见控件的地址赋值给mApproveIdea，使得在最后提交时能使用这个
-                mApproveIdea = proposeToIdea;
+                // proposeToIdea在此处可以进行编辑
+                showEditTextItemDifferentState(proposeToIdea, "请填写拟办意见", "(原拟办意见)");
+                mApproveIdea = proposeToIdea;// mApproveIdea在此处没有编辑，所以用来重新赋值
                 formActivity.showAgreeSubmitButton(View.VISIBLE, View.GONE);
                 break;
             case 3:// 最终意见
-                // 拟办意见控件用于显示。mApproveIdea控件用来编辑
-                mApproveIdea.getCustomEditTextRight().setFocusableInTouchMode(true);
-                mApproveIdea.getCustomEditTextRight().setFocusable(true);
-                if (!StringUtils.isEmpty(mEndStepOneselfIdea)) {
-                    mApproveIdea.getCustomEditTextRight().setHint("上一次批示: " + mEndStepOneselfIdea);
-                }
+                // mApproveIdea在此处可以进行编辑
+                showEditTextItemDifferentState(mApproveIdea, "请填写审批意见", "(原审批意见)");
                 formActivity.showAgreeSubmitButton(View.VISIBLE, View.GONE);
                 break;
         }
-        showEndStepSuggest();
     }
 
-    private void showEndStepSuggest() {
+    /* 有数据就展示数据表格，没有就不展示 */
+    private void show3StepSuggest() {
         if (endSuggestData.size() > 0) {
             mEndStepSuggestView.setVisibility(View.VISIBLE);
-            for (RecordEndSuggestBean recordEndSuggestBean : endSuggestData) {
+            mEndStepSuggestLabel.setVisibility(View.VISIBLE);
+            for (CountersignSuggestBean recordEndSuggestBean : endSuggestData) {
                 View inflate = ViewsUitls.inflate(R.layout.item_record_end_step_suggest);
                 TextView name = (TextView) inflate.findViewById(R.id.item_record_end_step_suggest_name);
                 name.setText(recordEndSuggestBean.getSuggestName());
@@ -176,8 +175,9 @@ public class RecordManagementFragment extends FormFragment {
                 idea.setText(recordEndSuggestBean.getSuggestContent());
                 mEndStepSuggestView.addView(inflate);
             }
-        }else{
+        } else {
             mEndStepSuggestView.setVisibility(View.GONE);
+            mEndStepSuggestLabel.setVisibility(View.GONE);
         }
     }
 
@@ -207,7 +207,6 @@ public class RecordManagementFragment extends FormFragment {
         textTypeData.add("永久");
 
         superiorTextType.setVisibility(View.VISIBLE);// 来文类型进行选择
-        mApproveIdea.setVisibility(View.GONE);// 此步骤不需要审批意见
         showEditTextItemCanEdit(superiorTextTitle);
         showEditTextItemCanClick(superiorTextNumber);
         showEditTextItemCanClick(superiorTextUnit);
@@ -379,6 +378,7 @@ public class RecordManagementFragment extends FormFragment {
         });
     }
 
+    // **************************************************************************************************************************************************
     @Override
     protected ContentPage.ResultState onLoad() {
         Response response = requestFormListItemDetail();
@@ -445,12 +445,12 @@ public class RecordManagementFragment extends FormFragment {
                             if (Integer.parseInt(mStep) == 3) {
                                 String string = SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_GET_USER_NAME, "");
                                 if (!jsonObject1.optString("truename").contains(string)) {
-                                    endSuggestData.add(new RecordEndSuggestBean(jsonObject1.optString("truename"), jsonObject1.optString("method"), getSuggestIdea(jsonObject1, "suggest", "method"), jsonObject1.optString("time")));
+                                    endSuggestData.add(new CountersignSuggestBean(jsonObject1.optString("truename"), jsonObject1.optString("method"), getSuggestIdea(jsonObject1, "suggest", "method"), jsonObject1.optString("time")));
                                 } else {
                                     mEndStepOneselfIdea = getSuggestIdea(jsonObject1, "suggest", "method");
                                 }
                             } else {
-                                endSuggestData.add(new RecordEndSuggestBean(jsonObject1.optString("truename"), jsonObject1.optString("method"), getSuggestIdea(jsonObject1, "suggest", "method"), jsonObject1.optString("time")));
+                                endSuggestData.add(new CountersignSuggestBean(jsonObject1.optString("truename"), jsonObject1.optString("method"), getSuggestIdea(jsonObject1, "suggest", "method"), jsonObject1.optString("time")));
                             }
                         }
                         excessive = new ArrayList<>();
@@ -495,12 +495,7 @@ public class RecordManagementFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        HashMap<String, String> endAgree = null;
-        if (Integer.parseInt(mStep) == 3) {
-            endAgree = new HashMap<>();
-            endAgree.put("username", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
-        }
-        getNextPersonData(mAssignee, mOrd, mAutoOrg, endAgree, "RecordManagementAgree_Have_Next", "RecordManagementAgree_No_Next", "是否同意该收文签收", new PassBackStringData() {
+        getNextPersonData(mAssignee, mOrd, mAutoOrg, getUserNameHashMap(mStep, 3), "RecordManagementAgree_Have_Next", "RecordManagementAgree_No_Next", "是否同意该收文签收", new PassBackStringData() {
             @Override
             public void passBackStringData(String passBackData) {
                 officialRecordManagement(passBackData, 0);

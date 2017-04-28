@@ -23,7 +23,7 @@ public enum AllForms {
     * */
     RECORD_MANAGEMENT("收文管理", R.mipmap.home_page_icon1, RecordManagementFragment.class, StringsFiled.NO_SHOW_BUTTON,
             StringsFiled.RecordManagementFragment_TAG, true, StringsFiled.RecordManagement_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_LIST),
-    POST_MANAGEMENT("发文管理", R.mipmap.home_page_icon2, PostManagementFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON,
+    POST_MANAGEMENT("发文管理", R.mipmap.home_page_icon2, PostManagementFragment.class, StringsFiled.NO_SHOW_BUTTON,
             StringsFiled.PostManagementFragment_TAG, true, StringsFiled.PostManagement_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_LIST),
     LEAVE_MANAGEMENT("请假管理", R.mipmap.home_page_icon3, LeaveManagementFragment.class, StringsFiled.SHOW_IS_AGREE_BUTTON,
             StringsFiled.LeaveManagementFragment_TAG, true, StringsFiled.Leave_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_LIST),

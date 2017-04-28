@@ -3,6 +3,7 @@ package com.minlu.office_system.fragment.form.formPremise;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.ListPopupWindow;
 import android.view.View;
@@ -84,7 +85,7 @@ public abstract class FormFragment extends BaseFragment {
     }
 
     /*
-    * 在参数一控件下，展示参数二集合中的文本数据，参数三是自定义点击文本条目的监听事件
+    * 在参数二控件下，展示参数三集合中的文本数据，参数四是自定义点击文本条目的监听事件
     * */
     public void setWhichViewShowListPopupWindow(boolean isDirectShow, View anchorView, final List<String> date, final ShowListPopupItemClickListener clickListener, Context context) {
         final ListPopupWindow listPopupWindow = new ListPopupWindow(context);
@@ -431,13 +432,29 @@ public abstract class FormFragment extends BaseFragment {
         }
     }
 
+    /* 有些流程最后一步同意请求网络需要添加一个username的参数 */
+    @Nullable
+    public HashMap<String, String> getUserNameHashMap(String mStep, int step) {
+        HashMap<String, String> endAgree = null;
+        if (Integer.parseInt(mStep) == step) {
+            endAgree = new HashMap<>();
+            endAgree.put("username", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
+        }
+        return endAgree;
+    }
+
     public void showToastAndEndLoading(String text) {
         endLoading();
         showToastToMain(text);
     }
 
+    /* 使用本方法的前提是suggestMethodField字段要在json数据中存在 */
     public String getSuggestIdea(JSONObject jsonObject, String suggestTextField, String suggestMethodField) {
-        return StringUtils.isEmpty(jsonObject.optString(suggestTextField)) ? ((Integer.parseInt(jsonObject.optString(suggestMethodField)) == 0) ? "(同意)" : "(不同意)") : jsonObject.optString(suggestTextField);
+        if (jsonObject.has(suggestMethodField)) {
+            return StringUtils.isEmpty(jsonObject.optString(suggestTextField)) ? ((Integer.parseInt(jsonObject.optString(suggestMethodField)) == 0) ? "(同意)" : "(不同意)") : jsonObject.optString(suggestTextField);
+        } else {
+            return "";
+        }
     }
 
     /* 设置EditTextItem控件可见并可以编辑 */
