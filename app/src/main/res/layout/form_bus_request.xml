@@ -31,22 +31,20 @@
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_bus_request_title"
         style="@style/width_match_height_wrap"
-        edittextitem:editText_hint="请输入标题"
+        edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="申请标题 : " />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_bus_request_office"
         style="@style/editText_item_top"
-        edittextitem:editText_hint="请输入处室"
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="申请处室 : " />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_bus_request_person"
         style="@style/editText_item_top"
-        edittextitem:editText_hint="请输入申请人"
         edittextitem:editText_is_edit="false"
-        edittextitem:editText_left_text="申请人 : " />
+        edittextitem:editText_left_text="经办人 : " />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_bus_request_bus_type"
@@ -79,7 +77,7 @@
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_bus_request_destination"
         style="@style/editText_item_top"
-        edittextitem:editText_hint="请编写目的地"
+        edittextitem:editText_hint="请填写目的地"
         edittextitem:editText_input_type="textMultiLine"
         edittextitem:editText_left_text="目的地 : "
         edittextitem:editText_max_lines="99" />
@@ -87,9 +85,17 @@
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_bus_request_cause"
         style="@style/editText_item_top"
-        edittextitem:editText_hint="请编写用车是由"
+        edittextitem:editText_hint="请填写用车是由"
         edittextitem:editText_input_type="textMultiLine"
         edittextitem:editText_left_text="用车是由 : "
+        edittextitem:editText_max_lines="99" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_bus_request_lead_team_person"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请填写带队人员"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_left_text="带队人员 : "
         edittextitem:editText_max_lines="99" />
 
     <com.minlu.office_system.customview.EditTextItem

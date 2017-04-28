@@ -54,6 +54,7 @@ public class BusRequestFragment extends FormFragment {
     private String mTaskName;
     private String mOrderId;
     private String mStep;
+    private EditTextItem mLeadTeamPerson;
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -118,8 +119,10 @@ public class BusRequestFragment extends FormFragment {
 
         // 下面四个是用户编写，提交时获取数据
         mTitle = (EditTextItem) inflate.findViewById(R.id.form_bus_request_title);
+        mTitle.setEditText("车辆申请_" + mUserName);
         mDestination = (EditTextItem) inflate.findViewById(R.id.form_bus_request_destination);
         mCause = (EditTextItem) inflate.findViewById(R.id.form_bus_request_cause);
+        mLeadTeamPerson = (EditTextItem) inflate.findViewById(R.id.form_bus_request_lead_team_person);
         mGoAlongPerson = (EditTextItem) inflate.findViewById(R.id.form_bus_request_go_along_person);
 
         ViewsUitls.setWidthFromTargetView(mTitle.getCustomEditTextLeft(), mBusType.getCustomEditTextLeft());
@@ -135,7 +138,7 @@ public class BusRequestFragment extends FormFragment {
         HashMap<String, String> busRequestPremise = new HashMap<>();
         busRequestPremise.put("processId", StringsFiled.Bus_ProcessId);
         busRequestPremise.put("taskName", "rec");
-        busRequestPremise.put("username", mUserName);
+        busRequestPremise.put("username", SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_USER, ""));
         busRequestPremise.put("orderId", "");
         busRequestPremise.put("taskId", "");
 
@@ -187,7 +190,7 @@ public class BusRequestFragment extends FormFragment {
         PromptDialog promptDialog = new PromptDialog(new PromptDialog.OnSureButtonClick() {
             @Override
             public void onSureClick(DialogInterface dialog, int id) {
-                getNextPersonData(mAssignee, "", "", null, "BusRequestSubmit_Have_Next", "BusRequestSubmit_No_Next", "本界面是车辆申请的第一步,则必定有下一步操作人",
+                getNextPersonData(mAssignee, mOrd, mAutoOrg, null, "BusRequestSubmit_Have_Next", "BusRequestSubmit_No_Next", "本界面是车辆申请的第一步,则必定有下一步操作人",
                         new PassBackStringData() {
                             @Override
                             public void passBackStringData(String passBackData) {
@@ -222,7 +225,8 @@ public class BusRequestFragment extends FormFragment {
         hashMap.put("mdd", mDestination.getCustomEditTextRight().getText().toString());
         hashMap.put("ycsy", mCause.getCustomEditTextRight().getText().toString());
         hashMap.put("sxry", mGoAlongPerson.getCustomEditTextRight().getText().toString());
+        hashMap.put("ddry", mLeadTeamPerson.getCustomEditTextRight().getText().toString());
 
-        startUltimatelySubmit(IpFiled.BUS_REQUEST_APPLY_SUBMIT, hashMap, "success", "服务器正忙,请稍后", "请假申请提交成功");
+        startUltimatelySubmit(IpFiled.BUS_REQUEST_APPLY_SUBMIT, hashMap, "success", "服务器正忙,请稍后", "车辆申请提交成功");
     }
 }
