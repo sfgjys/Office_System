@@ -50,6 +50,7 @@ public class RecordManagementFragment extends FormFragment {
     private ArrayList<String> mDownloadFilePath;
 
     private String mProposeToIdeaText = "";
+    private String mTranspondOfficeText = "";
     private String mAssignee = "";
     private String mTaskName = "";
     private String mOrd = "";
@@ -65,10 +66,10 @@ public class RecordManagementFragment extends FormFragment {
     private LinearLayout mAccessoryList;
     private String mFromSdFilePath = "";
     private String mTextType = "普通";
-    private List<CountersignSuggestBean> endSuggestData = new ArrayList<>();
+    private List<CountersignSuggestBean> instructionsSuggestData = new ArrayList<>();
+    private List<CountersignSuggestBean> readTransactSuggestData = new ArrayList<>();
     private String mEndStepOneselfIdea = "";
-    private LinearLayout mEndStepSuggestView;
-    private View mEndStepSuggestLabel;
+    private String mReadStepOneselfIdea = "";
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -129,17 +130,30 @@ public class RecordManagementFragment extends FormFragment {
         proposeToIdea.setEditTextGistIsEmpty(mProposeToIdeaText);// 拟办意见
 
         // 有用户原先的审批意见(mEndStepOneselfIdea)就先展示(具体这个能不能编辑就看下面的代码)，没有就不展示
-        mApproveIdea = (EditTextItem) inflate.findViewById(R.id.form_record_management_approve_idea);
-        mApproveIdea.setEditTextGistIsEmpty(mEndStepOneselfIdea);// mEndStepOneselfIdea只有在第3步才可能有值
+        EditTextItem leadApprove = (EditTextItem) inflate.findViewById(R.id.form_record_management_approve_idea);
+        leadApprove.setEditTextGistIsEmpty(mEndStepOneselfIdea);// mEndStepOneselfIdea只有在第3步才可能有值
+
+        // 转发处室
+        EditTextItem transpondOffice = (EditTextItem) inflate.findViewById(R.id.form_record_management_transpond_office);
+        transpondOffice.setEditTextGistIsEmpty(mTranspondOfficeText);
+
+        // 处室阅办
+        EditTextItem readTransactSuggest = (EditTextItem) inflate.findViewById(R.id.form_record_management_read_transact_suggest);
+        readTransactSuggest.setEditTextGistIsEmpty(mReadStepOneselfIdea);// mReadStepOneselfIdea只有在第4步才可能有值
 
         mAccessoryDownload = inflate.findViewById(R.id.form_record_management_details);// 附件下载整体控件
         mAccessoryList = (LinearLayout) inflate.findViewById(R.id.form_record_management_details_right);// 附件下载右边的附件列表
-
         refreshDownloadView();// 下载控件
 
-        mEndStepSuggestView = (LinearLayout) inflate.findViewById(R.id.form_record_management_end_step_suggest);// 最后一步的建议显示控件
-        mEndStepSuggestLabel = inflate.findViewById(R.id.form_record_management_end_step_suggest_label);
-        show3StepSuggest();
+        LinearLayout mEndStepSuggestView = (LinearLayout) inflate.findViewById(R.id.form_record_management_end_step_suggest);
+        View mEndStepSuggestLabel = inflate.findViewById(R.id.form_record_management_end_step_suggest_label);
+        showTableSuggest(instructionsSuggestData, mEndStepSuggestView, mEndStepSuggestLabel);
+
+        // 最后一步的建议显示控件
+        LinearLayout mReadStepSuggestView = (LinearLayout) inflate.findViewById(R.id.form_record_management_already_read_transact_suggest);
+        View mReadStepSuggestLabel = inflate.findViewById(R.id.form_record_management_already_read_transact);
+        showTableSuggest(readTransactSuggestData, mReadStepSuggestView, mReadStepSuggestLabel);
+
 
         switch (Integer.parseInt(mStep)) {
             case 1:// 来文被打回
@@ -152,20 +166,31 @@ public class RecordManagementFragment extends FormFragment {
                 mApproveIdea = proposeToIdea;// mApproveIdea在此处没有编辑，所以用来重新赋值
                 formActivity.showAgreeSubmitButton(View.VISIBLE, View.GONE);
                 break;
-            case 3:// 最终意见
-                // mApproveIdea在此处可以进行编辑
-                showEditTextItemDifferentState(mApproveIdea, "请填写审批意见", "(原审批意见)");
+            case 3:// 领导批示
+                showEditTextItemDifferentState(leadApprove, "请填写批示意见", "(原批示意见)");
+                mApproveIdea = leadApprove;// mApproveIdea在此处没有编辑，所以用来重新赋值
+                formActivity.showAgreeSubmitButton(View.VISIBLE, View.GONE);
+                break;
+            case 5:// 转发处室_没有会签
+                // transpondOffice在此处可以进行编辑
+                showEditTextItemDifferentState(transpondOffice, "请填写转发意见", "(原转发意见)");
+                mApproveIdea = transpondOffice;// mApproveIdea在此处没有编辑，所以用来重新赋值
+                formActivity.showAgreeSubmitButton(View.VISIBLE, View.GONE);
+                break;
+            case 4:// 处室阅办_有会签
+                showEditTextItemDifferentState(readTransactSuggest, "请填写阅办意见", "(原阅办意见)");
+                mApproveIdea = readTransactSuggest;// mApproveIdea在此处没有编辑，所以用来重新赋值
                 formActivity.showAgreeSubmitButton(View.VISIBLE, View.GONE);
                 break;
         }
     }
 
     /* 有数据就展示数据表格，没有就不展示 */
-    private void show3StepSuggest() {
-        if (endSuggestData.size() > 0) {
-            mEndStepSuggestView.setVisibility(View.VISIBLE);
-            mEndStepSuggestLabel.setVisibility(View.VISIBLE);
-            for (CountersignSuggestBean recordEndSuggestBean : endSuggestData) {
+    private void showTableSuggest(List<CountersignSuggestBean> data, LinearLayout suggestView, View suggestLabel) {
+        if (data.size() > 0) {
+            suggestView.setVisibility(View.VISIBLE);
+            suggestLabel.setVisibility(View.VISIBLE);
+            for (CountersignSuggestBean recordEndSuggestBean : data) {
                 View inflate = ViewsUitls.inflate(R.layout.item_record_end_step_suggest);
                 TextView name = (TextView) inflate.findViewById(R.id.item_record_end_step_suggest_name);
                 name.setText(recordEndSuggestBean.getSuggestName());
@@ -173,11 +198,11 @@ public class RecordManagementFragment extends FormFragment {
                 time.setText(recordEndSuggestBean.getSuggestTime());
                 TextView idea = (TextView) inflate.findViewById(R.id.item_record_end_step_suggest_idea);
                 idea.setText(recordEndSuggestBean.getSuggestContent());
-                mEndStepSuggestView.addView(inflate);
+                suggestView.addView(inflate);
             }
         } else {
-            mEndStepSuggestView.setVisibility(View.GONE);
-            mEndStepSuggestLabel.setVisibility(View.GONE);
+            suggestView.setVisibility(View.GONE);
+            suggestLabel.setVisibility(View.GONE);
         }
     }
 
@@ -434,9 +459,17 @@ public class RecordManagementFragment extends FormFragment {
 
             @Override
             public void analysisJSON(JSONObject jsonObject) {
+
                 if (jsonObject.has("rect3method")) {
                     mProposeToIdeaText = getSuggestIdea(jsonObject, "rect3suggest", "rect3method");
                 }
+                if (jsonObject.has("rect5method")) {
+                    mTranspondOfficeText = getSuggestIdea(jsonObject, "rect5suggest", "rect5method");
+                }
+
+                excessive = new ArrayList<>();
+                excessive.add("excessive");// 给excessive创建实例，并添加元素，让界面走onCreateSuccessView()方法
+
                 if (jsonObject.has("rect4")) {// 最后一步需要多个用户进行审批汇总
                     try {
                         JSONArray jsonArray = new JSONArray(jsonObject.optString("rect4"));
@@ -445,23 +478,39 @@ public class RecordManagementFragment extends FormFragment {
                             if (Integer.parseInt(mStep) == 3) {
                                 String string = SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_GET_USER_NAME, "");
                                 if (!jsonObject1.optString("truename").contains(string)) {
-                                    endSuggestData.add(new CountersignSuggestBean(jsonObject1.optString("truename"), jsonObject1.optString("method"), getSuggestIdea(jsonObject1, "suggest", "method"), jsonObject1.optString("time")));
+                                    instructionsSuggestData.add(new CountersignSuggestBean(jsonObject1.optString("truename"), jsonObject1.optString("method"), getSuggestIdea(jsonObject1, "suggest", "method"), jsonObject1.optString("time")));
                                 } else {
                                     mEndStepOneselfIdea = getSuggestIdea(jsonObject1, "suggest", "method");
                                 }
                             } else {
-                                endSuggestData.add(new CountersignSuggestBean(jsonObject1.optString("truename"), jsonObject1.optString("method"), getSuggestIdea(jsonObject1, "suggest", "method"), jsonObject1.optString("time")));
+                                instructionsSuggestData.add(new CountersignSuggestBean(jsonObject1.optString("truename"), jsonObject1.optString("method"), getSuggestIdea(jsonObject1, "suggest", "method"), jsonObject1.optString("time")));
                             }
                         }
-                        excessive = new ArrayList<>();
-                        excessive.add("excessive");// 给excessive创建实例，并添加元素，让界面走onCreateSuccessView()方法
                     } catch (JSONException e) {
                         e.printStackTrace();
                         excessive = null;
                     }
-                } else {
-                    excessive = new ArrayList<>();
-                    excessive.add("excessive");// 给excessive创建实例，并添加元素，让界面走onCreateSuccessView()方法
+                }
+                if (jsonObject.has("rect6")) {// 最后一步需要多个用户进行审批汇总
+                    try {
+                        JSONArray jsonArray = new JSONArray(jsonObject.optString("rect6"));
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                            if (Integer.parseInt(mStep) == 4) {// 修改步骤
+                                String string = SharedPreferencesUtil.getString(ViewsUitls.getContext(), StringsFiled.LOGIN_GET_USER_NAME, "");
+                                if (!jsonObject1.optString("truename").contains(string)) {
+                                    readTransactSuggestData.add(new CountersignSuggestBean(jsonObject1.optString("truename"), jsonObject1.optString("method"), getSuggestIdea(jsonObject1, "suggest", "method"), jsonObject1.optString("time")));
+                                } else {
+                                    mReadStepOneselfIdea = getSuggestIdea(jsonObject1, "suggest", "method");
+                                }
+                            } else {
+                                readTransactSuggestData.add(new CountersignSuggestBean(jsonObject1.optString("truename"), jsonObject1.optString("method"), getSuggestIdea(jsonObject1, "suggest", "method"), jsonObject1.optString("time")));
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        excessive = null;
+                    }
                 }
             }
         });
