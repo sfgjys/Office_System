@@ -6,7 +6,7 @@ package com.minlu.office_system;
 
 public class IpFiled {
 
-    private final static String ip = "http://192.168.1.31:8080/MJOA/";// 127.0.0.1
+    private final static String ip = "http://192.168.1.31:8080/MJOA/";// 192.168.1.110手机链接
 
     // ***********************************************************************************************************************************
 
@@ -73,6 +73,6 @@ public class IpFiled {
 
 
     // 请网络获取流程其中一个步骤如果驳回的的话,可以驳回到哪几个步骤
-    public final static String REJECT_WHICH_STEP=ip+"phone/taskBack.html";
+    public final static String REJECT_WHICH_STEP = ip + "phone/taskBack.html";
 
 }

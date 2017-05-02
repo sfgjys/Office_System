@@ -20,6 +20,7 @@ import com.minlu.office_system.StringsFiled;
 import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.bean.CountersignSuggestBean;
 import com.minlu.office_system.customview.EditTextItem;
+import com.minlu.office_system.customview.TableSuggest;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
 import com.minlu.office_system.fragment.time.DatePickerFragment;
@@ -145,15 +146,13 @@ public class RecordManagementFragment extends FormFragment {
         mAccessoryList = (LinearLayout) inflate.findViewById(R.id.form_record_management_details_right);// 附件下载右边的附件列表
         refreshDownloadView();// 下载控件
 
-        LinearLayout mEndStepSuggestView = (LinearLayout) inflate.findViewById(R.id.form_record_management_end_step_suggest);
-        View mEndStepSuggestLabel = inflate.findViewById(R.id.form_record_management_end_step_suggest_label);
-        showTableSuggest(instructionsSuggestData, mEndStepSuggestView, mEndStepSuggestLabel);
+        // 领导批示表格式建议
+        TableSuggest leadApproveTable = (TableSuggest) inflate.findViewById(R.id.form_record_management_lead_approve_table);
+        leadApproveTable.addTableData(instructionsSuggestData);
 
-        // 最后一步的建议显示控件
-        LinearLayout mReadStepSuggestView = (LinearLayout) inflate.findViewById(R.id.form_record_management_already_read_transact_suggest);
-        View mReadStepSuggestLabel = inflate.findViewById(R.id.form_record_management_already_read_transact);
-        showTableSuggest(readTransactSuggestData, mReadStepSuggestView, mReadStepSuggestLabel);
-
+        // 处室阅办表示式建议
+        TableSuggest officeReadTable = (TableSuggest) inflate.findViewById(R.id.form_record_management_office_read_table);
+        officeReadTable.addTableData(readTransactSuggestData);
 
         switch (Integer.parseInt(mStep)) {
             case 1:// 来文被打回

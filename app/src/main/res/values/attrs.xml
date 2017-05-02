@@ -66,6 +66,14 @@
         </attr>
     </declare-styleable>
 
+    <!-- 表格示的建议 -->
+    <declare-styleable name="TableSuggest">
+        <attr name="table_title" format="string" />
+        <attr name="table_first_lie_name" format="string" />
+        <attr name="table_second_lie_name" format="string" />
+        <attr name="table_third_lie_name" format="string" />
+    </declare-styleable>
+
     <declare-styleable name="EditTextTimeSelector">
         <attr name="time_selector_left_text" format="string" />
     </declare-styleable>
