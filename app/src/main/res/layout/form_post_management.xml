@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:edittextitem="http://schemas.android.com/apk/res-auto"
+    xmlns:tableSuggest="http://schemas.android.com/apk/res-auto"
     style="@style/form_head_parent_layout_style">
 
     <com.minlu.office_system.customview.EditTextItem
@@ -26,13 +27,6 @@
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="发文类型 : "
         edittextitem:editText_right_icon="@drawable/selector_pull_down" />
-
-    <com.minlu.office_system.customview.EditTextItem
-        android:id="@+id/form_post_management_post_number"
-        style="@style/editText_item_top"
-        edittextitem:editText_hint="请输入发文文号"
-        edittextitem:editText_is_edit="false"
-        edittextitem:editText_left_text="发文文号 : " />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_post_management_secret_grade"
@@ -62,30 +56,6 @@
         edittextitem:editText_left_text="主送机关 : "
         edittextitem:editText_max_lines="3" />
 
-    <LinearLayout
-        android:id="@+id/form_post_management_details"
-        style="@style/editText_item_top"
-        android:layout_marginBottom="10dp"
-        android:gravity="center"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="附件下载 : "
-            android:textColor="@color/black"
-            android:textSize="18dp" />
-
-        <LinearLayout
-            android:id="@+id/form_post_management_details_right"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="6dp"
-            android:layout_marginStart="6dp"
-            android:layout_weight="1"
-            android:orientation="vertical" />
-    </LinearLayout>
-
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_post_management_nuclear_draft_idea"
         style="@style/editText_item_top"
@@ -113,58 +83,70 @@
         edittextitem:editText_left_text="会签意见 : "
         edittextitem:editText_max_lines="6" />
 
-    <TextView
-        android:id="@+id/form_post_management_countersign_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="已经会签 : "
-        android:textColor="@color/black"
-        android:textSize="18dp"
-        android:visibility="gone" />
-
-    <LinearLayout
-        android:layout_marginBottom="10dp"
-        android:id="@+id/form_post_management_countersign"
+    <com.minlu.office_system.customview.TableSuggest
+        android:id="@+id/form_post_management_countersign_suggest"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:background="@color/black"
-        android:orientation="vertical"
-        android:padding="0.5dp"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/record_end_step_suggest_text_style"
-                android:layout_weight="0.8"
-                android:text="会签人"
-                android:textSize="16dp" />
-
-            <TextView
-                style="@style/record_end_step_suggest_text_style"
-                android:layout_weight="1"
-                android:text="会签时间"
-                android:textSize="16dp" />
-
-            <TextView
-                style="@style/record_end_step_suggest_text_style"
-                android:layout_weight="1"
-                android:text="会签意见"
-                android:textSize="16dp" />
-        </LinearLayout>
-    </LinearLayout>
+        android:visibility="gone"
+        tableSuggest:table_first_lie_name="阅者姓名"
+        tableSuggest:table_second_lie_name="阅办时间"
+        tableSuggest:table_third_lie_name="处室阅办"
+        tableSuggest:table_title="已阅办过的领导" />
 
     <com.minlu.office_system.customview.EditTextItem
         android:id="@+id/form_post_management_sign_and_issue"
         style="@style/editText_item_top"
+        android:layout_marginTop="20dp"
         edittextitem:editText_hint="可编辑签发意见"
         edittextitem:editText_input_type="textMultiLine"
         edittextitem:editText_is_edit="false"
         edittextitem:editText_left_text="签发 : "
         edittextitem:editText_max_lines="6" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_post_management_fair_copy_idea"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="可编辑清稿意见"
+        edittextitem:editText_input_type="textMultiLine"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="清稿意见 : "
+        edittextitem:editText_max_lines="6" />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_post_management_post_number"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请输入发文文号"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="发文文号 : " />
+
+    <com.minlu.office_system.customview.EditTextItem
+        android:id="@+id/form_post_management_print_number"
+        style="@style/editText_item_top"
+        edittextitem:editText_hint="请输入打印份数"
+        edittextitem:editText_is_edit="false"
+        edittextitem:editText_left_text="打印份数 : " />
+
+    <LinearLayout
+        android:id="@+id/form_post_management_details"
+        style="@style/editText_item_top"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="附件下载 : "
+            android:textColor="@color/black"
+            android:textSize="18dp" />
+
+        <LinearLayout
+            android:id="@+id/form_post_management_details_right"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:orientation="vertical" />
+    </LinearLayout>
 </LinearLayout>

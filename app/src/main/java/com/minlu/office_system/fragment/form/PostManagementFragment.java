@@ -19,6 +19,7 @@ import com.minlu.office_system.activity.FormActivity;
 import com.minlu.office_system.bean.CountersignSuggestBean;
 import com.minlu.office_system.bean.SingleOption;
 import com.minlu.office_system.customview.EditTextItem;
+import com.minlu.office_system.customview.TableSuggest;
 import com.minlu.office_system.fragment.dialog.PromptDialog;
 import com.minlu.office_system.fragment.form.formPremise.FormFragment;
 import com.minlu.office_system.http.OkHttpMethod;
@@ -73,10 +74,13 @@ public class PostManagementFragment extends FormFragment {
     private EditTextItem officeNuclearDraftIdea;
     private EditTextItem nuclearDraftIdea;
     private EditTextItem signAndIssue;
-    private LinearLayout mCountersignTable;
-    private View mCountersignTableLabel;
     private EditTextItem mCountersignIdea;
     private FormActivity formActivity;
+    private EditTextItem fairCopyIdea;
+    private EditTextItem printNumber;
+    private String mFairCopySuggestText = "";
+    private String mPrintNumberText;
+    private String mPostNumberText;
 
     @Override
     protected void onSubClassOnCreateView() {
@@ -114,7 +118,6 @@ public class PostManagementFragment extends FormFragment {
         secretGrade = (EditTextItem) inflate.findViewById(R.id.form_post_management_secret_grade);
         ViewsUitls.setWidthFromTargetView(mainOffice.getCustomEditTextLeft(), secretGrade.getCustomEditTextLeft());
         secretGrade.setEditText(mSecretGradeText);// 密级
-        postNumber = (EditTextItem) inflate.findViewById(R.id.form_post_management_post_number);  // 发文文号 暂无数据
 
         // 各个步骤审批意见
         officeNuclearDraftIdea = (EditTextItem) inflate.findViewById(R.id.form_post_management_office_nuclear_draft_idea);
@@ -129,34 +132,22 @@ public class PostManagementFragment extends FormFragment {
 
         setDownloadView(inflate);
 
+        // 用户自己的会签意见
         mCountersignIdea = (EditTextItem) inflate.findViewById(R.id.form_post_management_countersign_idea);
         mCountersignIdea.setEditTextGistIsEmpty(mUserOneselfSuggest);// mUserOneselfSuggest文本只有在用户编辑过会签，且重新编辑会签时才会有内容，其他时候都为空
-        mCountersignTable = (LinearLayout) inflate.findViewById(R.id.form_post_management_countersign);
-        mCountersignTableLabel = inflate.findViewById(R.id.form_post_management_countersign_label);
 
-        showAlreadyCountersign();
+        // 会签意见
+        TableSuggest countersignSuggest = (TableSuggest) inflate.findViewById(R.id.form_post_management_countersign_suggest);
+        countersignSuggest.addTableData(countersignSuggestData);
+
+        fairCopyIdea = (EditTextItem) inflate.findViewById(R.id.form_post_management_fair_copy_idea);
+        fairCopyIdea.setEditTextGistIsEmpty(mFairCopySuggestText);
+        printNumber = (EditTextItem) inflate.findViewById(R.id.form_post_management_print_number);
+        printNumber.setEditTextGistIsEmpty(mPrintNumberText);
+        postNumber = (EditTextItem) inflate.findViewById(R.id.form_post_management_post_number);  // 发文文号 暂无数据
+        postNumber.setEditTextGistIsEmpty(mPostNumberText);
 
         showEachStepView();
-    }
-
-    private void showAlreadyCountersign() {
-        if (countersignSuggestData.size() > 0) {
-            mCountersignTable.setVisibility(View.VISIBLE);
-            mCountersignTableLabel.setVisibility(View.VISIBLE);
-            for (CountersignSuggestBean countersignSuggestBean : countersignSuggestData) {
-                View view = ViewsUitls.inflate(R.layout.item_record_end_step_suggest);
-                TextView name = (TextView) view.findViewById(R.id.item_record_end_step_suggest_name);
-                name.setText(countersignSuggestBean.getSuggestName());
-                TextView time = (TextView) view.findViewById(R.id.item_record_end_step_suggest_time);
-                time.setText(countersignSuggestBean.getSuggestTime());
-                TextView idea = (TextView) view.findViewById(R.id.item_record_end_step_suggest_idea);
-                idea.setText(countersignSuggestBean.getSuggestContent());
-                mCountersignTable.addView(view);
-            }
-        } else {
-            mCountersignTable.setVisibility(View.GONE);
-            mCountersignTableLabel.setVisibility(View.GONE);
-        }
     }
 
     private void showEachStepView() {
@@ -180,10 +171,20 @@ public class PostManagementFragment extends FormFragment {
                 mApproveIdea = mCountersignIdea;
                 formActivity.showAgreeSubmitButton(View.VISIBLE, View.GONE);
                 break;
-            case 5:// 最终签发
+            case 5:// 签发
                 showEditTextItemDifferentState(signAndIssue, "请填写签发意见", "(原签发意见)");
                 mApproveIdea = signAndIssue;
                 formActivity.showAgreeSubmitButton(View.VISIBLE, View.GONE);
+                break;
+            case 7:
+                showEditTextItemDifferentState(fairCopyIdea, "请填写清稿意见", "(原清稿意见)");
+                mApproveIdea = fairCopyIdea;
+                formActivity.showAgreeSubmitButton(View.VISIBLE, View.GONE);
+                break;
+            case 6:
+                showEditTextItemDifferentState(postNumber, "请填写发文文号", "(原发文文号)");
+                showEditTextItemDifferentState(printNumber, "请填写打印份数", "(原打印分数)");
+                formActivity.showAgreeSubmitButton(View.GONE, View.VISIBLE);
                 break;
         }
     }
@@ -360,6 +361,7 @@ public class PostManagementFragment extends FormFragment {
 
         // 获取审批建议
         getAllSuggest(new AnalysisJSON() {
+
             @Override
             public void analysisJSON(JSONObject jsonObject) {
                 if (jsonObject.has("rect3method")) {
@@ -370,6 +372,15 @@ public class PostManagementFragment extends FormFragment {
                 }
                 if (jsonObject.has("rect9method")) {
                     mEndSignAndIssueText = getSuggestIdea(jsonObject, "rect9suggest", "rect9method");
+                }
+                if (jsonObject.has("rect10method")) {
+                    mFairCopySuggestText = getSuggestIdea(jsonObject, "rect10suggest", "rect10method");
+                }
+                if (jsonObject.has("num")) {
+                    mPrintNumberText = jsonObject.optString("num");
+                }
+                if (jsonObject.has("wh_year")) {
+                    mPostNumberText = jsonObject.optString("wh_year");
                 }
 
                 if (jsonObject.has("rect8")) {// 发文的会签建议
@@ -416,7 +427,7 @@ public class PostManagementFragment extends FormFragment {
 
     @Override
     public void agreeOnClick(View v) {
-        getNextPersonData(mAssignee, mOrd, mAutoOrg, getUserNameHashMap(mStep,5), "PostManagementAgree_Have_Next", "PostManagementAgree_No_Next", "是否同意该发文拟稿", new PassBackStringData() {
+        getNextPersonData(mAssignee, mOrd, mAutoOrg, getUserNameHashMap(mStep, 5), "PostManagementAgree_Have_Next", "PostManagementAgree_No_Next", "是否同意该发文拟稿", new PassBackStringData() {
             @Override
             public void passBackStringData(String passBackData) {
                 officialLeaveApply(passBackData, 0);
