@@ -75,4 +75,7 @@ public class IpFiled {
     // 请网络获取流程其中一个步骤如果驳回的的话,可以驳回到哪几个步骤
     public final static String REJECT_WHICH_STEP = ip + "phone/taskBack.html";
 
+    // 获取车辆信息
+    public final static String GET_BUS_INFO = ip + "phone/getCarSel.html";
+
 }

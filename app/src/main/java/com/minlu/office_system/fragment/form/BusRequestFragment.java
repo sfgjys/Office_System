@@ -219,7 +219,7 @@ public class BusRequestFragment extends FormFragment {
         hashMap.put("sqcs", mOffice.getCustomEditTextRight().getText().toString());
         hashMap.put("sqr", mRequestPerson.getCustomEditTextRight().getText().toString());
         hashMap.put("car_no", mBusType.getCustomEditTextRight().getText().toString());
-        hashMap.put("jsy", mBusTypeRemark.getCustomEditTextRight().getText().toString());
+        hashMap.put("beizhu", mBusTypeRemark.getCustomEditTextRight().getText().toString());
         hashMap.put("stime", mStartTime.getmDayOfYear().getText().toString() + " " + mStartTime.getmTimeOfDay().getText().toString() + ":00");
         hashMap.put("etime", mEndTime.getmDayOfYear().getText().toString() + " " + mEndTime.getmTimeOfDay().getText().toString() + ":00");
         hashMap.put("mdd", mDestination.getCustomEditTextRight().getText().toString());
