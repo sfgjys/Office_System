@@ -123,6 +123,7 @@ public class SelectNextUserDialog extends DialogFragment {
             WindowManager.LayoutParams layoutParams = window.getAttributes();
             // 设置透明度为0.3
             layoutParams.width = (int) (display.getWidth() * 0.7);
+            layoutParams.height = (int) (display.getWidth() * 0.7);
             window.setAttributes(layoutParams);
         }
     }

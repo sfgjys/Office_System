@@ -84,4 +84,27 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="week_work_plan_item_item_left_text_style">
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">0.5dp</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="week_work_plan_item_item_right_text_style">
+        <item name="android:textColorHint">@color/main_bottom_gray</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">0.5dp</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 </resources>

@@ -61,10 +61,10 @@ public class HomePageFragment extends BaseFragment<HomePageItem> {
 
         switch (AllForms.values()[position].getHomeToListType()) {
             case StringsFiled.HOME_TO_LIST_SHOW_LIST:
-                intent.setClass(getContext(), FormListActivity.class);
+                intent.setClass(getContext(), FormListActivity.class);// FormListActivity开启的Fragment必须是FormListFragment的子类
                 break;
             case StringsFiled.HOME_TO_LIST_SHOW_FORM:
-                intent.setClass(getContext(), FormActivity.class);
+                intent.setClass(getContext(), FormActivity.class);// FormActivity开启的Fragment必须是FormFragment的子类
                 break;
             case StringsFiled.HOME_TO_LIST_SHOW_NULL:
                 intent = null;

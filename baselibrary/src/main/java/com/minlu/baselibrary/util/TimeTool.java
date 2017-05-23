@@ -32,10 +32,13 @@ public class TimeTool {
         return formatTime;
     }
 
-    public static String getTimerWeek() {
+    public static String getTimerWeek(Date date, String oneOrTwo) {
         Calendar calendar = Calendar.getInstance();
+        if (date != null) {
+            calendar.setTime(date);
+        }
         int week = calendar.get(Calendar.DAY_OF_WEEK);
-        String timeWeek = "星期";
+        String timeWeek = oneOrTwo;
         switch (week) {
             case 2:
                 timeWeek = timeWeek + "一";

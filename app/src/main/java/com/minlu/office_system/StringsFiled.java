@@ -52,6 +52,7 @@ public class StringsFiled {
     public static final String BusRequestFragment_TAG = "BusRequest";
     public static final String OtherItemFragment_TAG = "OtherItem";
     public static final String NoticeInformFragment_TAG = "NoticeInformFragment";
+    public static final String WeekWorkPlanFragment_TAG = "WeekWorkPlanFragment";
 
 
     // processid为固定值

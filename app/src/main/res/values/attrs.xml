@@ -77,4 +77,11 @@
     <declare-styleable name="EditTextTimeSelector">
         <attr name="time_selector_left_text" format="string" />
     </declare-styleable>
+
+
+    <!-- 周工作安排中的每个工作的条目 -->
+    <declare-styleable name="WeekWorkPlanItem">
+        <attr name="each_work_title" format="string" />
+        <attr name="each_work_organization_name_ll" format="boolean" />
+    </declare-styleable>
 </resources>

@@ -6,7 +6,7 @@ package com.minlu.office_system;
 
 public class IpFiled {
 
-    private final static String ip = "http://192.168.1.31:8080/MJOA/";// 192.168.1.110手机链接
+    private final static String ip = "http://192.168.1.40:8081/MJOA/";// 192.168.1.110手机链接
 
     // ***********************************************************************************************************************************
 

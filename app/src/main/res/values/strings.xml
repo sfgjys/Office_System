@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Office_System</string>
+    <string name="week_work_item_title_example_text">工作一</string>
+    <string name="week_work_plan_delete_item">周工作安排中，没个工作安排右上角，都有一个可以删除本工作安排的删除图标</string>
+    <string name="start_time">开始时间</string>
+    <string name="select_start_time">请选择开始时间</string>
+    <string name="end_time">结束时间</string>
+    <string name="select_end_time">请选择结束时间</string>
+    <string name="work_site">工作地点</string>
+    <string name="edit_work_site">请填写具体工作地点</string>
+    <string name="work_content">工作内容</string>
+    <string name="edit_work_content">请填写具体工作内容</string>
+    <string name="attend_lead">出席领导</string>
+    <string name="select_attend_lead">请选择具体出席的领导</string>
+    <string name="participants">参加人员</string>
+    <string name="edit_participants">请填写具体的参加人员</string>
+    <string name="week">星期</string>
 </resources>
