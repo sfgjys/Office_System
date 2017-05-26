@@ -56,6 +56,19 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         datePickerDialog = new DatePickerDialog(getActivity(), this, nowYear, nowMonth, nowDayOfMonth);
 
+        setTimeAreaLimit(nowYear, nowMonth, nowDayOfMonth);
+
+        return datePickerDialog;
+    }
+
+    /**
+     * 时间区域限制方法
+     *
+     * @param nowYear       当前 年
+     * @param nowMonth      当前 月
+     * @param nowDayOfMonth 当前 日
+     */
+    public void setTimeAreaLimit(final int nowYear, final int nowMonth, final int nowDayOfMonth) {
         if (onDateChangedListener != null) {// 有自定义的监听就优先使用
             DatePicker datePicker = datePickerDialog.getDatePicker();
             datePicker.init(nowYear, nowMonth, nowDayOfMonth, onDateChangedListener);
@@ -88,7 +101,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
                 });
             }
         }
-        return datePickerDialog;
     }
 
     @Override
