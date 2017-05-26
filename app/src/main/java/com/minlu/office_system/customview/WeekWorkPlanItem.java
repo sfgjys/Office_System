@@ -323,12 +323,12 @@ public class WeekWorkPlanItem extends LinearLayout {
         }
     }
 
-    // 对外使用
+    // 对外使用设置删除按钮点击回调接口
     public void setOnDeleteButtonClick(OnDeleteButtonClick mOnDeleteButtonClick) {
         this.mOnDeleteButtonClick = mOnDeleteButtonClick;
     }
 
-    // 对外使用
+    // 对外使用设置选择出席领导所需要的可选领导数据
     public void setCanSelectPersonData(List<CanSelectAttendLead> mCanSelectPersonData) {
         this.mCanSelectPersonData = mCanSelectPersonData;
     }
