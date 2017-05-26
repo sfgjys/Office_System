@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/form_week_work_plan_parent_add_item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/tv_form_week_work_plan_add_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="12dp"
+        android:drawableLeft="@drawable/selector_round_add"
+        android:drawablePadding="6dp"
+        android:drawableStart="@drawable/selector_round_add"
+        android:text="@string/add_new_work_plan"
+        android:textColor="@color/black"
+        android:textSize="22sp" />
+
+    <ScrollView
+        android:id="@+id/form_week_work_plan_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/form_week_work_plan_parent_add_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical" />
+    </ScrollView>
 </LinearLayout>
