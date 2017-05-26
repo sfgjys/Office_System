@@ -52,21 +52,13 @@ public class WeekWorkPlanItem extends LinearLayout {
     // 存储控件数据的对象
     private WeekWorkEachData mWeekWorkEachData;
 
-    // 组织显示
-    private View llOrganizationName;
-    private EditText mOrganizationNameView;
-
 
     private Date mTextChangedStartTime;
     private Date mTextChangedEndTime;
     private List<CanSelectAttendLead> mCanSelectPersonData;
 
 
-    private ImageView mDeleteItem;
-    private EditText mParticipantsView;
     private EditText mAttendLeadView;
-    private EditText mWorkContentView;
-    private EditText mWorkSiteView;
     private EditText mWeekView;
     private EditText mEndTimeView;
     private EditText mStartTimeView;
@@ -96,19 +88,19 @@ public class WeekWorkPlanItem extends LinearLayout {
         // ******************************************************************************************************************************************
 
         // 组织显示
-        llOrganizationName = view.findViewById(R.id.ll_week_work_plan_item_organization_name);
+        View llOrganizationName = view.findViewById(R.id.ll_week_work_plan_item_organization_name);
         if (StringUtils.isEmpty(mWeekWorkEachData.getOrganization())) {
             llOrganizationName.setVisibility(GONE);// 隐藏
         } else {
             llOrganizationName.setVisibility(VISIBLE);// 显示
-            mOrganizationNameView = (EditText) view.findViewById(R.id.week_work_plan_item_organization_name);
+            EditText mOrganizationNameView = (EditText) view.findViewById(R.id.week_work_plan_item_organization_name);
             mOrganizationNameView.setText(mWeekWorkEachData.getOrganization());
         }
 
         // ******************************************************************************************************************************************
 
         // 设置工作地点内容和参加人员文本,并根据文本内容的变动实时修改数据源中对应的数据
-        mWorkSiteView = (EditText) view.findViewById(R.id.week_work_plan_item_work_site);
+        EditText mWorkSiteView = (EditText) view.findViewById(R.id.week_work_plan_item_work_site);
         mWorkSiteView.setText(mWeekWorkEachData.getWorkSite());
         mWorkSiteView.addTextChangedListener(new MyTextWatcher() {
             @Override
@@ -116,7 +108,7 @@ public class WeekWorkPlanItem extends LinearLayout {
                 mWeekWorkEachData.setWorkSite(s.toString());
             }
         });
-        mWorkContentView = (EditText) view.findViewById(R.id.week_work_plan_item_work_content);
+        EditText mWorkContentView = (EditText) view.findViewById(R.id.week_work_plan_item_work_content);
         mWorkContentView.setText(mWeekWorkEachData.getWorkContent());
         mWorkContentView.addTextChangedListener(new MyTextWatcher() {
             @Override
@@ -124,7 +116,7 @@ public class WeekWorkPlanItem extends LinearLayout {
                 mWeekWorkEachData.setWorkContent(s.toString());
             }
         });
-        mParticipantsView = (EditText) view.findViewById(R.id.week_work_plan_item_work_participants);
+        EditText mParticipantsView = (EditText) view.findViewById(R.id.week_work_plan_item_work_participants);
         mParticipantsView.setText(mWeekWorkEachData.getParticipants());
         mParticipantsView.addTextChangedListener(new MyTextWatcher() {
             @Override
@@ -136,7 +128,7 @@ public class WeekWorkPlanItem extends LinearLayout {
         // ******************************************************************************************************************************************
 
         // 设置删除回调接口
-        mDeleteItem = (ImageView) view.findViewById(R.id.week_work_plan_item_delete);
+        ImageView mDeleteItem = (ImageView) view.findViewById(R.id.week_work_plan_item_delete);
         mDeleteItem.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -339,16 +331,5 @@ public class WeekWorkPlanItem extends LinearLayout {
     // 对外使用
     public void setCanSelectPersonData(List<CanSelectAttendLead> mCanSelectPersonData) {
         this.mCanSelectPersonData = mCanSelectPersonData;
-    }
-
-    public boolean isEmpty(String value) {
-        if (value != null && !"".equalsIgnoreCase(value.trim())
-                && !"null".equalsIgnoreCase(value.trim())) {
-            // 不为空
-            return false;
-        } else {
-            // 为空
-            return true;
-        }
     }
 }
