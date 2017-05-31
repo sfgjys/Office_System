@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Office_System</string>
     <string name="week_work_item_title_example_text">工作计划</string>
-    <string name="week_work_plan_delete_item">周工作安排中，没个工作安排右上角，都有一个可以删除本工作安排的删除图标</string>
+    <string name="image_content_description_delete_item">每个条目右上角，都有一个可以删除本工作安排的删除图标</string>
     <string name="start_time">开始时间</string>
     <string name="select_start_time">请选择开始时间</string>
     <string name="end_time">结束时间</string>

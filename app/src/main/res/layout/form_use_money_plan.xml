@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:edittextitem="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.minlu.office_system.customview.EditTextTimeSelector
+        android:id="@+id/form_use_money_plan_time"
+        style="@style/editText_item_top"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        edittextitem:time_selector_left_text="时间 : " />
+
+    <ScrollView
+        android:id="@+id/form_use_money_plan_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/form_use_money_plan_parent_add_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical" />
+    </ScrollView>
+
+</LinearLayout>

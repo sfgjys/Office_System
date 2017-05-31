@@ -13,6 +13,7 @@ import com.minlu.office_system.fragment.form.OtherItemFragment;
 import com.minlu.office_system.fragment.form.PlanSummaryFragment;
 import com.minlu.office_system.fragment.form.PostManagementFragment;
 import com.minlu.office_system.fragment.form.RecordManagementFragment;
+import com.minlu.office_system.fragment.form.UseMoneyPlanFragment;
 import com.minlu.office_system.fragment.form.WeekWorkPlanFragment;
 import com.minlu.office_system.fragment.form.WorkMonthlyReportFragment;
 
@@ -47,7 +48,9 @@ public enum AllForms {
     NOTICE_INFORM("公告通知", R.mipmap.home_page_icon11, NoticeInformFragment.class, StringsFiled.NO_SHOW_BUTTON,
             StringsFiled.NoticeInformFragment_TAG, false, StringsFiled.No_Need_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_FORM),
     WEEK_WORK_PLAN("周工作安排", R.mipmap.home_page_icon11, WeekWorkPlanFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON,
-            StringsFiled.WeekWorkPlanFragment_TAG, false, StringsFiled.No_Need_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_FORM);
+            StringsFiled.WeekWorkPlanFragment_TAG, false, StringsFiled.No_Need_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_FORM),
+    USE_MONEY_PLAN("用款计划", R.mipmap.home_page_icon11, UseMoneyPlanFragment.class, StringsFiled.SHOW_SUBMIT_BUTTON,
+            StringsFiled.UseMoneyPlanFragment_TAG, false, StringsFiled.No_Need_ProcessId, StringsFiled.HOME_TO_LIST_SHOW_FORM);
 
     private String formName;
     private int formIconId;

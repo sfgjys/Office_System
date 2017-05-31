@@ -40,7 +40,7 @@
                 android:layout_marginEnd="12dp"
                 android:layout_marginRight="12dp"
                 android:background="@mipmap/delete_icon"
-                android:contentDescription="@string/week_work_plan_delete_item" />
+                android:contentDescription="@string/image_content_description_delete_item" />
 
         </RelativeLayout>
 
@@ -50,12 +50,12 @@
             android:orientation="horizontal">
 
             <TextView
-                style="@style/week_work_plan_item_item_left_text_style"
+                style="@style/plan_item_left_text_style"
                 android:text="@string/start_time" />
 
             <EditText
                 android:id="@+id/week_work_plan_item_start_time"
-                style="@style/week_work_plan_item_item_right_text_style"
+                style="@style/plan_item_right_text_style"
                 android:drawableEnd="@drawable/selector_calendar"
                 android:drawableRight="@drawable/selector_calendar"
                 android:focusable="false"
@@ -69,12 +69,12 @@
             android:orientation="horizontal">
 
             <TextView
-                style="@style/week_work_plan_item_item_left_text_style"
+                style="@style/plan_item_left_text_style"
                 android:text="@string/end_time" />
 
             <EditText
                 android:id="@+id/week_work_plan_item_end_time"
-                style="@style/week_work_plan_item_item_right_text_style"
+                style="@style/plan_item_right_text_style"
                 android:drawableEnd="@drawable/selector_calendar"
                 android:drawableRight="@drawable/selector_calendar"
                 android:focusable="false"
@@ -88,12 +88,12 @@
             android:orientation="horizontal">
 
             <TextView
-                style="@style/week_work_plan_item_item_left_text_style"
+                style="@style/plan_item_left_text_style"
                 android:text="@string/week" />
 
             <EditText
                 android:id="@+id/week_work_plan_item_week"
-                style="@style/week_work_plan_item_item_right_text_style"
+                style="@style/plan_item_right_text_style"
                 android:enabled="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
@@ -106,12 +106,12 @@
             android:orientation="horizontal">
 
             <TextView
-                style="@style/week_work_plan_item_item_left_text_style"
+                style="@style/plan_item_left_text_style"
                 android:text="@string/work_site" />
 
             <EditText
                 android:id="@+id/week_work_plan_item_work_site"
-                style="@style/week_work_plan_item_item_right_text_style"
+                style="@style/plan_item_right_text_style"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:hint="@string/edit_work_site"
                 android:inputType="textMultiLine" />
@@ -125,12 +125,12 @@
             android:orientation="horizontal">
 
             <TextView
-                style="@style/week_work_plan_item_item_left_text_style"
+                style="@style/plan_item_left_text_style"
                 android:text="@string/work_content" />
 
             <EditText
                 android:id="@+id/week_work_plan_item_work_content"
-                style="@style/week_work_plan_item_item_right_text_style"
+                style="@style/plan_item_right_text_style"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:hint="@string/edit_work_content"
                 android:inputType="textMultiLine" />
@@ -143,12 +143,12 @@
             android:orientation="horizontal">
 
             <TextView
-                style="@style/week_work_plan_item_item_left_text_style"
+                style="@style/plan_item_left_text_style"
                 android:text="@string/attend_lead" />
 
             <EditText
                 android:id="@+id/week_work_plan_work_item_attend_lead"
-                style="@style/week_work_plan_item_item_right_text_style"
+                style="@style/plan_item_right_text_style"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
@@ -165,12 +165,12 @@
             android:visibility="gone">
 
             <TextView
-                style="@style/week_work_plan_item_item_left_text_style"
+                style="@style/plan_item_left_text_style"
                 android:text="组织名称" />
 
             <EditText
                 android:id="@+id/week_work_plan_item_organization_name"
-                style="@style/week_work_plan_item_item_right_text_style"
+                style="@style/plan_item_right_text_style"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:enabled="false"
                 android:focusable="false"
@@ -184,12 +184,12 @@
             android:orientation="horizontal">
 
             <TextView
-                style="@style/week_work_plan_item_item_left_text_style"
+                style="@style/plan_item_left_text_style"
                 android:text="@string/participants" />
 
             <EditText
                 android:id="@+id/week_work_plan_item_work_participants"
-                style="@style/week_work_plan_item_item_right_text_style"
+                style="@style/plan_item_right_text_style"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:hint="@string/edit_participants"
                 android:inputType="textMultiLine" />

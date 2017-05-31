@@ -116,12 +116,25 @@ public class WeekWorkPlanItem extends LinearLayout {
                 mWeekWorkEachData.setWorkContent(s.toString());
             }
         });
-        EditText mParticipantsView = (EditText) view.findViewById(R.id.week_work_plan_item_work_participants);
+        final EditText mParticipantsView = (EditText) view.findViewById(R.id.week_work_plan_item_work_participants);
         mParticipantsView.setText(mWeekWorkEachData.getParticipants());
         mParticipantsView.addTextChangedListener(new MyTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 mWeekWorkEachData.setParticipants(s.toString());
+                mParticipantsView.setText("参加人员");
+                mParticipantsView.setEnabled(false);
+                if (mParticipantsView.getText().toString().equals("参加")) {
+                    System.out.println("错误");
+                } else {
+                    System.out.println("正确");
+                }
+                mParticipantsView.addOnLayoutChangeListener(new OnLayoutChangeListener() {
+                    @Override
+                    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+
+                    }
+                });
             }
         });
 

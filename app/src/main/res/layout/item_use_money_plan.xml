@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingBottom="24dp"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:orientation="vertical"
+        android:padding="0.5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/use_money_plan_item_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0.5dp"
+                android:background="@color/action_bar_background"
+                android:gravity="center"
+                android:padding="6dp"
+                android:text="用款计划"
+                android:textColor="@color/white"
+                android:textSize="24dp" />
+
+            <ImageView
+                android:id="@+id/use_money_plan_item_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:background="@mipmap/delete_icon"
+                android:contentDescription="@string/image_content_description_delete_item" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/plan_item_left_text_style"
+                android:text="时间" />
+
+            <EditText
+                android:id="@+id/use_money_plan_item_use_money_time"
+                style="@style/plan_item_right_text_style"
+                android:drawableEnd="@drawable/selector_calendar"
+                android:drawableRight="@drawable/selector_calendar"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="请选择用款计划的时间" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/plan_item_left_text_style"
+                android:text="项目" />
+
+            <EditText
+                android:id="@+id/use_money_plan_item_project_content"
+                style="@style/plan_item_right_text_style"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:hint="请详细描述用款的项目内容"
+                android:inputType="textMultiLine" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/plan_item_left_text_style"
+                android:text="金额" />
+
+            <EditText
+                android:id="@+id/use_money_plan_item_definite_money"
+                style="@style/plan_item_right_text_style"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:hint="请填写用款具体金额"
+                android:inputType="textMultiLine" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/plan_item_left_text_style"
+                android:text="备注" />
+
+            <EditText
+                android:id="@+id/use_money_plan_item_plan_remark"
+                style="@style/plan_item_right_text_style"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:hint="请填写用款计划备注"
+                android:inputType="textMultiLine" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>
